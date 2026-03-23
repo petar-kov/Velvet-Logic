@@ -1,12 +1,17 @@
+import express from 'express';
+import cors from 'cors';
 import { Resend } from 'resend';
+import dotenv from 'dotenv';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+dotenv.config({ path: '.env.local' });
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
+const app = express();
+const resend = new Resend(process.env.VITE_RESEND_API_KEY);
 
+app.use(cors());
+app.use(express.json());
+
+app.post('/contact', async (req, res) => {
   const { fullName, companyName, email, phone, message } = req.body;
 
   if (!fullName || !email || !message) {
@@ -16,7 +21,7 @@ export default async function handler(req, res) {
   try {
     const { data, error } = await resend.emails.send({
       from: 'Velvet Logic <noreply@velvetlogicagency.com>',
-      to: [process.env.RESEND_TO_EMAIL || process.env.VITE_CONTACT_EMAIL],
+      to: [process.env.VITE_CONTACT_EMAIL],
       replyTo: email,
       subject: `New Project Inquiry from ${fullName}`,
       html: `
@@ -43,7 +48,7 @@ export default async function handler(req, res) {
     console.error('Server Error:', err);
     return res.status(500).json({ message: 'Server error' });
   }
-}
+});
 
 function escapeHtml(text) {
   const map = {
@@ -55,3 +60,8 @@ function escapeHtml(text) {
   };
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
+
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`API server running on http://localhost:${PORT}`);
+});

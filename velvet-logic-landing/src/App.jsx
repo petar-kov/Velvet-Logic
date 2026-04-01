@@ -1075,11 +1075,13 @@ const DiscoveryAscentSection = ({ t, scrollProgress, isMobile }) => {
         >
           {t.procTag}
         </motion.span>
-        <motion.h2 
+        <DynamicHeading 
+          animate
+          tag={t.procHeadTag}
           className="text-4xl font-heading font-bold text-mercury mb-4 leading-brand"
         >
           {t.procHead}<span className="text-violet">{t.procHeadSpan}</span>{t.procHeadEnd}
-        </motion.h2>
+        </DynamicHeading>
         <motion.div 
           className="font-body text-logic-gray max-w-2xl mx-auto text-sm leading-relaxed"
         >
@@ -1322,6 +1324,12 @@ import { VisualEditing } from '@sanity/visual-editing/react';
 // Detect if we are in preview mode via URL parameter (same as client)
 const isPreview = typeof window !== 'undefined' && window.location.search.includes('preview=true');
 
+const DynamicHeading = ({ tag = 'h2', children, animate, ...props }) => {
+  const Tag = (tag || 'h2').toLowerCase();
+  const Component = animate ? motion[Tag] : Tag;
+  return <Component {...props}>{children}</Component>;
+};
+
 export default function App() {
   const [lang, setLang] = useState('ENG');
   const [sanityData, setSanityData] = useState(null);
@@ -1339,7 +1347,7 @@ export default function App() {
       const navigation = data.find(d => d._id === 'navigation');
       const settings = data.find(d => d._id === 'settings');
 
-      // Map sections from the array for easier lookup in component
+      // Map sections from the array for easier lookup
       const sectionMap = {
         hero: home?.sections?.find(s => s._type === 'hero'),
         testimonials: home?.sections?.find(s => s._type === 'testimonials'),
@@ -1352,23 +1360,24 @@ export default function App() {
     }).catch(console.error);
   }, []);
 
-
-  // ... (rest of component)
-
-
   useEffect(() => {
     if (sanityData?.settings?.siteTitle) {
       document.title = l(sanityData.settings.siteTitle);
     }
   }, [sanityData]);
 
-  // Helper resolvers for localized fields matching standard behavior
   const langKey = lang === 'ENG' ? 'en' : 'sr';
-
   const l = (field) => field && typeof field === 'object' ? field[langKey] || field.en || '' : (field || '');
 
-  // Map Sanity values to the static dictionary keys seamlessly. Fill gap with fallbacks.
+  // Map Sanity values to the static dictionary keys seamlessly.
   const t = {
+    // SEO Tags
+    heroTitleTag: sanityData?.hero?.titleTag || 'h1',
+    testiHeadTag: sanityData?.testimonials?.headTag || 'h2',
+    procHeadTag: sanityData?.process?.headTag || 'h2',
+    featHeadTag: sanityData?.values?.headingTag || 'h2',
+    contactHeadTag: sanityData?.contact?.headTag || 'h2',
+
     // Navigation
     navWork: l(sanityData?.navigation?.navWork) || dict[lang].navWork,
     navProcess: l(sanityData?.navigation?.navProcess) || dict[lang].navProcess,
@@ -1384,12 +1393,14 @@ export default function App() {
     heroDesc: l(sanityData?.hero?.description) || dict[lang].heroDesc,
     heroBtnStart: l(sanityData?.hero?.btnStartText) || dict[lang].heroBtnStart,
     heroBtnStartIcon: sanityData?.hero?.btnStartIcon || 'Zap',
+    heroBtnStartIconCustom: sanityData?.hero?.btnStartIconCustom,
     heroBtnPort: l(sanityData?.hero?.btnPortText) || dict[lang].heroBtnPort,
 
-    // Testimonials Section Header
+    // Testimonials
     testiHeadPre: l(sanityData?.testimonials?.headPre) || dict[lang].testiHeadPre,
     testiHeadSub: l(sanityData?.testimonials?.headSub) || dict[lang].testiHeadSub,
     testiDesc: l(sanityData?.testimonials?.description) || dict[lang].testiDesc,
+
 
     // Process
     procTag: l(sanityData?.process?.tag) || dict[lang].procTag,
@@ -1505,10 +1516,10 @@ export default function App() {
             >
               {t.heroPre}
             </motion.span>
-            <h1 className="text-6xl md:text-8xl font-heading font-bold tracking-tight mb-8 text-mercury">
+            <DynamicHeading tag={t.heroTitleTag} className="text-6xl md:text-8xl font-heading font-bold tracking-tight mb-8 text-mercury">
               {t.heroTitle1} <span className="text-violet italic">{t.heroTitleVelvet}</span>,<br />
               {t.heroTitle2} <span className="underline decoration-violet">{t.heroTitleLogic}</span>
-            </h1>
+            </DynamicHeading>
             <div className="font-body text-gray text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
               <RichText content={t.heroDesc} />
             </div>
@@ -1539,7 +1550,7 @@ export default function App() {
         <div className="sticky top-0 h-screen flex items-center overflow-hidden">
           <motion.div style={{ x }} className="flex gap-12 px-12 items-center">
             <div className="min-w-[400px]">
-              <h2 className="text-5xl font-heading font-bold text-mercury mb-4">{t.testiHeadPre}<br/><span className="text-violet">{t.testiHeadSub}</span></h2>
+              <DynamicHeading tag={t.testiHeadTag} className="text-5xl font-heading font-bold text-mercury mb-4">{t.testiHeadPre}<br/><span className="text-violet">{t.testiHeadSub}</span></DynamicHeading>
               <div className="text-gray font-mono"><RichText content={t.testiDesc} /></div>
             </div>
             
@@ -1567,9 +1578,9 @@ export default function App() {
           <span className="font-mono text-xs tracking-[0.3em] text-violet font-bold uppercase mb-3 block">
             {t.featPreTitle}
           </span>
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-mercury mb-4 leading-tight">
+          <DynamicHeading tag={t.featHeadTag} className="text-4xl md:text-5xl font-heading font-bold text-mercury mb-4 leading-tight">
             {t.featHeading}
-          </h2>
+          </DynamicHeading>
           <div className="font-body text-gray text-base max-w-2xl mx-auto leading-relaxed">
             <RichText content={t.featSubtext} />
           </div>
@@ -1613,9 +1624,9 @@ export default function App() {
             <span className="font-mono text-xs tracking-[0.3em] text-violet font-bold uppercase mb-4 block">
               {t.contactTag}
             </span>
-            <h2 className="text-4xl md:text-6xl font-heading font-bold mb-6 text-obsidian">
+            <DynamicHeading tag={t.contactHeadTag} className="text-4xl md:text-6xl font-heading font-bold mb-6 text-obsidian">
               {t.contactHead1}<span className="text-violet italic">{t.contactHeadSpan}</span>{t.contactHead2}
-            </h2>
+            </DynamicHeading>
             <div className="text-obsidian/70 font-body mb-10 text-base max-w-md leading-relaxed">
               <RichText content={t.contactDesc} />
             </div>

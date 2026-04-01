@@ -9,6 +9,20 @@ export const processType = defineType({
     defineField({ name: 'head', title: 'Heading Start (The)', type: 'localizedString' }),
     defineField({ name: 'headSpan', title: 'Heading Span (Velvet Logic)', type: 'localizedString' }),
     defineField({ name: 'headEnd', title: 'Heading End (Framework)', type: 'localizedString' }),
+    defineField({
+      name: 'headTag',
+      title: 'Heading HTML Tag (SEO)',
+      type: 'string',
+      initialValue: 'h2',
+      options: {
+        list: [
+          { title: 'H1 (Main)', value: 'h1' },
+          { title: 'H2 (Section Header)', value: 'h2' },
+          { title: 'H3 (Subheader)', value: 'h3' },
+          { title: 'Span (Inline)', value: 'span' }
+        ]
+      }
+    }),
     defineField({ name: 'description', title: 'Description', type: 'localizedBlockContent' }),
     defineField({
       name: 'steps',

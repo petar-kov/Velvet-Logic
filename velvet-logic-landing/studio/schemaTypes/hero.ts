@@ -16,6 +16,21 @@ export const heroType = defineType({
       type: 'localizedString',
     }),
     defineField({
+      name: 'titleTag',
+      title: 'Main Title HTML Tag (SEO)',
+      type: 'string',
+      initialValue: 'h1',
+      options: {
+        list: [
+          { title: 'H1 (Standard)', value: 'h1' },
+          { title: 'H2 (Sub-section)', value: 'h2' },
+          { title: 'H3 (Section)', value: 'h3' },
+          { title: 'H4 (Subsection)', value: 'h4' },
+          { title: 'Span (Inline)', value: 'span' }
+        ]
+      }
+    }),
+    defineField({
       name: 'titleVelvet',
       title: 'Title Highlight 1 (Velvet)',
       type: 'localizedString',

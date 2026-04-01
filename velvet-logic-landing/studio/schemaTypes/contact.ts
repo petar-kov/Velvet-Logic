@@ -9,6 +9,20 @@ export const contactType = defineType({
     defineField({ name: 'head1', title: 'Heading Start', type: 'localizedString' }),
     defineField({ name: 'headSpan', title: 'Heading Highlight', type: 'localizedString' }),
     defineField({ name: 'head2', title: 'Heading End', type: 'localizedString' }),
+    defineField({
+      name: 'headTag',
+      title: 'Heading HTML Tag (SEO)',
+      type: 'string',
+      initialValue: 'h2',
+      options: {
+        list: [
+          { title: 'H1 (Main Header)', value: 'h1' },
+          { title: 'H2 (Section Header)', value: 'h2' },
+          { title: 'H3 (Subheader)', value: 'h3' },
+          { title: 'Span (Inline)', value: 'span' }
+        ]
+      }
+    }),
     defineField({ name: 'description', title: 'Description', type: 'localizedBlockContent' }),
     defineField({
       name: 'features',

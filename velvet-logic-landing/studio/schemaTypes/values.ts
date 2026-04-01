@@ -16,6 +16,20 @@ export const valuesType = defineType({
       type: 'localizedString',
     }),
     defineField({
+      name: 'headingTag',
+      title: 'Section Heading HTML Tag (SEO)',
+      type: 'string',
+      initialValue: 'h2',
+      options: {
+        list: [
+          { title: 'H1 (Main)', value: 'h1' },
+          { title: 'H2 (Section Header)', value: 'h2' },
+          { title: 'H3 (Sub-header)', value: 'h3' },
+          { title: 'Span (Inline)', value: 'span' }
+        ]
+      }
+    }),
+    defineField({
       name: 'subtext',
       title: 'Section Subtext',
       type: 'localizedBlockContent',

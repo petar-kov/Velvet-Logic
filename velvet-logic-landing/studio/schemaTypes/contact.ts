@@ -6,6 +6,12 @@ export const contactType = defineType({
   type: 'object',
   fields: [
     defineField({ name: 'tag', title: 'Tag', type: 'localizedString' }),
+    defineField({
+      name: 'sectionLabel',
+      title: 'Friendly Label (Internal Only)',
+      type: 'string',
+      initialValue: 'Contact Section'
+    }),
     defineField({ name: 'head1', title: 'Heading Start', type: 'localizedString' }),
     defineField({ name: 'headSpan', title: 'Heading Highlight', type: 'localizedString' }),
     defineField({ name: 'head2', title: 'Heading End', type: 'localizedString' }),
@@ -62,7 +68,7 @@ export const contactType = defineType({
     })
   ],
   preview: { 
-    select: { title: 'tag.en' },
+    select: { title: 'sectionLabel' },
     prepare({title}) { return { title: title || 'Contact Section' } } 
   }
 })

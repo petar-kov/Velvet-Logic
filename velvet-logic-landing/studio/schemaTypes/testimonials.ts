@@ -6,6 +6,12 @@ export const testimonialsType = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'sectionLabel',
+      title: 'Friendly Label (Internal Only)',
+      type: 'string',
+      initialValue: 'Testimonials Section'
+    }),
+    defineField({
       name: 'headPre',
       title: 'Heading Prefix (Client)',
       type: 'localizedString',
@@ -71,10 +77,8 @@ export const testimonialsType = defineType({
       ]
     }),
   ],
-  preview: {
-    select: { title: 'headSub.en' },
-    prepare({title}) {
-      return { title: title || 'Testimonials Section' }
-    }
+  preview: { 
+    select: { title: 'sectionLabel' },
+    prepare({title}) { return { title: title || 'Testimonials Section' } } 
   }
 })

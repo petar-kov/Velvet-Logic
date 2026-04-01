@@ -6,6 +6,12 @@ export const valuesType = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'sectionLabel',
+      title: 'Friendly Label (Internal Only)',
+      type: 'string',
+      initialValue: 'Values Section'
+    }),
+    defineField({
       name: 'preTitle',
       title: 'Pre-Title (e.g. "Our Philosophy")',
       type: 'localizedString',
@@ -60,7 +66,7 @@ export const valuesType = defineType({
     }),
   ],
   preview: { 
-    select: { title: 'heading.en' },
-    prepare({title}) { return { title: title || 'Values/Features Section' } } 
+    select: { title: 'sectionLabel' },
+    prepare({title}) { return { title: title || 'Values Section' } } 
   }
 })

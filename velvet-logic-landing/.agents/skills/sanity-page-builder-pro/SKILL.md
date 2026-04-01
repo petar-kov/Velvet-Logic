@@ -1,3 +1,8 @@
+---
+name: sanity-page-builder-pro
+description: Expert Sanity Page Builder Skill for Antigravity & Claude. Unified Singletons, SEO Semantic Tagging, and High-Performance Site-wide Round-trips.
+---
+
 # Sanity Page Builder Pro — High-Performance CMS Skill ✨
 
 This skill informs **Antigravity** and **Claude** on how to build elite, professional-grade Sanity CMS architectures using a **Unified Singleton & Page Builder** pattern. It is designed for maximum SEO control, visual editing, and multi-language support.

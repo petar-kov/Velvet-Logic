@@ -6,6 +6,13 @@ export const heroType = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'sectionLabel',
+      title: 'Friendly Label (Internal Only)',
+      type: 'string',
+      description: 'Give this section a custom name to help you recognize it in the Page Builder list.',
+      initialValue: 'Hero Section'
+    }),
+    defineField({
       name: 'preTitle',
       title: 'Pre-Title (Small uppercase)',
       type: 'localizedString',
@@ -73,7 +80,11 @@ export const heroType = defineType({
     }),
   ],
   preview: {
-    select: { title: 'titlePart1.en' },
-    prepare({title}) { return { title: title || 'Hero Section' } }
+    select: { title: 'sectionLabel' },
+    prepare({title}) {
+      return {
+        title: title || 'Hero Section'
+      }
+    }
   }
 })

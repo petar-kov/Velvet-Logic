@@ -5,6 +5,12 @@ export const processType = defineType({
   title: 'Process Section',
   type: 'object',
   fields: [
+    defineField({
+      name: 'sectionLabel',
+      title: 'Friendly Label (Internal Only)',
+      type: 'string',
+      initialValue: 'Process Section'
+    }),
     defineField({ name: 'tag', title: 'Tag (Build Philosophy)', type: 'localizedString' }),
     defineField({ name: 'head', title: 'Heading Start (The)', type: 'localizedString' }),
     defineField({ name: 'headSpan', title: 'Heading Span (Velvet Logic)', type: 'localizedString' }),
@@ -48,7 +54,7 @@ export const processType = defineType({
     }),
   ],
   preview: { 
-    select: { title: 'tag.en' },
+    select: { title: 'sectionLabel' },
     prepare({title}) { return { title: title || 'Process Section' } } 
   }
 })

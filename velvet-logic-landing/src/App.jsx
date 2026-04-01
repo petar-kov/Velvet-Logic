@@ -1303,6 +1303,11 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
 
 // --- Main Layout ---
 
+import { VisualEditing } from '@sanity/visual-editing/react';
+
+// Detect if we are in preview mode via URL parameter (same as client)
+const isPreview = typeof window !== 'undefined' && window.location.search.includes('preview=true');
+
 export default function App() {
   const [lang, setLang] = useState('ENG');
   const [sanityData, setSanityData] = useState(null);
@@ -1319,6 +1324,9 @@ export default function App() {
       "navigation": *[_type == "navigation"][0]
     }`).then(data => setSanityData({ ...data.home, navigation: data.navigation })).catch(console.error);
   }, []);
+
+  // ... (rest of component)
+
 
   // Helper resolvers for localized fields matching standard behavior
   const langKey = lang === 'ENG' ? 'en' : 'sr';
@@ -1636,6 +1644,7 @@ export default function App() {
             <a href="#dribbble">Dribbble</a>
           </div>
         </div>
+        {isPreview && <VisualEditing />}
       </section>
     </div>
   );

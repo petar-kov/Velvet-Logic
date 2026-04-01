@@ -15,3 +15,46 @@
     @apply font-heading tracking-tight;
   }
 }
+
+/* ─── Liquid Fill Card Wave Animations ──────────────────────────────────────
+   GPU compositor-thread only (transform). No layout, no paint, silky 60fps. */
+@keyframes liquid-wave-fwd {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0%);   }
+}
+@keyframes liquid-wave-bwd {
+  from { transform: translateX(0%);   }
+  to   { transform: translateX(-50%); }
+}
+@keyframes liquid-wave-pulse {
+  0%, 100% { transform: translateX(-25%); }
+  50%       { transform: translateX(0%);  }
+}
+
+.wave-fwd   { animation: liquid-wave-fwd   linear      infinite; will-change: transform; }
+.wave-bwd   { animation: liquid-wave-bwd   linear      infinite; will-change: transform; }
+.wave-pulse { animation: liquid-wave-pulse ease-in-out infinite; will-change: transform; }
+
+/* ─── Human Impact Card – Aurora mesh blobs ────────────────────────────────
+   Three drifting radial gradient blobs; different periods + offsets so they
+   never sync, giving a living, organic aurora-borealis feel.               */
+@keyframes auroraBlob1 {
+  0%,100% { transform: translate(0%,  0%)  scale(1)    rotate(0deg);  }
+  25%      { transform: translate(18%, -20%) scale(1.18) rotate(22deg); }
+  50%      { transform: translate(-12%, 16%) scale(0.88) rotate(-14deg); }
+  75%      { transform: translate(22%, 8%) scale(1.1)  rotate(30deg); }
+}
+@keyframes auroraBlob2 {
+  0%,100% { transform: translate(0%,   0%) scale(1)    rotate(0deg);  }
+  33%      { transform: translate(-18%, 14%) scale(1.15) rotate(-22deg); }
+  66%      { transform: translate(16%, -18%) scale(0.86)  rotate(28deg); }
+}
+@keyframes auroraBlob3 {
+  0%,100% { transform: translate(0%,  0%) scale(1);    }
+  40%      { transform: translate(14%, -14%) scale(1.2); }
+  80%      { transform: translate(-16%, 12%) scale(0.82); }
+}
+
+.aurora-blob-1 { animation: auroraBlob1 18s ease-in-out infinite; will-change: transform; }
+.aurora-blob-2 { animation: auroraBlob2 13s ease-in-out infinite; animation-delay: -4.5s; will-change: transform; }
+.aurora-blob-3 { animation: auroraBlob3 22s ease-in-out infinite; animation-delay: -9s; will-change: transform; }

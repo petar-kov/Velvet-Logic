@@ -6,6 +6,21 @@ export const valuesType = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'preTitle',
+      title: 'Pre-Title (e.g. "Our Philosophy")',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Section Heading',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'subtext',
+      title: 'Section Subtext',
+      type: 'localizedBlockContent',
+    }),
+    defineField({
       name: 'cards',
       title: 'Value Cards',
       type: 'array',

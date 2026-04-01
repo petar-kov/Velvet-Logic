@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, useInView, animate } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import imageUrlBuilder from '@sanity/image-url';
@@ -249,8 +249,585 @@ const BorderBeamCard = ({ title, description, tag, iconName, delay = 0 }) => {
         </span>
         <h3 className="text-2xl font-heading font-bold mb-2 text-obsidian">{title}</h3>
         <div className="text-obsidian/70 font-body text-sm leading-relaxed mb-6"><RichText content={description} /></div>
-        <div className="flex items-center text-violet font-mono text-xs font-bold group-hover:gap-2 transition-all">
-          <DynamicIcon name={iconName} size={14} />
+      </div>
+    </motion.div>
+  );
+};
+
+// ─── GRAVITY WELL CARD ────────────────────────────────────────────────────────
+// Grid background + data-point nodes that travel grid lines on hover,
+// snap to intersections, and form structured circuit patterns.
+// Grid SVG = static never-animated layer.
+// Nodes = motion.circle elements driven by Framer Motion keyframe sequences.
+
+const GRID_COLS = 6;
+const GRID_ROWS = 5;
+const GW = 340; // viewBox width
+const GH = 260; // viewBox height
+const COL_STEP = GW / GRID_COLS;  // 56.67
+const ROW_STEP = GH / GRID_ROWS;  // 52
+
+// All grid intersection coordinates
+const intersections = [];
+for (let r = 0; r <= GRID_ROWS; r++) {
+  for (let c = 0; c <= GRID_COLS; c++) {
+    intersections.push({ x: c * COL_STEP, y: r * ROW_STEP });
+  }
+}
+
+// 12 node definitions: each has a resting position and a hover sequence of
+// grid intersections it snaps through. Sequences are chosen to look like
+// circuit routing — horizontal runs, then a right-angle turn, then a snap.
+const NODE_DEFS = [
+  { restIdx: 0,  seq: [0, 1, 2, 8, 15, 21, 14, 7],       color: "#7F00FF", r: 3.5,  delay: 0 },
+  { restIdx: 6,  seq: [6, 7, 8, 9, 16, 22, 23],           color: "#9B30FF", r: 2.5,  delay: 0.15 },
+  { restIdx: 12, seq: [12, 13, 20, 26, 25, 18],           color: "#7F00FF", r: 3,    delay: 0.3 },
+  { restIdx: 2,  seq: [2, 3, 10, 17, 24, 30, 29, 22],     color: "#B060FF", r: 2,    delay: 0.45 },
+  { restIdx: 18, seq: [18, 19, 20, 13, 6, 7, 14, 21],     color: "#7F00FF", r: 4,    delay: 0.1 },
+  { restIdx: 25, seq: [25, 26, 27, 34, 33, 32, 25],       color: "#9B30FF", r: 2.5,  delay: 0.6 },
+  { restIdx: 4,  seq: [4, 11, 18, 25, 32, 33, 26, 19],    color: "#7F00FF", r: 2,    delay: 0.25 },
+  { restIdx: 30, seq: [30, 23, 16, 9, 10, 17, 24, 31],    color: "#B060FF", r: 3,    delay: 0.7 },
+  { restIdx: 9,  seq: [9, 16, 23, 30, 29, 22, 15, 8],     color: "#7F00FF", r: 2,    delay: 0.35 },
+  { restIdx: 35, seq: [35, 34, 27, 28, 21, 14, 13, 20],   color: "#9B30FF", r: 3.5,  delay: 0.5 },
+  { restIdx: 3,  seq: [3, 4, 5, 12, 19, 26, 33, 34],      color: "#7F00FF", r: 2,    delay: 0.8 },
+  { restIdx: 28, seq: [28, 29, 30, 31, 24, 17, 10, 11],   color: "#B060FF", r: 2.5,  delay: 0.55 },
+];
+
+const GravityWellNode = ({ nodeDef, isActive }) => {
+  const cx = useMotionValue(intersections[nodeDef.restIdx % intersections.length]?.x ?? 0);
+  const cy = useMotionValue(intersections[nodeDef.restIdx % intersections.length]?.y ?? 0);
+  const opacity = useMotionValue(0.18);
+  const glowR = useMotionValue(nodeDef.r);
+  const activeRef = useRef(false);
+  const loopRef = useRef(null);
+
+  const runLoop = async () => {
+    activeRef.current = true;
+    let step = 0;
+    const seq = nodeDef.seq;
+    const len = seq.length;
+    while (activeRef.current) {
+      const idx = seq[step % len];
+      const target = intersections[idx % intersections.length];
+      if (!target) break;
+      await Promise.all([
+        animate(cx, target.x, { duration: 0.38, ease: [0.4, 0, 0.2, 1], delay: step === 0 ? nodeDef.delay : 0 }),
+        animate(cy, target.y, { duration: 0.38, ease: [0.4, 0, 0.2, 1], delay: step === 0 ? nodeDef.delay : 0 }),
+        animate(glowR, nodeDef.r * 1.9, { duration: 0.15 }),
+      ]);
+      // Pulse at intersection
+      await animate(glowR, nodeDef.r, { duration: 0.22, ease: "easeOut" });
+      // Brief dwell at node
+      await new Promise(r => setTimeout(r, 120));
+      step++;
+    }
+  };
+
+  const stopLoop = async () => {
+    activeRef.current = false;
+    if (loopRef.current) loopRef.current = null;
+    const rest = intersections[nodeDef.restIdx % intersections.length];
+    await Promise.all([
+      animate(cx, rest.x, { duration: 0.6, ease: "easeInOut" }),
+      animate(cy, rest.y, { duration: 0.6, ease: "easeInOut" }),
+      animate(opacity, 0.18, { duration: 0.5 }),
+      animate(glowR, nodeDef.r, { duration: 0.5 }),
+    ]);
+  };
+
+  useEffect(() => {
+    if (isActive) {
+      animate(opacity, 1, { duration: 0.4, delay: nodeDef.delay });
+      loopRef.current = runLoop();
+    } else {
+      stopLoop();
+    }
+  }, [isActive]);
+
+  return (
+    <motion.g>
+      {/* Glow halo */}
+      <motion.circle
+        style={{ cx, cy }}
+        fill={nodeDef.color}
+        opacity={0.18}
+        r={nodeDef.r * 3.5}
+        filter="url(#nodeGlow)"
+      />
+      {/* Sharp core */}
+      <motion.circle
+        style={{ cx, cy, opacity, r: glowR }}
+        fill={nodeDef.color}
+      />
+    </motion.g>
+  );
+};
+
+const GravityWellCard = ({ title, description, tag, delay = 0 }) => {
+  const containerRef = useRef(null);
+  const [active, setActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const isInView = useInView(containerRef, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile && isInView) {
+      setActive(true);
+    }
+  }, [isMobile, isInView]);
+
+  return (
+    <motion.div
+      ref={containerRef}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      onHoverStart={() => !isMobile && setActive(true)}
+      onHoverEnd={() => !isMobile && setActive(false)}
+      className="relative group p-8 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden min-h-[300px]"
+    >
+      {/* Border beam on hover or active on mobile */}
+      <div className={`absolute inset-0 p-[2px] transition-opacity duration-700 ${active ? 'opacity-100' : 'opacity-0'} ${!isMobile ? 'group-hover:opacity-100' : ''}`}>
+        <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#7F00FF22_0%,#7F00FF_50%,#7F00FF22_100%)]" />
+      </div>
+
+      <div className="relative bg-white rounded-xl h-full flex flex-col overflow-hidden">
+
+        {/* ── GRID BACKGROUND ─────────────────────────────────────────────── */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg
+            viewBox={`0 0 ${GW} ${GH}`}
+            preserveAspectRatio="xMidYMid slice"
+            className="w-full h-full"
+            style={{ filter: 'blur(0.4px)' }}
+          >
+            <defs>
+              {/* Grid pattern tile */}
+              <pattern id="gwGrid" x="0" y="0" width={COL_STEP} height={ROW_STEP} patternUnits="userSpaceOnUse">
+                <path
+                  d={`M ${COL_STEP} 0 L 0 0 0 ${ROW_STEP}`}
+                  fill="none"
+                  stroke="#94a3b830"
+                  strokeWidth="0.8"
+                />
+              </pattern>
+              {/* Node glow filter */}
+              <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              {/* Intersection dot filter (sharper) */}
+              <filter id="dotGlow">
+                <feGaussianBlur stdDeviation="1.2" result="b" />
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            {/* Grid fill */}
+            <rect width={GW} height={GH} fill="url(#gwGrid)" />
+            {/* Close the right and bottom edges */}
+            <line x1={GW} y1="0" x2={GW} y2={GH} stroke="#94a3b830" strokeWidth="0.8" />
+            <line x1="0" y1={GH} x2={GW} y2={GH} stroke="#94a3b830" strokeWidth="0.8" />
+
+            {/* Faint intersection dots — always visible */}
+            {intersections.map((pt, i) => (
+              <circle key={i} cx={pt.x} cy={pt.y} r="1.4" fill="#94a3b855" />
+            ))}
+
+            {/* Active intersection highlight — glows violet on hover */}
+            <motion.rect
+              width={GW} height={GH}
+              fill="none"
+              stroke="#7F00FF"
+              strokeWidth="0"
+              animate={{ opacity: active ? 0.06 : 0 }}
+              transition={{ duration: 0.6 }}
+            />
+
+            {/* Data-point nodes */}
+            {NODE_DEFS.map((nd, i) => (
+              <GravityWellNode key={i} nodeDef={nd} isActive={active} />
+            ))}
+          </svg>
+
+          {/* Gradient overlay: grid fades into white at bottom for content legibility */}
+          <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-white via-white/90 to-transparent" />
+        </div>
+
+        {/* ── CONTENT ─────────────────────────────────────────────────────── */}
+        <div className="relative z-10 flex flex-col h-full p-6">
+          {/* Tag — top-aligned, same position as other cards */}
+          <span className="text-[10px] font-mono bg-violet/10 px-2 py-1 rounded text-violet mb-4 inline-block tracking-tighter uppercase font-bold self-start">
+            {tag}
+          </span>
+          {/* Title + description pushed to the bottom */}
+          <div className="mt-auto">
+            <h3 className="text-2xl font-heading font-bold mb-2 text-obsidian">{title}</h3>
+            <div className="text-obsidian/70 font-body text-sm leading-relaxed"><RichText content={description} /></div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// ─── HUMAN IMPACT CARD ────────────────────────────────────────────────────────
+// Aurora mesh background + cursor-tracked glass lens + click-ripple physics.
+// Two identical aurora blob layers: bottom (filter:blur), top (sharp, clip-path circle).
+// CSS animations drive blob motion entirely on the compositor thread.
+
+const HumanImpactCard = ({ title, description, tag, delay = 0 }) => {
+  const cardRef   = useRef(null);
+  const mouseX    = useMotionValue(-300);
+  const mouseY    = useMotionValue(-300);
+  const [ripples, setRipples] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const isInView = useInView(cardRef, { once: false, margin: "-50px" });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMob = window.innerWidth < 768;
+      setIsMobile(isMob);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Spring-smooth coordinates for physical lens feel
+  const lx = useSpring(mouseX, { stiffness: 180, damping: 25 });
+  const ly = useSpring(mouseY, { stiffness: 180, damping: 25 });
+
+  // Automatic "breathing" drift for mobile when in view
+  useEffect(() => {
+    if (isMobile && isInView) {
+      // Start a slow, continuous orbit
+      const controlsX = animate(mouseX, [0, 200, 100, 300, 0], {
+        duration: 15,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut"
+      });
+      const controlsY = animate(mouseY, [0, 100, 300, 200, 0], {
+        duration: 12,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut"
+      });
+      return () => {
+        controlsX.stop();
+        controlsY.stop();
+      };
+    }
+  }, [isMobile, isInView, mouseX, mouseY]);
+
+  // Lens clip-path (circle 88px at cursor)
+  const lensClip = useMotionTemplate`circle(88px at ${lx}px ${ly}px)`;
+  const ringX = useTransform(lx, v => v - 88);
+  const ringY = useTransform(ly, v => v - 88);
+
+  const handleMouseMove = (e) => {
+    if (isMobile) return;
+    if (!cardRef.current) return;
+    const r = cardRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - r.left);
+    mouseY.set(e.clientY - r.top);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobile) return;
+    animate(mouseX, -300, { duration: 0.6, ease: 'easeOut' });
+    animate(mouseY, -300, { duration: 0.6, ease: 'easeOut' });
+  };
+
+  const handleClick = (e) => {
+    if (!cardRef.current) return;
+    const r = cardRef.current.getBoundingClientRect();
+    const cx = e.clientX - r.left;
+    const cy = e.clientY - r.top;
+    const batch = Date.now();
+    const rings = [0, 0.4, 0.8, 1.2].map((offset, i) => ({
+      id: batch + i, x: cx, y: cy, delay: offset
+    }));
+    setRipples(prev => [...prev, ...rings]);
+    setTimeout(() => setRipples(prev => prev.filter(rp => rp.id < batch || rp.id > batch + 3)), 4500);
+  };
+
+  // Identical aurora mesh layers
+  const auroraBlobs = (
+    <>
+      <div className="aurora-blob-1 absolute w-[72%] h-[80%] -top-[18%] -left-[16%] rounded-full"
+        style={{ background: 'radial-gradient(ellipse at 55% 45%, rgba(127,0,255,0.45) 0%, rgba(100,0,240,0.22) 42%, transparent 70%)' }}
+      />
+      <div className="aurora-blob-2 absolute w-[58%] h-[68%] top-[8%] -right-[12%] rounded-full"
+        style={{ background: 'radial-gradient(ellipse at 45% 55%, rgba(185,80,255,0.32) 0%, rgba(140,0,255,0.16) 44%, transparent 72%)' }}
+      />
+      <div className="aurora-blob-3 absolute w-[52%] h-[62%] bottom-[2%] left-[22%] rounded-full"
+        style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(80,0,210,0.38) 0%, rgba(60,0,185,0.2) 42%, transparent 70%)' }}
+      />
+    </>
+  );
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.7, delay, ease: 'easeOut' }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      className="relative group p-8 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden min-h-[300px] cursor-crosshair select-none"
+    >
+      {/* ── ANIMATED BORDER BEAMS (always visible, slow orbit) ────────────────
+          Two counter-rotating conic gradients create the effect of light
+          circling the card border. Outer at 10s, inner at 14s reverse.       */}
+      <div className="absolute inset-0 p-[2px] opacity-0 group-hover:opacity-75 transition-opacity duration-700 rounded-2xl overflow-hidden">
+        <div className="absolute inset-[-1000%] animate-[spin_10s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#7F00FF18_0%,#7F00FF_50%,#7F00FF18_100%)]" />
+      </div>
+      <div className="absolute inset-0 p-[2px] opacity-0 group-hover:opacity-40 transition-opacity duration-700 rounded-2xl overflow-hidden">
+        <div className="absolute inset-[-1000%] animate-[spin_14s_linear_infinite_reverse] bg-[conic-gradient(from_270deg_at_50%_50%,#B060FF18_0%,#B060FF_50%,#B060FF18_100%)]" />
+      </div>
+
+      <div className="relative bg-white rounded-xl h-full flex flex-col overflow-hidden">
+
+        {/* ── BLURRED AURORA LAYER ──────────────────────────────────────── */}
+        <div className="absolute inset-0 overflow-hidden"
+          style={{ filter: 'blur(22px) saturate(1.4)', willChange: 'transform' }}
+        >
+          {auroraBlobs}
+        </div>
+
+        {/* ── SHARP AURORA LAYER (glass lens) ───────────────────────────
+            Identical blobs, NO blur. Clipped to circle at spring cursor.     */}
+        <motion.div
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: lensClip }}
+        >
+        {auroraBlobs}
+        </motion.div>
+
+        {/* ── GLASS LENS RING ─────────────────────────────────────────────
+            Lives above the gradient (z-[5]) so it's visible over the text
+            area too. Content at z-10 renders on top, keeping text readable. */}
+        <motion.div
+          className="absolute pointer-events-none z-[5]"
+          style={{
+            width: 176, height: 176,
+            x: ringX, y: ringY,
+            borderRadius: '50%',
+            border: '1.5px solid rgba(255,255,255,0.60)',
+            boxShadow: '0 0 0 1px rgba(127,0,255,0.22), 0 4px 32px rgba(127,0,255,0.15), inset 0 1px 0 rgba(255,255,255,0.40)',
+            background: 'radial-gradient(circle at 38% 32%, rgba(255,255,255,0.16), transparent 58%)'
+          }}
+        />
+
+        {/* ── CLICK RIPPLES (4 rings, staggered, slow expansion) ────────── */}
+        {ripples.map(rp => (
+          <motion.div
+            key={rp.id}
+            className="absolute rounded-full pointer-events-none"
+            style={{ border: '1px solid rgba(127,0,255,0.5)' }}
+            initial={{ width: 0,   height: 0,   x: rp.x,       y: rp.y,       opacity: 0.8 }}
+            animate={{ width: 500, height: 500, x: rp.x - 250, y: rp.y - 250, opacity: 0   }}
+            transition={{ duration: 2.8, delay: rp.delay, ease: [0.1, 0.6, 0.3, 1] }}
+          />
+        ))}
+
+        {/* White gradient fade at bottom for text legibility */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
+          style={{ background: 'linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.92) 50%, transparent 100%)' }}
+        />
+
+        {/* ── CONTENT ───────────────────────────────────────────────── */}
+        <div className="relative z-10 flex flex-col h-full p-6">
+          <span className="text-[10px] font-mono bg-white/70 backdrop-blur-sm px-2 py-1 rounded text-violet mb-4 inline-block tracking-tighter uppercase font-bold self-start border border-violet/10">
+            {tag}
+          </span>
+          <div className="mt-auto">
+            <h3 className="text-2xl font-heading font-bold mb-2 text-obsidian">{title}</h3>
+            <div className="text-obsidian/70 font-body text-sm leading-relaxed"><RichText content={description} /></div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const LiquidFillCard = ({ title, description, tag, delay = 0 }) => {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-50px" });
+  const hasPoured = useRef(false);
+
+  // 0 → 1 (maps directly to scaleY — no layout cost, pure transform)
+  const fillScale = useMotionValue(0);
+
+  // Wall adhesion spring: lags behind main liquid by ~80ms,
+  // stays ~4% higher (surface tension film clinging to walls)
+  const wallLag = useSpring(fillScale, { stiffness: 50, damping: 18 });
+  const wallScale = useTransform(wallLag, v => Math.min(1, v + 0.042));
+
+  // Liquid body color deepens as fill rises
+  const liquidBg = useTransform(
+    fillScale,
+    [0, 0.25, 0.6, 1],
+    [
+      "rgba(127,0,255,0.06)",
+      "rgba(110,0,240,0.13)",
+      "rgba(90,0,220,0.21)",
+      "rgba(65,0,195,0.32)"
+    ]
+  );
+
+  // Wall film color (slightly more opaque than the body — pressed against glass)
+  const wallFilmBg = useTransform(
+    wallLag,
+    [0, 0.5, 1],
+    [
+      "linear-gradient(to top, rgba(110,0,240,0.28) 0%, rgba(127,0,255,0.10) 60%, rgba(127,0,255,0.02) 88%, transparent 100%)",
+      "linear-gradient(to top, rgba(100,0,230,0.34) 0%, rgba(110,0,240,0.14) 60%, rgba(127,0,255,0.03) 88%, transparent 100%)",
+      "linear-gradient(to top, rgba(80,0,210,0.42) 0%, rgba(90,0,220,0.18) 60%, rgba(100,0,230,0.04) 88%, transparent 100%)"
+    ]
+  );
+
+  // Wave tint colours get richer with fill level
+  const wave1Color = useTransform(fillScale, [0, 1], ["rgba(127,0,255,0.16)", "rgba(80,0,210,0.32)"]);
+  const wave2Color = useTransform(fillScale, [0, 1], ["rgba(127,0,255,0.10)", "rgba(70,0,200,0.21)"]);
+  const wave3Color = useTransform(fillScale, [0, 1], ["rgba(127,0,255,0.05)", "rgba(60,0,180,0.13)"]);
+
+  // ── WAVE POSITIONING (pixel-based translateY, GPU only) ──────────────────
+  // Measuring real pixel height avoids the `top` layout property entirely.
+  // waveY = (1 - fillScale) * cardH - WAVE_H * 0.35
+  // This places 35% of the wave container above the waterline (crests visible)
+  // and 65% inside the liquid (troughs submerged) — physically accurate.
+  const cardInnerRef = useRef(null);
+  const [cardH, setCardH] = useState(360);
+  useEffect(() => {
+    if (cardInnerRef.current) setCardH(cardInnerRef.current.offsetHeight);
+  }, []);
+  const WAVE_H = 56; // h-14 = 56px
+  const waveY = useTransform(fillScale, v => (1 - v) * cardH - WAVE_H * 0.35);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Pour-in: multi-keyframe slosh
+  useEffect(() => {
+    if (isInView && !hasPoured.current) {
+      hasPoured.current = true;
+      const targetFill = isMobile ? 0.55 : 0.25;
+      animate(fillScale,
+        [0, 0.08, 0.30, 0.19, 0.28, 0.22, targetFill],
+        {
+          duration: 4.5,
+          times:    [0, 0.08, 0.38, 0.55, 0.70, 0.87, 1.0],
+          ease: "easeInOut",
+          delay: delay * 0.4
+        }
+      );
+    }
+  }, [isInView, delay, fillScale, isMobile]);
+
+  const handleHoverStart = () => !isMobile && animate(fillScale, 1,    { duration: 4.5, ease: [0.05, 0.3, 0.3, 1] });
+  const handleHoverEnd  = () => !isMobile && animate(fillScale, 0.25, { duration: 2.5, ease: [0.4, 0, 0.1, 1] });
+
+  return (
+    <motion.div
+      ref={containerRef}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      onHoverStart={handleHoverStart}
+      onHoverEnd={handleHoverEnd}
+      className="relative group p-8 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden min-h-[300px]"
+    >
+      <div className="absolute inset-0 p-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#7F00FF22_0%,#7F00FF_50%,#7F00FF22_100%)]" />
+      </div>
+
+      <div ref={cardInnerRef} className="relative bg-white rounded-xl h-full flex flex-col p-6 overflow-hidden">
+
+        {/* ── LIQUID BODY ──────────────────────────────────────────────────── */}
+        <motion.div
+          className="absolute bottom-0 left-0 w-full h-full z-0 origin-bottom"
+          style={{ scaleY: fillScale, backgroundColor: liquidBg }}
+        />
+
+        {/* ── WAVE SURFACE ────────────────────────────────────────────────────
+            `y` is pure translateY in pixels — GPU compositor, zero reflow.
+            Wave paths have a concave meniscus: curves rise at both walls
+            (x=0 / x=1200) and dip in the centre, matching real surface tension. */}
+        <motion.div
+          className="absolute left-[-2px] right-[-2px] z-[1] pointer-events-none"
+          style={{ top: 0, height: `${WAVE_H}px`, y: waveY }}
+        >
+          {/* Wave 1 — fast ripple, meniscus: y=28 at walls, y=18–78 centre */}
+          <motion.svg
+            viewBox="0 0 1200 80" preserveAspectRatio="none"
+            className="wave-fwd absolute inset-0 w-[200%] h-full fill-current"
+            style={{ color: wave1Color, animationDuration: "1.8s" }}
+          >
+                        <path d="M0,48 C150,76 350,16 600,48 C750,76 950,16 1200,48 L1200,80 L0,80 Z" />
+          </motion.svg>
+
+          {/* Wave 2 — counter-direction, softer meniscus */}
+          <motion.svg
+            viewBox="0 0 1200 80" preserveAspectRatio="none"
+            className="wave-bwd absolute inset-0 w-[200%] h-full fill-current"
+            style={{ color: wave2Color, animationDuration: "2.8s" }}
+          >
+                        <path d="M0,50 C150,18 380,76 600,50 C750,18 980,76 1200,50 L1200,80 L0,80 Z" />
+          </motion.svg>
+
+          {/* Wave 3 — slow deep swell */}
+          <motion.svg
+            viewBox="0 0 1200 80" preserveAspectRatio="none"
+            className="wave-pulse absolute inset-0 w-[200%] h-full fill-current"
+            style={{ color: wave3Color, animationDuration: "4.4s" }}
+          >
+                        <path d="M0,46 C200,12 420,74 600,46 C800,12 1020,74 1200,46 L1200,80 L0,80 Z" />
+          </motion.svg>
+        </motion.div>
+
+        {/* ── WALL ADHESION FILMS ─────────────────────────────────────────── */}
+        <motion.div
+          className="absolute left-0 bottom-0 w-[3px] h-full z-[2] origin-bottom pointer-events-none"
+          style={{ scaleY: wallScale, background: wallFilmBg }}
+        />
+        <motion.div
+          className="absolute right-0 bottom-0 w-[3px] h-full z-[2] origin-bottom pointer-events-none"
+          style={{ scaleY: wallScale, background: wallFilmBg }}
+        />
+
+        {/* ── CONTENT ─────────────────────────────────────────────────────── */}
+        <div className="relative z-10 flex flex-col h-full flex-grow text-left">
+          <div className="mb-4">
+            <span className="text-[10px] font-mono bg-violet/10 px-2 py-1 rounded text-violet tracking-tighter uppercase font-bold transition-all group-hover:bg-white/80 group-hover:shadow-sm">
+              {tag}
+            </span>
+          </div>
+          <h3 className="text-2xl font-heading font-bold mb-2 text-obsidian">{title}</h3>
+          <div className="text-obsidian/70 font-body text-sm leading-relaxed mb-6 flex-grow">
+            <RichText content={description} />
+          </div>
         </div>
       </div>
     </motion.div>
@@ -475,10 +1052,10 @@ const DiscoveryAscentSection = ({ t, scrollProgress, isMobile }) => {
   return (
     <section 
       id="process" 
-      className={`${isMobile ? 'relative py-8 h-auto flex flex-col w-full' : 'sticky top-0 h-screen w-full flex flex-col py-12 px-6'} bg-obsidian overflow-hidden z-40`}
+      className={`${isMobile ? 'relative py-8 h-auto flex flex-col w-full' : 'sticky top-16 h-[calc(100vh-4rem)] w-full flex flex-col pt-4 pb-4 px-6'} bg-obsidian overflow-hidden z-40`}
     >
       {/* HEADER - Visible at top */}
-      <div className="text-center mb-8 z-20">
+      <div className="text-center mb-4 z-20">
         <motion.span 
           className="font-mono text-xs tracking-brand text-violet font-bold uppercase block"
         >
@@ -554,7 +1131,7 @@ const DiscoveryAscentSection = ({ t, scrollProgress, isMobile }) => {
             step="01"
             title={t.proc1Title}
             desc={t.proc1Desc}
-            yOffset={isMobile ? 0 : 120}
+            yOffset={isMobile ? 0 : 60}
             activationProgress={isMobile ? alwaysOn : card1Activate}
           />
 
@@ -564,7 +1141,7 @@ const DiscoveryAscentSection = ({ t, scrollProgress, isMobile }) => {
             step="02"
             title={t.proc2Title}
             desc={t.proc2Desc}
-            yOffset={isMobile ? 0 : 60}
+            yOffset={isMobile ? 0 : 30}
             activationProgress={isMobile ? alwaysOn : card2Activate}
           />
 
@@ -783,6 +1360,9 @@ export default function App() {
     proc3Desc: l(sanityData?.process?.steps?.[2]?.description) || dict[lang].proc3Desc,
 
     // Features
+    featPreTitle: l(sanityData?.values?.preTitle) || (lang === 'ENG' ? 'Our Philosophy' : 'Naša Filozofija'),
+    featHeading:  l(sanityData?.values?.heading)  || (lang === 'ENG' ? 'Three Pillars of Excellence' : 'Tri Stuba Izvrsnosti'),
+    featSubtext:  l(sanityData?.values?.subtext)   || (lang === 'ENG' ? 'Every project we take on is guided by three core values that define how we think, build, and deliver.' : 'Svaki projekat kojim upravljamo vođen je trima temeljnim vrednostima koje definišu kako razmišljamo, gradimo i isporučujemo.'),
     feat1Tag: l(sanityData?.values?.cards?.[0]?.tag) || dict[lang].feat1Tag,
     feat1Icon: sanityData?.values?.cards?.[0]?.icon || 'ArrowRight',
     feat1Title: l(sanityData?.values?.cards?.[0]?.title) || dict[lang].feat1Title,
@@ -928,26 +1508,42 @@ export default function App() {
 
       {/* STORYTELLING / FEATURES */}
       <section className="py-24 px-6 max-w-7xl mx-auto bg-white/5 rounded-3xl mb-10 border border-violet/20">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="text-center mb-14"
+        >
+          <span className="font-mono text-xs tracking-[0.3em] text-violet font-bold uppercase mb-3 block">
+            {t.featPreTitle}
+          </span>
+          <h2 className="text-4xl md:text-5xl font-heading font-bold text-mercury mb-4 leading-tight">
+            {t.featHeading}
+          </h2>
+          <div className="font-body text-gray text-base max-w-2xl mx-auto leading-relaxed">
+            <RichText content={t.featSubtext} />
+          </div>
+        </motion.div>
+
         <div className="grid md:grid-cols-3 gap-8">
-          <BorderBeamCard 
+          <LiquidFillCard 
             tag={t.feat1Tag}
             title={t.feat1Title}
             description={t.feat1Desc}
-            iconName={t.feat1Icon}
             delay={0.1}
           />
-          <BorderBeamCard 
+          <GravityWellCard 
             tag={t.feat2Tag}
             title={t.feat2Title}
             description={t.feat2Desc}
-            iconName={t.feat2Icon}
             delay={0.3}
           />
-          <BorderBeamCard 
+          <HumanImpactCard 
             tag={t.feat3Tag}
             title={t.feat3Title}
             description={t.feat3Desc}
-            iconName={t.feat3Icon}
             delay={0.5}
           />
         </div>

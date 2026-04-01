@@ -15,6 +15,7 @@ export const valuesType = defineType({
           type: 'object',
           fields: [
             defineField({ name: 'tag', title: 'Card Tag (e.g. The Vision)', type: 'localizedString' }),
+            defineField({ name: 'icon', title: 'Icon (lucide-react name, e.g. "ArrowRight")', type: 'string' }),
             defineField({ name: 'title', title: 'Card Title', type: 'localizedString' }),
             defineField({ name: 'description', title: 'Card Description', type: 'localizedText' }),
           ],

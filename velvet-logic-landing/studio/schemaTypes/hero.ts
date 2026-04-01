@@ -41,6 +41,11 @@ export const heroType = defineType({
       type: 'localizedString',
     }),
     defineField({
+      name: 'btnStartIcon',
+      title: 'Start Button Icon (lucide-react name, e.g. "Zap")',
+      type: 'string',
+    }),
+    defineField({
       name: 'btnPortText',
       title: 'Portfolio/Testimonials Button Text',
       type: 'localizedString',

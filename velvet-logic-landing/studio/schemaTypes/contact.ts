@@ -20,6 +20,7 @@ export const contactType = defineType({
           type: 'object',
           fields: [
             defineField({ name: 'title', title: 'Feature Title', type: 'localizedString' }),
+            defineField({ name: 'icon', title: 'Icon (lucide-react name, e.g. "Zap" or "Layers")', type: 'string' }),
             defineField({ name: 'subtext', title: 'Feature Subtext', type: 'localizedString' }),
           ],
           preview: {
@@ -40,6 +41,7 @@ export const contactType = defineType({
         defineField({ name: 'details', title: 'Details Label', type: 'localizedString' }),
         defineField({ name: 'detailsPlace', title: 'Details Placeholder', type: 'localizedString' }),
         defineField({ name: 'submit', title: 'Submit Button', type: 'localizedString' }),
+        defineField({ name: 'btnSubmitIcon', title: 'Submit Button Icon (lucide-react name)', type: 'string' }),
       ]
     })
   ],

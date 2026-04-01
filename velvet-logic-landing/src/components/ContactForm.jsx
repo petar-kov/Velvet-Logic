@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+
+const DynamicIcon = ({ name, ...props }) => {
+  const Icon = LucideIcons[name] || LucideIcons.Zap;
+  return <Icon {...props} />;
+};
 
 export default function ContactForm({ labels, currentLang = 'ENG' }) {
   const [formData, setFormData] = useState({
@@ -187,8 +193,7 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 {status === 'loading' ? (labels?.sending || 'SENDING...') : (labels?.submit || 'SEND MESSAGE')} 
-                {!status && <Zap size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
-                {status !== 'loading' && <Zap size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
+                {status !== 'loading' && <DynamicIcon name={labels?.submitIcon} size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
               </span>
               <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
             </motion.button>

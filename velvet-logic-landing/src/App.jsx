@@ -1,6 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
-import { ArrowRight, Layers, Zap } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+
+const DynamicIcon = ({ name, ...props }) => {
+  const Icon = LucideIcons[name] || LucideIcons.ArrowRight;
+  return <Icon {...props} />;
+};
 import VelvetSpheres from './VelvetSpheres';
 import ContactForm from './components/ContactForm';
 import { client } from './sanity';
@@ -195,7 +200,7 @@ const Navbar = ({ lang, setLang, t }) => {
   );
 };
 
-const BorderBeamCard = ({ title, description, tag, delay = 0 }) => {
+const BorderBeamCard = ({ title, description, tag, iconName, delay = 0 }) => {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 50 }}
@@ -216,7 +221,7 @@ const BorderBeamCard = ({ title, description, tag, delay = 0 }) => {
         <h3 className="text-2xl font-heading font-bold mb-2 text-obsidian">{title}</h3>
         <p className="text-obsidian/70 font-body text-sm leading-relaxed mb-6">{description}</p>
         <div className="flex items-center text-violet font-mono text-xs font-bold group-hover:gap-2 transition-all">
-          <ArrowRight size={14} />
+          <DynamicIcon name={iconName} size={14} />
         </div>
       </div>
     </motion.div>
@@ -715,6 +720,7 @@ export default function App() {
     heroTitleLogic: l(sanityData?.hero?.titleLogic) || dict[lang].heroTitleLogic,
     heroDesc: l(sanityData?.hero?.description) || dict[lang].heroDesc,
     heroBtnStart: l(sanityData?.hero?.btnStartText) || dict[lang].heroBtnStart,
+    heroBtnStartIcon: sanityData?.hero?.btnStartIcon || 'Zap',
     heroBtnPort: l(sanityData?.hero?.btnPortText) || dict[lang].heroBtnPort,
 
     // Testimonials Section Header
@@ -737,12 +743,15 @@ export default function App() {
 
     // Features
     feat1Tag: l(sanityData?.values?.cards?.[0]?.tag) || dict[lang].feat1Tag,
+    feat1Icon: sanityData?.values?.cards?.[0]?.icon || 'ArrowRight',
     feat1Title: l(sanityData?.values?.cards?.[0]?.title) || dict[lang].feat1Title,
     feat1Desc: l(sanityData?.values?.cards?.[0]?.description) || dict[lang].feat1Desc,
     feat2Tag: l(sanityData?.values?.cards?.[1]?.tag) || dict[lang].feat2Tag,
+    feat2Icon: sanityData?.values?.cards?.[1]?.icon || 'ArrowRight',
     feat2Title: l(sanityData?.values?.cards?.[1]?.title) || dict[lang].feat2Title,
     feat2Desc: l(sanityData?.values?.cards?.[1]?.description) || dict[lang].feat2Desc,
     feat3Tag: l(sanityData?.values?.cards?.[2]?.tag) || dict[lang].feat3Tag,
+    feat3Icon: sanityData?.values?.cards?.[2]?.icon || 'ArrowRight',
     feat3Title: l(sanityData?.values?.cards?.[2]?.title) || dict[lang].feat3Title,
     feat3Desc: l(sanityData?.values?.cards?.[2]?.description) || dict[lang].feat3Desc,
 
@@ -753,8 +762,10 @@ export default function App() {
     contactHead2: l(sanityData?.contact?.head2) || dict[lang].contactHead2,
     contactDesc: l(sanityData?.contact?.description) || dict[lang].contactDesc,
     contactF1: l(sanityData?.contact?.features?.[0]?.title) || dict[lang].contactF1,
+    contactF1Icon: sanityData?.contact?.features?.[0]?.icon || 'Zap',
     contactF1Sub: l(sanityData?.contact?.features?.[0]?.subtext) || dict[lang].contactF1Sub,
     contactF2: l(sanityData?.contact?.features?.[1]?.title) || dict[lang].contactF2,
+    contactF2Icon: sanityData?.contact?.features?.[1]?.icon || 'Layers',
     contactF2Sub: l(sanityData?.contact?.features?.[1]?.subtext) || dict[lang].contactF2Sub,
     
     // Form Labels (Sanity Fallbacks)
@@ -765,6 +776,7 @@ export default function App() {
     formDetails: l(sanityData?.contact?.formLabels?.details) || dict[lang].formDetails,
     formDetailsPlace: l(sanityData?.contact?.formLabels?.detailsPlace) || dict[lang].formDetailsPlace,
     formSubmit: l(sanityData?.contact?.formLabels?.submit) || dict[lang].formSubmit,
+    formSubmitIcon: sanityData?.contact?.formLabels?.btnSubmitIcon || 'Zap',
     
     // Extraneous Form Translations (Currently Static)
     formOptional: dict[lang].formOptional,
@@ -838,7 +850,7 @@ export default function App() {
                 whileTap={{ scale: 0.95 }}
                 className="bg-violet text-obsidian px-8 py-4 rounded-xl font-heading font-bold text-lg shadow-lg shadow-violet/30 flex items-center justify-center gap-2 relative overflow-hidden group"
               >
-                <span className="relative z-10 flex items-center gap-2">{t.heroBtnStart} <Zap size={20} fill="currentColor" /></span>
+                <span className="relative z-10 flex items-center gap-2">{t.heroBtnStart} <DynamicIcon name={t.heroBtnStartIcon} size={20} fill="currentColor" /></span>
                 <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               </motion.button>
               
@@ -880,18 +892,21 @@ export default function App() {
             tag={t.feat1Tag}
             title={t.feat1Title}
             description={t.feat1Desc}
+            iconName={t.feat1Icon}
             delay={0.1}
           />
           <BorderBeamCard 
             tag={t.feat2Tag}
             title={t.feat2Title}
             description={t.feat2Desc}
+            iconName={t.feat2Icon}
             delay={0.3}
           />
           <BorderBeamCard 
             tag={t.feat3Tag}
             title={t.feat3Title}
             description={t.feat3Desc}
+            iconName={t.feat3Icon}
             delay={0.5}
           />
         </div>
@@ -923,7 +938,7 @@ export default function App() {
             <div className="space-y-6 text-obsidian/70 font-body">
               <div className="flex items-center gap-4 group">
                 <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-violet/30 group-hover:border-violet/80 group-hover:scale-110 transition-all">
-                  <Zap className="text-violet" size={20} />
+                  <DynamicIcon name={t.contactF1Icon} className="text-violet" size={20} />
                 </div>
                 <div>
                   <h4 className="font-bold text-obsidian text-lg">{t.contactF1}</h4>
@@ -932,7 +947,7 @@ export default function App() {
               </div>
               <div className="flex items-center gap-4 group">
                 <div className="w-12 h-12 rounded-xl bg-violet/10 flex items-center justify-center border border-violet/30 group-hover:border-violet/80 group-hover:scale-110 transition-all">
-                  <Layers className="text-violet" size={20} />
+                  <DynamicIcon name={t.contactF2Icon} className="text-violet" size={20} />
                 </div>
                 <div>
                   <h4 className="font-bold text-obsidian text-lg">{t.contactF2}</h4>
@@ -964,7 +979,8 @@ export default function App() {
                 successTitle: t.formSuccessTitle,
                 successDesc: t.formSuccessDesc,
                 errorText: t.formError,
-                sending: t.formSending
+                sending: t.formSending,
+                submitIcon: t.formSubmitIcon
               }} 
             />
           </motion.div>

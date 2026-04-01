@@ -3,7 +3,7 @@ import {defineType, defineField, defineArrayMember} from 'sanity'
 export const valuesType = defineType({
   name: 'values',
   title: 'Values/Features Section',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({
       name: 'preTitle',
@@ -44,5 +44,8 @@ export const valuesType = defineType({
       ]
     }),
   ],
-  preview: { prepare() { return { title: 'Values/Features Section Config' } } }
+  preview: { 
+    select: { title: 'heading.en' },
+    prepare({title}) { return { title: title || 'Values/Features Section' } } 
+  }
 })

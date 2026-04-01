@@ -3,7 +3,7 @@ import {defineType, defineField} from 'sanity'
 export const heroType = defineType({
   name: 'hero',
   title: 'Hero Section',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({
       name: 'preTitle',
@@ -52,8 +52,7 @@ export const heroType = defineType({
     }),
   ],
   preview: {
-    prepare() {
-      return { title: 'Hero Section Configuration' }
-    }
+    select: { title: 'titlePart1.en' },
+    prepare({title}) { return { title: title || 'Hero Section' } }
   }
 })

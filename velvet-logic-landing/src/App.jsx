@@ -1309,13 +1309,15 @@ export default function App() {
 
   useEffect(() => {
     client.fetch(`{
-      "hero": *[_type == "hero"][0],
-      "testimonials": *[_type == "testimonials"][0],
-      "process": *[_type == "process"][0],
-      "values": *[_type == "values"][0],
-      "contact": *[_type == "contact"][0],
+      "home": *[_id == "home-page"][0] {
+        "hero": sections[_type == "hero"][0],
+        "testimonials": sections[_type == "testimonials"][0],
+        "process": sections[_type == "process"][0],
+        "values": sections[_type == "values"][0],
+        "contact": sections[_type == "contact"][0]
+      },
       "navigation": *[_type == "navigation"][0]
-    }`).then(data => setSanityData(data)).catch(console.error);
+    }`).then(data => setSanityData({ ...data.home, navigation: data.navigation })).catch(console.error);
   }, []);
 
   // Helper resolvers for localized fields matching standard behavior

@@ -3,7 +3,7 @@ import {defineType, defineField, defineArrayMember} from 'sanity'
 export const testimonialsType = defineType({
   name: 'testimonials',
   title: 'Testimonials Section',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({
       name: 'headPre',
@@ -56,8 +56,9 @@ export const testimonialsType = defineType({
     }),
   ],
   preview: {
-    prepare() {
-      return { title: 'Testimonials Section Configuration' }
+    select: { title: 'headSub.en' },
+    prepare({title}) {
+      return { title: title || 'Testimonials Section' }
     }
   }
 })

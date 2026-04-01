@@ -3,7 +3,7 @@ import {defineType, defineField, defineArrayMember} from 'sanity'
 export const contactType = defineType({
   name: 'contact',
   title: 'Contact Section',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({ name: 'tag', title: 'Tag', type: 'localizedString' }),
     defineField({ name: 'head1', title: 'Heading Start', type: 'localizedString' }),
@@ -45,5 +45,8 @@ export const contactType = defineType({
       ]
     })
   ],
-  preview: { prepare() { return { title: 'Contact Section Configuration' } } }
+  preview: { 
+    select: { title: 'tag.en' },
+    prepare({title}) { return { title: title || 'Contact Section' } } 
+  }
 })

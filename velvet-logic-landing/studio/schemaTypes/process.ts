@@ -3,7 +3,7 @@ import {defineType, defineField, defineArrayMember} from 'sanity'
 export const processType = defineType({
   name: 'process',
   title: 'Process Section',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({ name: 'tag', title: 'Tag (Build Philosophy)', type: 'localizedString' }),
     defineField({ name: 'head', title: 'Heading Start (The)', type: 'localizedString' }),
@@ -33,5 +33,8 @@ export const processType = defineType({
       ]
     }),
   ],
-  preview: { prepare() { return { title: 'Process Section Configuration' } } }
+  preview: { 
+    select: { title: 'tag.en' },
+    prepare({title}) { return { title: title || 'Process Section' } } 
+  }
 })

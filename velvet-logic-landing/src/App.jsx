@@ -41,11 +41,9 @@ const RichText = ({ content, className = '' }) => {
     </div>
   );
 };
-import VelvetSpheres from './VelvetSpheres';
-import ContactForm from './components/ContactForm';
-import { client } from './sanity';
 
 const dict = {
+
   ENG: {
     navWork: "Testimonials",
     navProcess: "Process",

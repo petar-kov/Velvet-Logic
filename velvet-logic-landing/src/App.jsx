@@ -950,20 +950,23 @@ export default function App() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-white p-8 md:p-10 rounded-3xl border border-violet/20 shadow-2xl shadow-violet/5 relative"
           >
-            <ContactForm labels={{
-              name: t.formName,
-              company: t.formCompany,
-              email: t.formEmail,
-              phone: t.formPhone,
-              details: t.formDetails,
-              detailsPlace: t.formDetailsPlace,
-              submit: t.formSubmit,
-              optional: t.formOptional,
-              successTitle: t.formSuccessTitle,
-              successDesc: t.formSuccessDesc,
-              errorText: t.formError,
-              sending: t.formSending
-            }} />
+            <ContactForm 
+              currentLang={lang}
+              labels={{
+                name: t.formName,
+                company: t.formCompany,
+                email: t.formEmail,
+                phone: t.formPhone,
+                details: t.formDetails,
+                detailsPlace: t.formDetailsPlace,
+                submit: t.formSubmit,
+                optional: t.formOptional,
+                successTitle: t.formSuccessTitle,
+                successDesc: t.formSuccessDesc,
+                errorText: t.formError,
+                sending: t.formSending
+              }} 
+            />
           </motion.div>
         </div>
         

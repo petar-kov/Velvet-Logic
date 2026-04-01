@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, CheckCircle2 } from 'lucide-react';
 
-export default function ContactForm({ labels }) {
+export default function ContactForm({ labels, currentLang = 'ENG' }) {
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -48,7 +48,7 @@ export default function ContactForm({ labels }) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, lang: currentLang })
       });
       
       if (res.ok) {

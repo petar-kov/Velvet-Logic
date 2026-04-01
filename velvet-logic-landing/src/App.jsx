@@ -401,13 +401,21 @@ const DiscoveryAscentWrapper = ({ t }) => {
     offset: ["start start", "end end"]
   });
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div 
       ref={containerRef}
-      className="bg-obsidian relative h-[300vh]"
+      className={`bg-obsidian relative ${isMobile ? 'h-auto py-12' : 'h-[300vh]'}`}
     >
       {/* Sticky inner content - appears locked while scroll drives animation */}
-      <DiscoveryAscentSection t={t} scrollProgress={scrollYProgress} />
+      <DiscoveryAscentSection t={t} scrollProgress={scrollYProgress} isMobile={isMobile} />
     </div>
   );
 };
@@ -416,7 +424,7 @@ const DiscoveryAscentWrapper = ({ t }) => {
 // THE ANIMATED CONTENT (Sticky in viewport)
 // ==============================================
 
-const DiscoveryAscentSection = ({ t, scrollProgress }) => {
+const DiscoveryAscentSection = ({ t, scrollProgress, isMobile }) => {
   const [card3PoweredOn, setCard3PoweredOn] = React.useState(false);
   
   const card1Ref = useRef(null);
@@ -462,11 +470,12 @@ const DiscoveryAscentSection = ({ t, scrollProgress }) => {
 
   // Calculate fade-out of "Scroll to Explore" hint after Phase 1 begins
   const scrollHintOpacity = useTransform(pathProgress, [0, 0.15], [1, 0]);
+  const alwaysOn = useMotionValue(1);
 
   return (
     <section 
       id="process" 
-      className="sticky top-0 h-screen w-full flex flex-col py-12 px-6 bg-obsidian overflow-hidden z-40"
+      className={`${isMobile ? 'relative py-8 h-auto flex flex-col w-full' : 'sticky top-0 h-screen w-full flex flex-col py-12 px-6'} bg-obsidian overflow-hidden z-40`}
     >
       {/* HEADER - Visible at top */}
       <div className="text-center mb-8 z-20">
@@ -488,65 +497,65 @@ const DiscoveryAscentSection = ({ t, scrollProgress }) => {
       </div>
 
       {/* MAIN CONTENT - Flex-1 for remaining space */}
-      <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col items-center justify-center relative">
+      <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col items-center justify-center relative px-6 md:px-0">
         {/* SVG POWER LINE - Animated path following scroll progress */}
-        <svg 
-          className="absolute inset-0 w-full h-full pointer-events-none z-0" 
-          viewBox="0 0 1200 600"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <filter id="pathGlow">
-              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
+        {!isMobile && (
+          <>
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none z-0" 
+              viewBox="0 0 1200 600"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <filter id="pathGlow">
+                  <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
 
-          {/* Faint base path as guide */}
-          <path
-            d={svgPath}
-            stroke="#7F00FF"
-            strokeWidth="3"
-            fill="none"
-            opacity="0.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-          />
+              <path
+                d={svgPath}
+                stroke="#7F00FF"
+                strokeWidth="3"
+                fill="none"
+                opacity="0.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
 
-          {/* Bright animated path that grows as user scrolls */}
-          <motion.path
-            d={svgPath}
-            stroke="#7F00FF"
-            strokeWidth="5"
-            fill="none"
-            opacity="0.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            filter="url(#pathGlow)"
-            vectorEffect="non-scaling-stroke"
-            style={{
-              pathLength: pathProgress
-            }}
-          />
-        </svg>
-
-        {/* Pulsing dot that moves along the path */}
-        <ActivatorDot pathProgress={pathProgress} />
+              <motion.path
+                d={svgPath}
+                stroke="#7F00FF"
+                strokeWidth="5"
+                fill="none"
+                opacity="0.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#pathGlow)"
+                vectorEffect="non-scaling-stroke"
+                style={{
+                  pathLength: pathProgress
+                }}
+              />
+            </svg>
+            <ActivatorDot pathProgress={pathProgress} />
+          </>
+        )}
 
         {/* CARDS GRID - 3 columns, staggered heights */}
-        <div className="grid md:grid-cols-3 gap-12 relative z-10 w-full">
+        <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative z-10 w-full mt-10 md:mt-0">
           {/* CARD 01 - System Audit */}
           <DiscoveryCard
             ref={card1Ref}
             step="01"
             title={t.proc1Title}
             desc={t.proc1Desc}
-            yOffset={120}
-            activationProgress={card1Activate}
+            yOffset={isMobile ? 0 : 120}
+            activationProgress={isMobile ? alwaysOn : card1Activate}
           />
 
           {/* CARD 02 - Prototype Shell */}
@@ -555,8 +564,8 @@ const DiscoveryAscentSection = ({ t, scrollProgress }) => {
             step="02"
             title={t.proc2Title}
             desc={t.proc2Desc}
-            yOffset={60}
-            activationProgress={card2Activate}
+            yOffset={isMobile ? 0 : 60}
+            activationProgress={isMobile ? alwaysOn : card2Activate}
           />
 
           {/* CARD 03 - Flagship Deployment */}
@@ -566,52 +575,55 @@ const DiscoveryAscentSection = ({ t, scrollProgress }) => {
             title={t.proc3Title}
             desc={t.proc3Desc}
             yOffset={0}
-            activationProgress={card3Activate}
+            activationProgress={isMobile ? alwaysOn : card3Activate}
           />
         </div>
       </div>
 
       {/* "SCROLL TO EXPLORE" HINT - Fades out as Phase 1 progresses */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"
-        style={{
-          opacity: scrollHintOpacity
-        }}
-      >
-        <div className="text-xs font-mono text-violet/60 uppercase tracking-widest text-center">
-          Scroll to Explore
-        </div>
-        <motion.div
-          className="mx-auto mt-2 w-6 h-10 border-2 border-violet/40 rounded-full flex justify-center"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
+      {!isMobile && (
+        <>
           <motion.div
-            className="w-1 h-2 bg-violet/40 rounded-full mt-2"
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-        </motion.div>
-      </motion.div>
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"
+            style={{
+              opacity: scrollHintOpacity
+            }}
+          >
+            <div className="text-xs font-mono text-violet/60 uppercase tracking-widest text-center">
+              Scroll to Explore
+            </div>
+            <motion.div
+              className="mx-auto mt-2 w-6 h-10 border-2 border-violet/40 rounded-full flex justify-center"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <motion.div
+                className="w-1 h-2 bg-violet/40 rounded-full mt-2"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
+          </motion.div>
 
-      {/* UNLOCK INDICATOR - Shows when card 3 is fully powered */}
-      <motion.div
-        className="absolute bottom-8 right-8 z-50 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: card3PoweredOn ? 1 : 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <motion.div
-          className="text-xs font-mono text-violet uppercase tracking-widest"
-          animate={{
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          ✨ Flagship Unlocked
-        </motion.div>
-      </motion.div>
-
+          {/* UNLOCK INDICATOR - Shows when card 3 is fully powered */}
+          <motion.div
+            className="absolute bottom-8 right-8 z-50 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: card3PoweredOn ? 1 : 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.div
+              className="text-xs font-mono text-violet uppercase tracking-widest"
+              animate={{
+                scale: [1, 1.1, 1],
+              }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              ✨ Flagship Unlocked
+            </motion.div>
+          </motion.div>
+        </>
+      )}
     </section>
   );
 };

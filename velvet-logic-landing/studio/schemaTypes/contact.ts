@@ -9,7 +9,7 @@ export const contactType = defineType({
     defineField({ name: 'head1', title: 'Heading Start', type: 'localizedString' }),
     defineField({ name: 'headSpan', title: 'Heading Highlight', type: 'localizedString' }),
     defineField({ name: 'head2', title: 'Heading End', type: 'localizedString' }),
-    defineField({ name: 'description', title: 'Description', type: 'localizedText' }),
+    defineField({ name: 'description', title: 'Description', type: 'localizedBlockContent' }),
     defineField({
       name: 'features',
       title: 'Features List',

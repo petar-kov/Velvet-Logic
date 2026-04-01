@@ -18,7 +18,7 @@ export const testimonialsType = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'localizedString',
+      type: 'localizedBlockContent',
     }),
     defineField({
       name: 'list',
@@ -31,7 +31,7 @@ export const testimonialsType = defineType({
           fields: [
             defineField({ name: 'name', title: 'Name', type: 'string' }),
             defineField({ name: 'role', title: 'Role/Company', type: 'localizedString' }),
-            defineField({ name: 'quote', title: 'Quote', type: 'localizedText' }),
+            defineField({ name: 'quote', title: 'Quote', type: 'localizedBlockContent' }),
             defineField({
               name: 'color',
               title: 'Glow Color',

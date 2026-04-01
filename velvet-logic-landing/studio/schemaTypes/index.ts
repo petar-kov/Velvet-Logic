@@ -1,5 +1,6 @@
 import { localizedString } from './localizedString'
 import { localizedText } from './localizedText'
+import { localizedBlockContent } from './localizedBlockContent'
 import { heroType } from './hero'
 import { testimonialsType } from './testimonials'
 import { processType } from './process'
@@ -10,6 +11,7 @@ import { navigationType } from './navigation'
 export const schemaTypes = [
   localizedString,
   localizedText,
+  localizedBlockContent,
   heroType,
   testimonialsType,
   processType,

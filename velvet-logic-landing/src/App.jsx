@@ -1,10 +1,39 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
+import { PortableText } from '@portabletext/react';
+import imageUrlBuilder from '@sanity/image-url';
 
 const DynamicIcon = ({ name, ...props }) => {
   const Icon = LucideIcons[name] || LucideIcons.ArrowRight;
   return <Icon {...props} />;
+};
+
+const RichText = ({ content, className = '' }) => {
+  if (!content) return null;
+  if (typeof content === 'string') return <>{content}</>;
+
+  const ptComponents = {
+    types: {
+      image: ({ value }) => {
+        if (!value?.asset?._ref) return null;
+        return (
+          <img
+            alt={value.alt || 'Content image'}
+            loading="lazy"
+            src={client ? imageUrlBuilder(client).image(value).width(800).auto('format').url() : ''}
+            className="w-full rounded-2xl my-6 border border-white/10 shadow-xl shadow-obsidian/50 object-cover"
+          />
+        );
+      }
+    }
+  };
+
+  return (
+    <div className={`[&>p]:mb-4 last:[&>p]:mb-0 ${className}`}>
+      <PortableText value={content} components={ptComponents} />
+    </div>
+  );
 };
 import VelvetSpheres from './VelvetSpheres';
 import ContactForm from './components/ContactForm';
@@ -219,7 +248,7 @@ const BorderBeamCard = ({ title, description, tag, iconName, delay = 0 }) => {
           {tag}
         </span>
         <h3 className="text-2xl font-heading font-bold mb-2 text-obsidian">{title}</h3>
-        <p className="text-obsidian/70 font-body text-sm leading-relaxed mb-6">{description}</p>
+        <div className="text-obsidian/70 font-body text-sm leading-relaxed mb-6"><RichText content={description} /></div>
         <div className="flex items-center text-violet font-mono text-xs font-bold group-hover:gap-2 transition-all">
           <DynamicIcon name={iconName} size={14} />
         </div>
@@ -283,7 +312,7 @@ const GlowingTestimonialCard = ({ testimony }) => {
         
         {/* Content Wrapper */}
         <div className="relative z-20">
-          <p className="font-heading text-2xl md:text-3xl font-bold text-white leading-tight mb-10">"{testimony.quote}"</p>
+          <div className="font-heading text-2xl md:text-3xl font-bold text-white leading-tight mb-10">"<RichText content={testimony.quote} className="inline [&>p]:inline" />"</div>
         </div>
         
         <div className="flex items-center gap-4 relative z-20">
@@ -451,11 +480,11 @@ const DiscoveryAscentSection = ({ t, scrollProgress }) => {
         >
           {t.procHead}<span className="text-violet">{t.procHeadSpan}</span>{t.procHeadEnd}
         </motion.h2>
-        <motion.p 
+        <motion.div 
           className="font-body text-logic-gray max-w-2xl mx-auto text-sm leading-relaxed"
         >
-          {t.procDesc}
-        </motion.p>
+          <RichText content={t.procDesc} />
+        </motion.div>
       </div>
 
       {/* MAIN CONTENT - Flex-1 for remaining space */}
@@ -663,12 +692,12 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
         </motion.h3>
 
         {/* Description - Fades in with power-on - FASTER */}
-        <motion.p 
+        <motion.div 
           className="text-logic-gray text-sm leading-relaxed flex-grow relative z-10 font-body"
           style={{ opacity: descOpacity }}
         >
-          {desc}
-        </motion.p>
+          <RichText content={desc} />
+        </motion.div>
 
         {/* Bottom accent line - Grows on activation - FASTER */}
         <motion.div 
@@ -840,9 +869,9 @@ export default function App() {
               {t.heroTitle1} <span className="text-violet italic">{t.heroTitleVelvet}</span>,<br />
               {t.heroTitle2} <span className="underline decoration-violet">{t.heroTitleLogic}</span>
             </h1>
-            <p className="font-body text-gray text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-              {t.heroDesc}
-            </p>
+            <div className="font-body text-gray text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+              <RichText content={t.heroDesc} />
+            </div>
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
               <motion.button 
                 onClick={scrollToContact}
@@ -871,7 +900,7 @@ export default function App() {
           <motion.div style={{ x }} className="flex gap-12 px-12 items-center">
             <div className="min-w-[400px]">
               <h2 className="text-5xl font-heading font-bold text-mercury mb-4">{t.testiHeadPre}<br/><span className="text-violet">{t.testiHeadSub}</span></h2>
-              <p className="text-gray font-mono">{t.testiDesc}</p>
+              <div className="text-gray font-mono"><RichText content={t.testiDesc} /></div>
             </div>
             
             {activeTestimonials.map((testimony, idx) => (
@@ -931,9 +960,9 @@ export default function App() {
             <h2 className="text-4xl md:text-6xl font-heading font-bold mb-6 text-obsidian">
               {t.contactHead1}<span className="text-violet italic">{t.contactHeadSpan}</span>{t.contactHead2}
             </h2>
-            <p className="text-obsidian/70 font-body mb-10 text-base max-w-md leading-relaxed">
-              {t.contactDesc}
-            </p>
+            <div className="text-obsidian/70 font-body mb-10 text-base max-w-md leading-relaxed">
+              <RichText content={t.contactDesc} />
+            </div>
             
             <div className="space-y-6 text-obsidian/70 font-body">
               <div className="flex items-center gap-4 group">

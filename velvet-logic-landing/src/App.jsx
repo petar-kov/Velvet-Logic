@@ -593,6 +593,14 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
   // Border glow intensity - Fast snap on
   const glowIntensity = useTransform(activationProgress, [0, 0.08, 1], [0.1, 1, 1]);
 
+  // Hoisted hook calls away from JSX bodies and loops
+  const bgGlowMap = useTransform(glowIntensity, v => `radial-gradient(circle, rgba(127, 0, 255, ${v * 0.4}), transparent 70%)`);
+  const shadowMap = useTransform(glowIntensity, v => `0 0 ${20 + v * 40}px rgba(127, 0, 255, ${0.5 + v * 0.5})`);
+  const titleOpacity = useTransform(activationProgress, [0, 0.12, 1], [0, 1, 1]);
+  const titleY = useTransform(activationProgress, [0, 0.12, 1], [10, 0, 0]);
+  const descOpacity = useTransform(activationProgress, [0, 0.15, 1], [0, 1, 1]);
+  const accentScaleX = useTransform(activationProgress, [0, 0.12, 1], [0, 1, 1]);
+
   return (
     <motion.div 
       ref={ref}
@@ -612,21 +620,14 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
         {/* Inner glow when powered on */}
         <motion.div 
           className="absolute inset-0 rounded-2xl"
-          style={{
-            background: useTransform(glowIntensity, v => `radial-gradient(circle, rgba(127, 0, 255, ${v * 0.4}), transparent 70%)`)
-          }}
+          style={{ background: bgGlowMap }}
           pointerEvents="none"
         />
 
         {/* Number Box - Pulses when powered on */}
         <motion.div 
           className="w-16 h-16 bg-violet text-obsidian rounded-xl flex items-center justify-center font-mono font-bold text-2xl mb-8 shadow-neon-glow relative z-10"
-          style={{
-            boxShadow: useTransform(
-              glowIntensity,
-              v => `0 0 ${20 + v * 40}px rgba(127, 0, 255, ${0.5 + v * 0.5})` 
-            )
-          }}
+          style={{ boxShadow: shadowMap }}
           animate={{
             scale: [1, 1.05, 1]
           }}
@@ -646,10 +647,8 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
             <motion.span
               key={idx}
               style={{
-                opacity: useTransform(activationProgress, [0, 0.12, 1], [0, 1, 1])
-              }}
-              animate={{
-                y: useTransform(activationProgress, [0, 0.12, 1], [10, 0, 0])
+                opacity: titleOpacity,
+                y: titleY
               }}
               transition={{ delay: idx * 0.01 }}
             >
@@ -661,9 +660,7 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
         {/* Description - Fades in with power-on - FASTER */}
         <motion.p 
           className="text-logic-gray text-sm leading-relaxed flex-grow relative z-10 font-body"
-          style={{
-            opacity: useTransform(activationProgress, [0, 0.15, 1], [0, 1, 1])
-          }}
+          style={{ opacity: descOpacity }}
         >
           {desc}
         </motion.p>
@@ -672,7 +669,7 @@ const DiscoveryCard = React.forwardRef(({ step, title, desc, yOffset, activation
         <motion.div 
           className="h-1 bg-gradient-to-r from-violet/0 via-violet to-violet/0 mt-6 relative z-10"
           style={{
-            scaleX: useTransform(activationProgress, [0, 0.12, 1], [0, 1, 1]),
+            scaleX: accentScaleX,
             opacity: glowIntensity
           }}
         />

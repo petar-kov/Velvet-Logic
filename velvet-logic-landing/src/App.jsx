@@ -166,18 +166,6 @@ const Navbar = ({ lang, setLang, t }) => {
           >
             SRB
           </button>
-          {/* FORM */}
-          <div className="relative">
-            <ContactForm labels={{
-              name: t.formName,
-              company: t.formCompany,
-              email: t.formEmail,
-              phone: t.formPhone,
-              details: t.formDetails,
-              detailsPlace: t.formDetailsPlace,
-              submit: t.formSubmit,
-            }} />
-          </div>
         </div>
       </div>
 

@@ -53,9 +53,16 @@ const dict = {
     contactF2Sub: "Custom tailored to your specific needs",
     formName: "Name",
     formEmail: "Email",
+    formCompany: "Company Name",
+    formPhone: "Phone Number",
     formDetails: "Project Details",
     formDetailsPlace: "Tell us about your next big idea...",
-    formSubmit: "Submit Inquiry"
+    formSubmit: "Submit Inquiry",
+    formOptional: "(optional)",
+    formSuccessTitle: "Thank you.",
+    formSuccessDesc: "We've received your inquiry and will be in touch within 24 hours.",
+    formError: "Something went wrong. Please try again.",
+    formSending: "SENDING..."
   },
   SRB: {
     navWork: "Svedočanstva",
@@ -104,9 +111,16 @@ const dict = {
     contactF2Sub: "Prilagođena isključivo vašim potrebama",
     formName: "Ime",
     formEmail: "Email",
+    formCompany: "Ime Kompanije",
+    formPhone: "Broj Telefona",
     formDetails: "Detalji Projekta",
     formDetailsPlace: "Opišite nam vašu sledeću veliku ideju...",
-    formSubmit: "Pošalji Upit"
+    formSubmit: "Pošalji Upit",
+    formOptional: "(opciono)",
+    formSuccessTitle: "Hvala Vam.",
+    formSuccessDesc: "Primili smo vaš upit i javićemo vam se u roku od 24 sata.",
+    formError: "Nešto je pošlo po zlu. Molimo pokušajte ponovo.",
+    formSending: "ŠALJEM..."
   }
 };
 
@@ -746,14 +760,21 @@ export default function App() {
     contactF2: l(sanityData?.contact?.features?.[1]?.title) || dict[lang].contactF2,
     contactF2Sub: l(sanityData?.contact?.features?.[1]?.subtext) || dict[lang].contactF2Sub,
     
-    // Form Labels
+    // Form Labels (Sanity Fallbacks)
     formName: l(sanityData?.contact?.formLabels?.name) || dict[lang].formName,
-    formCompany: l(sanityData?.contact?.formLabels?.company) || "Company Name",
+    formCompany: l(sanityData?.contact?.formLabels?.company) || dict[lang].formCompany,
     formEmail: l(sanityData?.contact?.formLabels?.email) || dict[lang].formEmail,
-    formPhone: l(sanityData?.contact?.formLabels?.phone) || "Phone Number",
+    formPhone: l(sanityData?.contact?.formLabels?.phone) || dict[lang].formPhone,
     formDetails: l(sanityData?.contact?.formLabels?.details) || dict[lang].formDetails,
     formDetailsPlace: l(sanityData?.contact?.formLabels?.detailsPlace) || dict[lang].formDetailsPlace,
     formSubmit: l(sanityData?.contact?.formLabels?.submit) || dict[lang].formSubmit,
+    
+    // Extraneous Form Translations (Currently Static)
+    formOptional: dict[lang].formOptional,
+    formSuccessTitle: dict[lang].formSuccessTitle,
+    formSuccessDesc: dict[lang].formSuccessDesc,
+    formError: dict[lang].formError,
+    formSending: dict[lang].formSending,
   };
 
   const activeTestimonials = sanityData?.testimonials?.list?.length 
@@ -940,6 +961,11 @@ export default function App() {
               details: t.formDetails,
               detailsPlace: t.formDetailsPlace,
               submit: t.formSubmit,
+              optional: t.formOptional,
+              successTitle: t.formSuccessTitle,
+              successDesc: t.formSuccessDesc,
+              errorText: t.formError,
+              sending: t.formSending
             }} />
           </motion.div>
         </div>

@@ -86,9 +86,9 @@ export default function ContactForm({ labels }) {
             >
               <CheckCircle2 size={40} className="text-violet" />
             </motion.div>
-            <h3 className="text-3xl font-heading font-bold text-obsidian mb-2">Thank you.</h3>
+            <h3 className="text-3xl font-heading font-bold text-obsidian mb-2">{labels?.successTitle || "Thank you."}</h3>
             <p className="font-mono text-sm text-violet">
-              We've received your inquiry and will be in touch within 24 hours.
+              {labels?.successDesc || "We've received your inquiry and will be in touch within 24 hours."}
             </p>
           </motion.div>
         ) : (
@@ -127,7 +127,7 @@ export default function ContactForm({ labels }) {
                   className={inputClasses} 
                   placeholder={labels?.company || "Company Name"} 
                 />
-                <label htmlFor="companyName" className={labelClasses}>{labels?.company || "Company Name"} <span className="lowercase text-obsidian/40">(optional)</span></label>
+                <label htmlFor="companyName" className={labelClasses}>{labels?.company || "Company Name"} <span className="lowercase text-obsidian/40">{labels?.optional || "(optional)"}</span></label>
               </div>
 
               <div className="relative">
@@ -154,7 +154,7 @@ export default function ContactForm({ labels }) {
                   className={inputClasses} 
                   placeholder={labels?.phone || "Phone Number"} 
                 />
-                <label htmlFor="phone" className={labelClasses}>{labels?.phone || "Phone Number"} <span className="lowercase text-obsidian/40">(optional)</span></label>
+                <label htmlFor="phone" className={labelClasses}>{labels?.phone || "Phone Number"} <span className="lowercase text-obsidian/40">{labels?.optional || "(optional)"}</span></label>
                 {errors.phone && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.phone}</span>}
               </div>
 
@@ -175,7 +175,7 @@ export default function ContactForm({ labels }) {
             
             {status === 'error' && (
               <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-mono text-center">
-                Something went wrong. Please try again.
+                {labels?.errorText || "Something went wrong. Please try again."}
               </div>
             )}
 
@@ -186,7 +186,7 @@ export default function ContactForm({ labels }) {
               className="w-full bg-violet text-white py-4 mt-4 rounded-xl font-heading font-bold text-lg relative overflow-hidden group shadow-lg shadow-violet/20 hover:shadow-violet/40 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                {status === 'loading' ? 'SENDING...' : (labels?.submit || 'SEND MESSAGE')} 
+                {status === 'loading' ? (labels?.sending || 'SENDING...') : (labels?.submit || 'SEND MESSAGE')} 
                 {!status && <Zap size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
                 {status !== 'loading' && <Zap size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
               </span>

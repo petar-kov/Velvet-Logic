@@ -33,7 +33,7 @@ export const heroType = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'localizedString',
+      type: 'localizedBlockContent',
     }),
     defineField({
       name: 'btnStartText',

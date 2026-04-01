@@ -1,4 +1,5 @@
 import { createClient } from '@sanity/client'
+import imageUrlBuilder from '@sanity/image-url'
 
 // Detect if we are in preview mode via URL parameter or cookie
 const isPreview = typeof window !== 'undefined' && window.location.search.includes('preview=true');
@@ -14,6 +15,10 @@ export const client = createClient({
   // Enable visual editing overlays (stega)
   stega: {
     enabled: isPreview,
-    studioUrl: '/studio', // Change this if your studio lives elsewhere
+    studioUrl: '/studio', 
   }
 })
+
+const builder = imageUrlBuilder(client)
+export const urlFor = (source) => builder.image(source)
+

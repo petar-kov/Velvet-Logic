@@ -1,8 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, useInView, animate } from 'framer-motion';
+import { client, urlFor } from './sanity';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, useInView, animate, AnimatePresence } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import imageUrlBuilder from '@sanity/image-url';
+import VelvetSpheres from './VelvetSpheres';
+import ContactForm from './components/ContactForm';
 
 const DynamicIcon = ({ name, ...props }) => {
   const Icon = LucideIcons[name] || LucideIcons.ArrowRight;
@@ -893,8 +896,16 @@ const GlowingTestimonialCard = ({ testimony }) => {
         </div>
         
         <div className="flex items-center gap-4 relative z-20">
-          <div className={`h-12 w-12 rounded-full flex items-center justify-center font-bold text-xl shadow-lg border border-white/10 ${testimony.color}`}>
-            {testimony.name.charAt(0)}
+          <div className={`h-12 w-12 rounded-full flex items-center justify-center font-bold text-xl shadow-lg border border-white/10 ${testimony.color} overflow-hidden`}>
+            {testimony.avatar ? (
+              <img 
+                src={urlFor(testimony.avatar).width(48).height(48).fit('crop').url()} 
+                alt={testimony.name} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              testimony.initials || testimony.name.charAt(0)
+            )}
           </div>
           <div>
             <h4 className="text-lg font-bold text-white leading-none mb-1">{testimony.name}</h4>
@@ -1422,9 +1433,12 @@ export default function App() {
         name: typeof item.name === 'object' ? l(item.name) : item.name,
         role: l(item.role),
         quote: l(item.quote),
-        color: item.color || "bg-primary"
+        color: item.color || "bg-primary",
+        avatar: item.avatar,
+        initials: item.initials
       })) 
     : getTestimonials(lang);
+
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {

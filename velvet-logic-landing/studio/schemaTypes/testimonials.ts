@@ -18,7 +18,7 @@ export const testimonialsType = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'localizedString',
+      type: 'localizedBlockContent',
     }),
     defineField({
       name: 'list',
@@ -32,6 +32,8 @@ export const testimonialsType = defineType({
             defineField({ name: 'name', title: 'Name', type: 'string' }),
             defineField({ name: 'role', title: 'Role/Company', type: 'localizedString' }),
             defineField({ name: 'quote', title: 'Quote', type: 'localizedBlockContent' }),
+            defineField({ name: 'initials', title: 'Initials (Fallback)', type: 'string', description: 'e.g. "JD" if no image is uploaded' }),
+            defineField({ name: 'avatar', title: 'Client Image', type: 'image', options: { hotspot: true } }),
             defineField({
               name: 'color',
               title: 'Glow Color',

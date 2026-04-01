@@ -9,9 +9,14 @@ const client = createClient({
   projectId: '0mihymp4',
   dataset: 'production',
   apiVersion: '2024-03-24',
-  token: 'process.env.SANITY_API_WRITE_TOKEN',
+  token: process.env.SANITY_API_WRITE_TOKEN,
   useCdn: false,
 });
+
+if (!process.env.SANITY_API_WRITE_TOKEN) {
+  console.log('⚠️  Warning: Missing SANITY_API_WRITE_TOKEN. Migration likely to fail.');
+}
+
 
 // Helper to wrap a string in a standard Sanity block
 const stringToBlock = (str) => {
@@ -68,16 +73,40 @@ async function migrate() {
         if (type === 'values') {
           cleanData.subtext = convertToLocalizedBlock(cleanData.subtext);
           if (Array.isArray(cleanData.cards)) {
+            console.log(' - Upgrading Values cards...');
             cleanData.cards = cleanData.cards.map(card => ({
               ...card,
               description: convertToLocalizedBlock(card.description)
             }));
           }
         }
-        // Process & Testimonials & Contact
-        if (["process", "testimonials", "contact"].includes(type)) {
+        // Process
+        if (type === 'process') {
+          cleanData.description = convertToLocalizedBlock(cleanData.description);
+          if (Array.isArray(cleanData.steps)) {
+            console.log(' - Upgrading Process steps...');
+            cleanData.steps = cleanData.steps.map(step => ({
+              ...step,
+              description: convertToLocalizedBlock(step.description)
+            }));
+          }
+        }
+        // Testimonials
+        if (type === 'testimonials') {
+          cleanData.description = convertToLocalizedBlock(cleanData.description);
+          if (Array.isArray(cleanData.list)) {
+            console.log(' - Upgrading Testimonial quotes...');
+            cleanData.list = cleanData.list.map(item => ({
+              ...item,
+              quote: convertToLocalizedBlock(item.quote)
+            }));
+          }
+        }
+        // Contact
+        if (type === 'contact') {
           cleanData.description = convertToLocalizedBlock(cleanData.description);
         }
+
 
         sections.push({
           ...cleanData,

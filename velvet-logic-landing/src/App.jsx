@@ -169,13 +169,13 @@ const Navbar = ({ lang, setLang, t }) => {
           {/* FORM */}
           <div className="relative">
             <ContactForm labels={{
-              name: l(sanityData?.contact?.formLabels?.name) || dict[lang].formName,
-              company: l(sanityData?.contact?.formLabels?.company) || "Company Name",
-              email: l(sanityData?.contact?.formLabels?.email) || dict[lang].formEmail,
-              phone: l(sanityData?.contact?.formLabels?.phone) || "Phone Number",
-              details: l(sanityData?.contact?.formLabels?.details) || dict[lang].formDetails,
-              detailsPlace: l(sanityData?.contact?.formLabels?.detailsPlace) || dict[lang].formDetailsPlace,
-              submit: l(sanityData?.contact?.formLabels?.submit) || dict[lang].formSubmit,
+              name: t.formName,
+              company: t.formCompany,
+              email: t.formEmail,
+              phone: t.formPhone,
+              details: t.formDetails,
+              detailsPlace: t.formDetailsPlace,
+              submit: t.formSubmit,
             }} />
           </div>
         </div>
@@ -757,6 +757,15 @@ export default function App() {
     contactF1Sub: l(sanityData?.contact?.features?.[0]?.subtext) || dict[lang].contactF1Sub,
     contactF2: l(sanityData?.contact?.features?.[1]?.title) || dict[lang].contactF2,
     contactF2Sub: l(sanityData?.contact?.features?.[1]?.subtext) || dict[lang].contactF2Sub,
+    
+    // Form Labels
+    formName: l(sanityData?.contact?.formLabels?.name) || dict[lang].formName,
+    formCompany: l(sanityData?.contact?.formLabels?.company) || "Company Name",
+    formEmail: l(sanityData?.contact?.formLabels?.email) || dict[lang].formEmail,
+    formPhone: l(sanityData?.contact?.formLabels?.phone) || "Phone Number",
+    formDetails: l(sanityData?.contact?.formLabels?.details) || dict[lang].formDetails,
+    formDetailsPlace: l(sanityData?.contact?.formLabels?.detailsPlace) || dict[lang].formDetailsPlace,
+    formSubmit: l(sanityData?.contact?.formLabels?.submit) || dict[lang].formSubmit,
   };
 
   const activeTestimonials = sanityData?.testimonials?.list?.length 
@@ -935,7 +944,15 @@ export default function App() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-white p-8 md:p-10 rounded-3xl border border-violet/20 shadow-2xl shadow-violet/5 relative"
           >
-            <ContactForm />
+            <ContactForm labels={{
+              name: t.formName,
+              company: t.formCompany,
+              email: t.formEmail,
+              phone: t.formPhone,
+              details: t.formDetails,
+              detailsPlace: t.formDetailsPlace,
+              submit: t.formSubmit,
+            }} />
           </motion.div>
         </div>
         

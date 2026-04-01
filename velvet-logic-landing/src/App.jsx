@@ -7,7 +7,10 @@ import imageUrlBuilder from '@sanity/image-url';
 import VelvetSpheres from './VelvetSpheres';
 import ContactForm from './components/ContactForm';
 
-const DynamicIcon = ({ name, ...props }) => {
+const DynamicIcon = ({ name, customIcon, ...props }) => {
+  if (customIcon) {
+    return <img src={urlFor(customIcon).url()} alt="" style={{ width: props.size || 20, height: props.size || 20 }} className={props.className} />
+  }
   const Icon = LucideIcons[name] || LucideIcons.ArrowRight;
   return <Icon {...props} />;
 };

@@ -42,8 +42,14 @@ export const heroType = defineType({
     }),
     defineField({
       name: 'btnStartIcon',
-      title: 'Start Button Icon (lucide-react name, e.g. "Zap")',
+      title: 'Start Button Icon (lucide name, e.g. "Zap")',
       type: 'string',
+    }),
+    defineField({
+      name: 'btnStartIconCustom',
+      title: 'Start Button Custom SVG Override',
+      type: 'image',
+      description: 'Upload an SVG file here to bypass the Lucide icon name above.'
     }),
     defineField({
       name: 'btnPortText',

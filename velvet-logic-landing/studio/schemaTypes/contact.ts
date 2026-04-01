@@ -19,6 +19,8 @@ export const contactType = defineType({
         defineArrayMember({
           type: 'object',
           fields: [
+            defineField({ name: 'icon', title: 'Icon Name (e.g. "Mail")', type: 'string' }),
+            defineField({ name: 'iconCustom', title: 'Custom Icon Upload', type: 'image' }),
             defineField({ name: 'title', title: 'Feature Title', type: 'localizedString' }),
             defineField({ name: 'icon', title: 'Icon (lucide-react name, e.g. "Zap" or "Layers")', type: 'string' }),
             defineField({ name: 'subtext', title: 'Feature Subtext', type: 'localizedString' }),

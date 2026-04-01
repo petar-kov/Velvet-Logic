@@ -1327,23 +1327,44 @@ export default function App() {
   const [sanityData, setSanityData] = useState(null);
 
   useEffect(() => {
-    client.fetch(`{
-      "home": *[_id == "home-page"][0] {
-        "hero": sections[_type == "hero"][0],
-        "testimonials": sections[_type == "testimonials"][0],
-        "process": sections[_type == "process"][0],
-        "values": sections[_type == "values"][0],
-        "contact": sections[_type == "contact"][0]
-      },
-      "navigation": *[_type == "navigation"][0]
-    }`).then(data => setSanityData({ ...data.home, navigation: data.navigation })).catch(console.error);
+    // Audit: Unified Global Query fetching everything in ONE round-trip
+    const query = `*[_id in ["home-page", "navigation", "settings"]] {
+      _id,
+      _type,
+      ...
+    }`;
+
+    client.fetch(query).then(data => {
+      const home = data.find(d => d._id === 'home-page');
+      const navigation = data.find(d => d._id === 'navigation');
+      const settings = data.find(d => d._id === 'settings');
+
+      // Map sections from the array for easier lookup in component
+      const sectionMap = {
+        hero: home?.sections?.find(s => s._type === 'hero'),
+        testimonials: home?.sections?.find(s => s._type === 'testimonials'),
+        process: home?.sections?.find(s => s._type === 'process'),
+        values: home?.sections?.find(s => s._type === 'values'),
+        contact: home?.sections?.find(s => s._type === 'contact')
+      };
+
+      setSanityData({ ...sectionMap, navigation, settings });
+    }).catch(console.error);
   }, []);
+
 
   // ... (rest of component)
 
 
+  useEffect(() => {
+    if (sanityData?.settings?.siteTitle) {
+      document.title = l(sanityData.settings.siteTitle);
+    }
+  }, [sanityData]);
+
   // Helper resolvers for localized fields matching standard behavior
   const langKey = lang === 'ENG' ? 'en' : 'sr';
+
   const l = (field) => field && typeof field === 'object' ? field[langKey] || field.en || '' : (field || '');
 
   // Map Sanity values to the static dictionary keys seamlessly. Fill gap with fallbacks.

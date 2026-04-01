@@ -9,7 +9,7 @@ export const processType = defineType({
     defineField({ name: 'head', title: 'Heading Start (The)', type: 'localizedString' }),
     defineField({ name: 'headSpan', title: 'Heading Span (Velvet Logic)', type: 'localizedString' }),
     defineField({ name: 'headEnd', title: 'Heading End (Framework)', type: 'localizedString' }),
-    defineField({ name: 'description', title: 'Description', type: 'localizedBlockContent' }),
+    defineField({ name: 'description', title: 'Description', type: 'localizedString' }),
     defineField({
       name: 'steps',
       title: 'Process Steps',

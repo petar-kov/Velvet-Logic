@@ -18,7 +18,7 @@ export const testimonialsType = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'localizedBlockContent',
+      type: 'localizedString',
     }),
     defineField({
       name: 'list',

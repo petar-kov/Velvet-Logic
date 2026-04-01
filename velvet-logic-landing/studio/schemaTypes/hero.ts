@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {defineType, defineField} from 'sanity'
 
 export const heroType = defineType({
   name: 'hero',
@@ -6,29 +6,49 @@ export const heroType = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: (rule) => rule.required(),
+      name: 'preTitle',
+      title: 'Pre-Title (Small uppercase)',
+      type: 'localizedString',
     }),
     defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'text',
+      name: 'titlePart1',
+      title: 'Title Part 1 (Soft as)',
+      type: 'localizedString',
     }),
     defineField({
-      name: 'image',
-      title: 'Background/Feature Image',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alternative text',
-          type: 'string',
-          validation: (rule) => rule.required(),
-        }),
-      ]
+      name: 'titleVelvet',
+      title: 'Title Highlight 1 (Velvet)',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'titlePart2',
+      title: 'Title Part 2 (Sharp as)',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'titleLogic',
+      title: 'Title Highlight 2 (Logic.)',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'localizedText',
+    }),
+    defineField({
+      name: 'btnStartText',
+      title: 'Start Button Text',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'btnPortText',
+      title: 'Portfolio/Testimonials Button Text',
+      type: 'localizedString',
     }),
   ],
+  preview: {
+    prepare() {
+      return { title: 'Hero Section Configuration' }
+    }
+  }
 })

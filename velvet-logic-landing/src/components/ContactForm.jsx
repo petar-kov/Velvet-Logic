@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, CheckCircle2 } from 'lucide-react';
 
-export default function ContactForm() {
+export default function ContactForm({ labels }) {
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -61,8 +61,10 @@ export default function ContactForm() {
     }
   };
 
-  const inputClasses = "peer w-full bg-transparent border-b-2 border-slate-700/50 px-0 py-3 text-white focus:outline-none focus:border-cta focus:ring-0 placeholder-transparent transition-colors font-sans rounded-none";
-  const labelClasses = "absolute left-0 -top-4 text-slate-400 text-[10px] font-mono uppercase tracking-widest transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-3 peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-cta pointer-events-none";
+  const inputClasses = "peer w-full bg-transparent border-2 border-obsidian/20 px-4 py-4 text-obsidian focus:outline-none focus:border-violet focus:ring-0 placeholder-transparent transition-colors font-body rounded-lg animate-glow";
+  const labelClasses = "absolute left-4 top-4 text-obsidian/40 text-sm font-mono uppercase tracking-widest transition-all pointer-events-none " +
+    "peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-[10px] peer-focus:bg-white peer-focus:px-1 peer-focus:text-violet " +
+    "peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1";
 
   return (
     <div className="relative w-full h-full min-h-[500px]">
@@ -74,18 +76,18 @@ export default function ContactForm() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-slate-900/50 rounded-3xl border border-[#d27dff]/30 backdrop-blur-xl"
+            className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-white rounded-3xl border border-violet/20 shadow-xl"
           >
             <motion.div 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="w-20 h-20 rounded-full bg-[#d27dff]/10 border border-[#d27dff]/30 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(210,125,255,0.3)]"
+              className="w-20 h-20 rounded-full bg-violet/10 border border-violet/20 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(127,0,255,0.2)]"
             >
-              <CheckCircle2 size={40} className="text-[#d27dff]" />
+              <CheckCircle2 size={40} className="text-violet" />
             </motion.div>
-            <h3 className="text-3xl font-heading font-bold text-white mb-2">Thank you.</h3>
-            <p className="font-mono text-sm text-[#d27dff]/80">
+            <h3 className="text-3xl font-heading font-bold text-obsidian mb-2">Thank you.</h3>
+            <p className="font-mono text-sm text-violet">
               We've received your inquiry and will be in touch within 24 hours.
             </p>
           </motion.div>
@@ -109,9 +111,9 @@ export default function ContactForm() {
                   value={formData.fullName}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder="Full Name" 
+                  placeholder={labels?.name || "Full Name"} 
                 />
-                <label htmlFor="fullName" className={labelClasses}>Full Name</label>
+                <label htmlFor="fullName" className={labelClasses}>{labels?.name || "Full Name"}</label>
                 {errors.fullName && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.fullName}</span>}
               </div>
 
@@ -123,9 +125,9 @@ export default function ContactForm() {
                   value={formData.companyName}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder="Company Name" 
+                  placeholder={labels?.company || "Company Name"} 
                 />
-                <label htmlFor="companyName" className={labelClasses}>Company Name <span className="lowercase text-slate-500">(optional)</span></label>
+                <label htmlFor="companyName" className={labelClasses}>{labels?.company || "Company Name"} <span className="lowercase text-obsidian/40">(optional)</span></label>
               </div>
 
               <div className="relative">
@@ -136,9 +138,9 @@ export default function ContactForm() {
                   value={formData.email}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder="Email Address" 
+                  placeholder={labels?.email || "Email Address"} 
                 />
-                <label htmlFor="email" className={labelClasses}>Email Address</label>
+                <label htmlFor="email" className={labelClasses}>{labels?.email || "Email Address"}</label>
                 {errors.email && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.email}</span>}
               </div>
 
@@ -150,9 +152,9 @@ export default function ContactForm() {
                   value={formData.phone}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder="Phone Number" 
+                  placeholder={labels?.phone || "Phone Number"} 
                 />
-                <label htmlFor="phone" className={labelClasses}>Phone Number <span className="lowercase text-slate-500">(optional)</span></label>
+                <label htmlFor="phone" className={labelClasses}>{labels?.phone || "Phone Number"} <span className="lowercase text-obsidian/40">(optional)</span></label>
                 {errors.phone && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.phone}</span>}
               </div>
 
@@ -164,9 +166,9 @@ export default function ContactForm() {
                   value={formData.message}
                   onChange={handleChange}
                   className={`${inputClasses} resize-none`} 
-                  placeholder="Message" 
+                  placeholder={labels?.detailsPlace || "Message"} 
                 ></textarea>
-                <label htmlFor="message" className={labelClasses}>Message</label>
+                <label htmlFor="message" className={labelClasses}>{labels?.details || "Project Details"}</label>
                 {errors.message && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.message}</span>}
               </div>
             </div>
@@ -181,10 +183,10 @@ export default function ContactForm() {
               disabled={status === 'loading'}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-cta text-white py-4 mt-4 rounded-xl font-heading font-bold text-lg relative overflow-hidden group shadow-lg shadow-cta/20 hover:shadow-cta/40 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full bg-violet text-white py-4 mt-4 rounded-xl font-heading font-bold text-lg relative overflow-hidden group shadow-lg shadow-violet/20 hover:shadow-violet/40 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                {status === 'loading' ? 'SENDING...' : 'SEND MESSAGE'} 
+                {status === 'loading' ? 'SENDING...' : (labels?.submit || 'SEND MESSAGE')} 
                 {!status && <Zap size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
                 {status !== 'loading' && <Zap size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
               </span>

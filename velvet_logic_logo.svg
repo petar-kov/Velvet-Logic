@@ -1,0 +1,21 @@
+<svg width="400" height="100" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Brand Palette: Mercury (#E2E8F0) and Violet (#8B5CF6) -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@800&amp;display=swap');
+      .logo-text {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        font-size: 48px;
+        text-transform: uppercase;
+      }
+      .velvet { fill: #E2E8F0; }
+      .logic { fill: #8B5CF6; }
+    </style>
+  </defs>
+  
+  <text x="50%" y="60%" text-anchor="middle" class="logo-text">
+    <tspan class="velvet">VELVET</tspan><tspan class="logic">LOGIC</tspan>
+  </text>
+</svg>

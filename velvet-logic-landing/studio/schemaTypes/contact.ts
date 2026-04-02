@@ -34,15 +34,23 @@ export const contactType = defineType({
       name: 'features',
       title: 'Features List',
       type: 'array',
-      validation: rule => rule.max(2),
+      validation: rule => rule.min(1),
       of: [
         defineArrayMember({
           type: 'object',
           fields: [
-            defineField({ name: 'icon', title: 'Icon Name (e.g. "Mail")', type: 'string' }),
-            defineField({ name: 'iconCustom', title: 'Custom Icon Upload', type: 'image' }),
             defineField({ name: 'title', title: 'Feature Title', type: 'localizedString' }),
-            defineField({ name: 'icon', title: 'Icon (lucide-react name, e.g. "Zap" or "Layers")', type: 'string' }),
+            defineField({ 
+              name: 'icon', 
+              title: 'Icon (Lucide name)', 
+              type: 'string' 
+            }),
+            defineField({ 
+              name: 'iconCustom', 
+              title: 'Upload Custom SVG', 
+              type: 'image',
+              options: { accept: 'image/svg+xml' }
+            }),
             defineField({ name: 'subtext', title: 'Feature Subtext', type: 'localizedString' }),
           ],
           preview: {

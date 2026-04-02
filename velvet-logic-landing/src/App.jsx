@@ -1334,16 +1334,18 @@ export default function App() {
 
   useEffect(() => {
     // Audit: Unified Global Query fetching everything in ONE round-trip
-    const query = `*[_id in ["home-page", "navigation", "settings"]] {
+    const query = `*[_id in ["home-page", "navigation", "settings", "footer"]] {
       _id,
       _type,
       ...
     }`;
 
     client.fetch(query).then(data => {
-      const home = data.find(d => d._id === 'home-page');
-      const navigation = data.find(d => d._id === 'navigation');
-      const settings = data.find(d => d._id === 'settings');
+      // PRO TIP: Match by _type instead of _id to seamlessly handle Drafts (drafts.xxx) in Preview Mode.
+      const home = data.find(d => d._type === 'homePage');
+      const navigation = data.find(d => d._type === 'navigation');
+      const settings = data.find(d => d._type === 'settings');
+      const footer = data.find(d => d._type === 'footer');
 
       // Map sections from the array for easier lookup
       const sectionMap = {
@@ -1354,7 +1356,7 @@ export default function App() {
         contact: home?.sections?.find(s => s._type === 'contact')
       };
 
-      setSanityData({ ...sectionMap, navigation, settings });
+      setSanityData({ ...sectionMap, navigation, settings, footer });
     }).catch(console.error);
   }, []);
 
@@ -1683,12 +1685,20 @@ export default function App() {
         {/* Footer Links Mini */}
         <div className="max-w-7xl mx-auto mt-24 bg-obsidian rounded-2xl p-12 border border-violet/20 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-xl font-bold font-heading tracking-tighter text-mercury">
-            VELVET<span className="text-violet">LOGIC</span>
+            {sanityData?.footer?.logoTextMain || "VELVET"}<span className="text-violet">{sanityData?.footer?.logoTextHighlight || "LOGIC"}</span>
           </div>
           <div className="flex gap-8 font-mono text-xs uppercase tracking-widest text-gray hover:[&>a]:text-violet transition-colors duration-300">
-            <a href="#instagram">Instagram</a>
-            <a href="#linkedin">LinkedIn</a>
-            <a href="#dribbble">Dribbble</a>
+            {sanityData?.footer?.socialLinks?.length ? (
+              sanityData.footer.socialLinks.map((link) => (
+                <a key={link._key || link.label} href={link.url}>{link.label}</a>
+              ))
+            ) : (
+              <>
+                <a href="#instagram">Instagram</a>
+                <a href="#linkedin">LinkedIn</a>
+                <a href="#dribbble">Dribbble</a>
+              </>
+            )}
           </div>
         </div>
         {isPreview && <VisualEditing />}

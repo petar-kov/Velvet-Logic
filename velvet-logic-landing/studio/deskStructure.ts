@@ -37,11 +37,19 @@ export const myStructure = (S: any) =>
                     .schemaType('settings')
                     .documentId('settings')
                 ),
+              S.listItem()
+                .title('Footer Config')
+                .id('footer')
+                .child(
+                  S.document()
+                    .schemaType('footer')
+                    .documentId('footer')
+                ),
             ])
         ),
 
       // 3. Hide all singleton/object types from the generic 'All Documents' list
       ...S.documentTypeListItems().filter(
-        (listItem: any) => !['homePage', 'navigation', 'settings', 'hero', 'values', 'process', 'testimonials', 'contact'].includes(listItem.getId())
+        (listItem: any) => !['homePage', 'navigation', 'settings', 'hero', 'values', 'process', 'testimonials', 'contact', 'footer'].includes(listItem.getId())
       ),
     ]);

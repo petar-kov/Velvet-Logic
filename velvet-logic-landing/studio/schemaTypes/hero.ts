@@ -71,7 +71,8 @@ export const heroType = defineType({
       name: 'btnStartIconCustom',
       title: 'Start Button Custom SVG Override',
       type: 'image',
-      description: 'Upload an SVG file here to bypass the Lucide icon name above.'
+      description: 'Upload an SVG file here to bypass the Lucide icon name above.',
+      options: { accept: 'image/svg+xml' }
     }),
     defineField({
       name: 'btnPortText',

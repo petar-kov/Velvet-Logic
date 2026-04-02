@@ -10,6 +10,8 @@ import { navigationType } from './navigation'
 import { homePageType } from './homePage'
 import { settingsType } from './settings'
 
+import { footerType } from './footer'
+
 export const schemaTypes = [
   localizedString,
   localizedText,
@@ -22,4 +24,5 @@ export const schemaTypes = [
   contactType,
   navigationType,
   settingsType,
+  footerType,
 ]

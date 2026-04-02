@@ -34,13 +34,20 @@ export const processType = defineType({
       name: 'steps',
       title: 'Process Steps',
       type: 'array',
-      validation: rule => rule.max(3).min(3),
+      validation: rule => rule.min(1),
       of: [
         defineArrayMember({
           type: 'object',
           fields: [
             defineField({ name: 'stepNumber', title: 'Step Number', type: 'string' }),
             defineField({ name: 'title', title: 'Step Title', type: 'localizedString' }),
+            defineField({ name: 'icon', title: 'Icon (Lucide name)', type: 'string' }),
+            defineField({ 
+              name: 'iconCustom', 
+              title: 'Upload Custom SVG', 
+              type: 'image',
+              options: { accept: 'image/svg+xml' }
+            }),
             defineField({ name: 'description', title: 'Step Description', type: 'localizedBlockContent' }),
           ],
           preview: {

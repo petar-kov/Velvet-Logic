@@ -67,7 +67,7 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
     }
   };
 
-  const inputClasses = "peer w-full bg-transparent border-2 border-obsidian/20 px-4 py-4 text-obsidian focus:outline-none focus:border-violet focus:ring-0 placeholder-transparent transition-colors font-body rounded-lg animate-glow";
+  const inputClasses = "peer w-full bg-transparent border-2 border-obsidian/20 px-4 py-4 text-obsidian focus:outline-none focus:border-violet focus:ring-0 placeholder-transparent transition-colors font-body rounded-lg";
   const labelClasses = "absolute left-4 top-4 text-obsidian/40 text-sm font-mono uppercase tracking-widest transition-all pointer-events-none " +
     "peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-[10px] peer-focus:bg-white peer-focus:px-1 peer-focus:text-violet " +
     "peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1";

@@ -2,21 +2,12 @@ import {defineType, defineField} from 'sanity'
 
 export const localizedBlockContent = defineType({
   name: 'localizedBlockContent',
-  title: 'Localized Rich Text',
+  title: 'Rich Text',
   type: 'object',
   fields: [
     defineField({
       name: 'en',
-      title: 'English',
-      type: 'array',
-      of: [
-        {type: 'block'},
-        {type: 'image', options: {hotspot: true}}
-      ]
-    }),
-    defineField({
-      name: 'sr',
-      title: 'Serbian',
+      title: 'Content',
       type: 'array',
       of: [
         {type: 'block'},

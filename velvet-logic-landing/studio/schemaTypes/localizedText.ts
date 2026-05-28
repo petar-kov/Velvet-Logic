@@ -2,18 +2,12 @@ import {defineType, defineField} from 'sanity'
 
 export const localizedText = defineType({
   name: 'localizedText',
-  title: 'Localized Text',
+  title: 'Text',
   type: 'object',
   fields: [
     defineField({
       name: 'en',
-      title: 'English',
-      type: 'text',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'sr',
-      title: 'Serbian',
+      title: 'Content',
       type: 'text',
       validation: (rule) => rule.required(),
     }),

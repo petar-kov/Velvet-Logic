@@ -7,40 +7,46 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ===== VELVET LOGIC DESIGN SYSTEM (V3) =====
+        // ===== VELVET LOGIC INDUSTRIAL DESIGN SYSTEM =====
         // Primary Brand Colors
-        obsidian: "#080808",     // Deep Black - Primary Background
-        mercury: "#E5E5E5",      // Silver Mercury - Primary Text
-        violet: "#7F00FF",       // Electric Violet - Brand Accent & CTA
-        "logic-gray": "#888888", // Logic Gray - Secondary Text
+        obsidian: "#1E293B",     // Slate 800 - Primary Text
+        mercury: "#F8FAFC",      // Slate 50 - Primary Background (inverted from previous)
+        violet: "#2563EB",       // Navy Blue - Primary Brand (keeps class name for compatibility)
+        "logic-gray": "#475569", // Slate 600 - Secondary Text
+        
+        // New explicit industrial colors
+        navy: "#2563EB",
+        orange: "#F97316",
+        slate: "#1E293B",
+        surface: "#FFFFFF",
         
         // Legacy Compatibility
-        primary: "#7F00FF",      // Electric Violet
-        cta: "#7F00FF",          // Electric Violet
-        accent: "#7F00FF",       // Electric Violet
-        background: "#080808",   // Obsidian Black
-        slate: "#E5E5E5",        // Silver Mercury
-        secondary: "#888888",    // Logic Gray
-        gray: "#888888",         // Logic Gray
+        primary: "#2563EB",      // Navy Blue
+        cta: "#F97316",          // Safety Orange
+        accent: "#2563EB",       // Navy Blue
+        background: "#F8FAFC",   // Slate 50
+        secondary: "#475569",    // Slate 600
+        gray: "#64748B",         // Slate 500
       },
       
       boxShadow: {
-        // Neon Glow Effects
-        "neon-violet": "0 0 20px rgba(127, 0, 255, 0.4), 0 0 40px rgba(127, 0, 255, 0.2)",
-        "neon-violet-intense": "0 0 30px rgba(127, 0, 255, 0.8), 0 0 60px rgba(127, 0, 255, 0.4)",
-        "neon-glow": "0 0 20px rgba(127, 0, 255, 0.4)",
-        "neon-glow-lg": "0 0 40px rgba(127, 0, 255, 0.6), inset 0 0 30px rgba(127, 0, 255, 0.1)",
+        // Industrial smooth shadows (replaced neon glows)
+        "neon-violet": "0 4px 6px -1px rgba(37, 99, 235, 0.1), 0 2px 4px -1px rgba(37, 99, 235, 0.06)",
+        "neon-violet-intense": "0 10px 15px -3px rgba(37, 99, 235, 0.1), 0 4px 6px -2px rgba(37, 99, 235, 0.05)",
+        "neon-glow": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+        "neon-glow-lg": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        "industrial": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
       },
       
       fontFamily: {
-        heading: ["Inter Tight", "sans-serif"],
+        heading: ["Inter", "sans-serif"],
         body: ["Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
       },
       
       letterSpacing: {
-        tight: "-0.05em",
-        brand: "0.15em",
+        tight: "-0.025em",
+        brand: "0.05em",
       },
       
       lineHeight: {
@@ -50,34 +56,14 @@ export default {
       },
       
       animation: {
-        glow: "glow 3s ease-in-out infinite",
-        "pulse-neon": "pulse-neon 2.8s ease-in-out infinite",
-        "ascent-reveal": "ascent-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+        "ascent-reveal": "ascent-reveal 0.6s ease-out",
       },
       
       keyframes: {
-        glow: {
-          "0%, 100%": {
-            boxShadow: "0 0 5px rgba(127, 0, 255, 0.4), inset 0 0 5px rgba(127, 0, 255, 0.1)",
-          },
-          "50%": {
-            boxShadow: "0 0 20px rgba(127, 0, 255, 0.8), inset 0 0 10px rgba(127, 0, 255, 0.2)",
-          },
-        },
-        "pulse-neon": {
-          "0%, 100%": {
-            boxShadow: "0 0 30px rgba(127, 0, 255, 0.5)",
-            opacity: "1",
-          },
-          "50%": {
-            boxShadow: "0 0 60px rgba(127, 0, 255, 1)",
-            opacity: "0.8",
-          },
-        },
         "ascent-reveal": {
           "0%": {
             opacity: "0",
-            transform: "translateY(30px)",
+            transform: "translateY(20px)",
           },
           "100%": {
             opacity: "1",

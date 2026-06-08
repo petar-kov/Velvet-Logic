@@ -7,6 +7,7 @@ import imageUrlBuilder from '@sanity/image-url';
 import ContactForm from './components/ContactForm';
 import SiteAuditor from './components/auditor/SiteAuditor';
 import { VisualEditing } from '@sanity/visual-editing/react';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // Detect if we are in preview mode via URL parameter (same as client)
 const isPreview = typeof window !== 'undefined' && window.location.search.includes('preview=true');
@@ -158,14 +159,7 @@ const Navbar = ({ t, logo }) => {
   return (
     <>
       <nav className="fixed top-0 w-full z-50 px-4 py-3 md:px-6 md:py-4 flex justify-between items-center bg-surface border-b border-gray/20 shadow-sm">
-        <div className="flex items-center gap-2">
-          <button 
-            className="md:hidden text-slate p-1 focus:outline-none" 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <DynamicIcon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
-          </button>
-          
+        <div className="flex items-center">
           {logo ? (
             <img src={urlFor(logo).height(40).url()} alt="Logo" className="h-8 md:h-10" />
           ) : (
@@ -181,12 +175,21 @@ const Navbar = ({ t, logo }) => {
           <a href="#contact" onClick={scrollToContact} className="hover:text-navy transition-colors">{t.navContact}</a>
         </div>
 
-        <button 
-          onClick={scrollToContact}
-          className="bg-orange text-white px-4 py-2 md:px-6 md:py-2.5 rounded-lg font-heading font-bold text-xs md:text-sm transition-colors hover:bg-orange/90 shadow-md whitespace-nowrap"
-        >
-          {t.btnStart}
-        </button>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={scrollToContact}
+            className="hidden sm:block bg-orange text-white px-4 py-2 md:px-6 md:py-2.5 rounded-lg font-heading font-bold text-xs md:text-sm transition-colors hover:bg-orange/90 shadow-md whitespace-nowrap"
+          >
+            {t.btnStart}
+          </button>
+          
+          <button 
+            className="md:hidden text-slate p-1 focus:outline-none" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <DynamicIcon name={mobileMenuOpen ? "X" : "Menu"} size={28} />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
@@ -592,23 +595,7 @@ export default function App() {
     }).catch(console.error);
   }, []);
 
-  useEffect(() => {
-    if (sanityData?.settings?.siteTitle) {
-      document.title = l(sanityData.settings.siteTitle) || "Velvet Logic";
-    }
-    if (sanityData?.settings?.seoDesc) {
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute('content', l(sanityData.settings.seoDesc));
-      }
-    }
-    if (sanityData?.settings?.favicon) {
-      let linkIcon = document.querySelector('link[rel="icon"]');
-      if (linkIcon) {
-        linkIcon.setAttribute('href', urlFor(sanityData.settings.favicon).width(32).height(32).url());
-      }
-    }
-  }, [sanityData]);
+  // SEO and GEO handled by react-helmet-async
 
   // Simplify translation helper to just return the string or the English property
   const l = (field) => field && typeof field === 'object' ? field.en || '' : (field || '');
@@ -751,9 +738,58 @@ export default function App() {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const canonicalUrl = "https://velvetlogicagency.com";
+  const seoTitle = l(sanityData?.settings?.siteTitle) || "Velvet Logic | High-Performance Websites for the Trades";
+  const seoDescription = l(sanityData?.settings?.seoDesc) || "We build high-converting, lightning-fast websites for roofing, plumbing, HVAC, electrical, and manufacturing businesses. Stop leaking leads and dominate local search.";
+  const faviconUrl = sanityData?.settings?.favicon ? urlFor(sanityData.settings.favicon).width(32).height(32).url() : "/favicon.svg";
+  const ogImageUrl = sanityData?.settings?.ogImage ? urlFor(sanityData.settings.ogImage).width(1200).height(630).url() : "";
+
+  const jsonLdData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Velvet Logic",
+        "url": canonicalUrl,
+        "description": seoDescription,
+        "logo": faviconUrl,
+        ...(ogImageUrl && { "image": ogImageUrl })
+      }
+    ]
+  };
+
+  if (t.faqQuestions && t.faqQuestions.length > 0) {
+    jsonLdData["@graph"].push({
+      "@type": "FAQPage",
+      "mainEntity": t.faqQuestions.map(q => ({
+        "@type": "Question",
+        "name": q.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": q.answer
+        }
+      }))
+    });
+  }
+
   return (
-    <div className="bg-mercury text-slate min-h-screen font-body antialiased selection:bg-orange/20 selection:text-orange">
-      <Navbar t={t} logo={sanityData?.settings?.logo} />
+    <HelmetProvider>
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalUrl} />
+        {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="icon" href={faviconUrl} />
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLdData)}
+        </script>
+      </Helmet>
+      <div className="bg-mercury text-slate min-h-screen font-body antialiased selection:bg-orange/20 selection:text-orange">
+        <Navbar t={t} logo={sanityData?.settings?.logo} />
 
       {/* HERO SECTION */}
       <section className="relative pt-24 pb-16 md:pt-40 md:pb-32 px-6 overflow-hidden bg-surface">
@@ -982,6 +1018,7 @@ export default function App() {
       </footer>
       
       {isPreview && <VisualEditing />}
-    </div>
+      </div>
+    </HelmetProvider>
   );
 }

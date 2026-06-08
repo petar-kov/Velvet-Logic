@@ -4,6 +4,7 @@ services:
     env: docker
     region: ohio # US East
     plan: free # Can upgrade to starter if needed
+    rootDir: mini-site-auditor/backend
     dockerfilePath: ./Dockerfile
     envVars:
       - key: RESEND_API_KEY

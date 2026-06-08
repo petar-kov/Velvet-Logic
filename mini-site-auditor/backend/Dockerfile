@@ -19,6 +19,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN npm ci
 
 # Copy source code

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: velvet-site-auditor-backend
+    env: docker
+    region: ohio # US East
+    plan: free # Can upgrade to starter if needed
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: RESEND_API_KEY
+        sync: false # Requires manual entry in the Render dashboard for security
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: "true"
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: "/usr/bin/google-chrome-stable"

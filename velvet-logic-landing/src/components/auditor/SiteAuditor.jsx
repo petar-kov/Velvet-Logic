@@ -80,7 +80,7 @@ export default function SiteAuditor({ t }) {
     setAuditData(null);
     
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://velvet-site-auditor-backend.onrender.com';
       const response = await fetch(`${apiUrl}/api/v1/audit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Search, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function AuditForm({ onSubmit, isLoading }) {
+export default function AuditForm({ onSubmit, isLoading, t }) {
   const [email, setEmail] = useState('');
   const [url, setUrl] = useState('');
 
@@ -19,7 +19,7 @@ export default function AuditForm({ onSubmit, isLoading }) {
       
       <div className="relative z-10">
         <label htmlFor="url" className="block text-xs font-bold font-heading uppercase tracking-widest text-navy mb-2">
-          Website URL
+          {t?.auditorUrlLabel || 'Website URL'}
         </label>
         <div className="relative">
           <input
@@ -37,7 +37,7 @@ export default function AuditForm({ onSubmit, isLoading }) {
 
       <div className="relative z-10">
         <label htmlFor="email" className="block text-xs font-bold font-heading uppercase tracking-widest text-navy mb-2">
-          Business Email
+          {t?.auditorEmailLabel || 'Business Email'}
         </label>
         <div className="relative">
           <input
@@ -64,12 +64,12 @@ export default function AuditForm({ onSubmit, isLoading }) {
           {isLoading ? (
             <>
               <Loader2 className="animate-spin -ml-1 mr-3 h-6 w-6 text-white" />
-              Scanning Domain...
+              {t?.auditorLoading || 'Scanning Domain...'}
             </>
           ) : (
             <>
               <Search className="-ml-1 mr-3 h-5 w-5 text-white" />
-              Generate Free Audit
+              {t?.auditorSubmit || 'Generate Free Audit'}
             </>
           )}
         </motion.button>

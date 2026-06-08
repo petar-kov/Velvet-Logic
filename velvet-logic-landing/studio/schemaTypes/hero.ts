@@ -79,6 +79,30 @@ export const heroType = defineType({
       title: 'Portfolio/Testimonials Button Text',
       type: 'localizedString',
     }),
+    defineField({
+      name: 'socialProofText',
+      title: 'Social Proof Title',
+      type: 'localizedString',
+      description: 'E.g. "Trusted by 150+ Trade Businesses"'
+    }),
+    defineField({
+      name: 'socialProofSubtext',
+      title: 'Social Proof Subtext',
+      type: 'localizedString',
+      description: 'E.g. "Rated 5.0/5.0 on Google & Clutch"'
+    }),
+    defineField({
+      name: 'floatingStatLabel',
+      title: 'Floating Stat Label',
+      type: 'localizedString',
+      description: 'E.g. "Avg. Lead Growth"'
+    }),
+    defineField({
+      name: 'floatingStatValue',
+      title: 'Floating Stat Value',
+      type: 'localizedString',
+      description: 'E.g. "+340%"'
+    }),
   ],
   preview: {
     select: { title: 'sectionLabel' },

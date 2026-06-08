@@ -13,6 +13,8 @@ import { settingsType } from './settings'
 import { footerType } from './footer'
 import { faqType } from './faq'
 import { whyItMattersType } from './whyItMatters'
+import { siteAuditorType } from './siteAuditor'
+
 export const schemaTypes = [
   localizedString,
   localizedText,
@@ -28,4 +30,5 @@ export const schemaTypes = [
   footerType,
   faqType,
   whyItMattersType,
+  siteAuditorType,
 ]

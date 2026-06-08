@@ -538,6 +538,7 @@ export default function App() {
         testimonials: home?.sections?.find(s => s._type === 'testimonials'),
         process: home?.sections?.find(s => s._type === 'process'),
         whyItMatters: home?.sections?.find(s => s._type === 'whyItMatters'),
+        siteAuditor: home?.sections?.find(s => s._type === 'siteAuditor'),
         values: home?.sections?.find(s => s._type === 'values'),
         faq: home?.sections?.find(s => s._type === 'faq'),
         contact: home?.sections?.find(s => s._type === 'contact')
@@ -589,6 +590,28 @@ export default function App() {
     heroBtnStart: l(sanityData?.hero?.btnStartText) || dict.heroBtnStart,
     heroBtnStartIcon: sanityData?.hero?.btnStartIcon || 'Phone',
     heroBtnPort: l(sanityData?.hero?.btnPortText) || dict.heroBtnPort,
+    heroSocialProofText: l(sanityData?.hero?.socialProofText) || 'Trusted by 150+ Trade Businesses',
+    heroSocialProofSub: l(sanityData?.hero?.socialProofSubtext) || 'Rated 5.0/5.0 on Google & Clutch',
+    heroStatLabel: l(sanityData?.hero?.floatingStatLabel) || 'Avg. Lead Growth',
+    heroStatValue: l(sanityData?.hero?.floatingStatValue) || '+340%',
+
+    auditorPre: l(sanityData?.siteAuditor?.preTitle) || 'Instant Analysis',
+    auditorHead1: l(sanityData?.siteAuditor?.headingPart1) || 'Get Your Free ',
+    auditorHeadHighlight: l(sanityData?.siteAuditor?.headingHighlight) || 'Site Audit',
+    auditorSub: l(sanityData?.siteAuditor?.subtext) || 'Enter your domain below. Our engine will instantly scan your site for Conversion Leaks, Local SEO errors, and AI Search Readiness.',
+    auditorEmailLabel: l(sanityData?.siteAuditor?.formEmailLabel) || 'Email address',
+    auditorUrlLabel: l(sanityData?.siteAuditor?.formUrlLabel) || 'Website URL (e.g. example.com)',
+    auditorSubmit: l(sanityData?.siteAuditor?.formSubmitText) || 'Scan My Site',
+    auditorLoading: l(sanityData?.siteAuditor?.formLoadingText) || 'SCANNING...',
+    auditorMockTag: l(sanityData?.siteAuditor?.mockReportTag) || 'Live Preview',
+    auditorMockTitle: l(sanityData?.siteAuditor?.mockReportTitle) || 'Diagnostic Report',
+    auditorMock1Title: l(sanityData?.siteAuditor?.mockReportItem1Title) || 'Performance',
+    auditorMock1Sub: l(sanityData?.siteAuditor?.mockReportItem1Sub) || 'Sub-second load time',
+    auditorMock2Title: l(sanityData?.siteAuditor?.mockReportItem2Title) || 'Conversion Leaks',
+    auditorMock2Sub: l(sanityData?.siteAuditor?.mockReportItem2Sub) || '3 critical errors',
+    auditorMockList1: l(sanityData?.siteAuditor?.mockReportList1) || 'SSL Certificate Valid',
+    auditorMockList2: l(sanityData?.siteAuditor?.mockReportList2) || 'Missing sticky mobile CTA',
+    auditorMockList3: l(sanityData?.siteAuditor?.mockReportList3) || 'Multiple H1 tags detected',
 
     testiHeadPre: l(sanityData?.testimonials?.headPre) || dict.testiHeadPre,
     testiHeadSub: l(sanityData?.testimonials?.headSub) || dict.testiHeadSub,
@@ -746,8 +769,8 @@ export default function App() {
                   <DynamicIcon name="Star" size={16} fill="currentColor" />
                   <DynamicIcon name="Star" size={16} fill="currentColor" />
                 </div>
-                <p className="text-slate font-bold font-heading text-sm">Trusted by 150+ Trade Businesses</p>
-                <p className="text-secondary text-xs font-body mt-1">Rated 5.0/5.0 on Google & Clutch</p>
+                <p className="text-slate font-bold font-heading text-sm">{t.heroSocialProofText}</p>
+                <p className="text-secondary text-xs font-body mt-1">{t.heroSocialProofSub}</p>
               </div>
             </div>
           </motion.div>
@@ -766,8 +789,8 @@ export default function App() {
                 <DynamicIcon name="TrendingUp" className="text-green-600" size={24} />
               </div>
               <div>
-                <p className="text-[10px] md:text-xs text-secondary uppercase font-bold tracking-wider">Avg. Lead Growth</p>
-                <p className="text-lg md:text-xl font-heading font-bold text-slate">+340%</p>
+                <p className="text-[10px] md:text-xs text-secondary uppercase font-bold tracking-wider">{t.heroStatLabel}</p>
+                <p className="text-lg md:text-xl font-heading font-bold text-slate">{t.heroStatValue}</p>
               </div>
             </div>
           </motion.div>
@@ -812,7 +835,7 @@ export default function App() {
 
       <WhyItMatters t={t} />
 
-      <SiteAuditor />
+      <SiteAuditor t={t} />
 
       {/* TESTIMONIALS SECTION */}
       <section id="testimonials" className="py-24 px-6 bg-slate text-white">

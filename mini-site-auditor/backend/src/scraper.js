@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-
 async function scrapePage(url) {
+  const { default: puppeteer } = await import('puppeteer');
+
   if (!url.startsWith('http')) {
     url = 'https://' + url;
   }

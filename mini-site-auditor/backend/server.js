@@ -8,6 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.status(200).send('Velvet Logic Auditor Engine is running.');
+});
+
 app.post('/api/v1/audit', async (req, res) => {
   const { email, url } = req.body;
   if (!email || !url) {

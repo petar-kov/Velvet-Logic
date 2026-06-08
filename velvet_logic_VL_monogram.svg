@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Brand Palette: Obsidian (#0B0B0B), Mercury (#E2E8F0), Violet (#8B5CF6) -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@900&amp;display=swap');
+      .vl-text {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 900;
+        letter-spacing: -0.08em;
+        font-size: 260px;
+        text-transform: uppercase;
+      }
+      .v { fill: #E2E8F0; }
+      .l { fill: #8B5CF6; }
+    </style>
+  </defs>
+  
+  <!-- Obsidian Container -->
+  <rect width="512" height="512" rx="100" fill="#0B0B0B"/>
+  
+  <text x="50%" y="62%" text-anchor="middle" class="vl-text">
+    <tspan class="v">V</tspan><tspan class="l">L</tspan>
+  </text>
+</svg>

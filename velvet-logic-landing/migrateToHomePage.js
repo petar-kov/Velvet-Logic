@@ -9,12 +9,12 @@ const client = createClient({
   projectId: '0mihymp4',
   dataset: 'production',
   apiVersion: '2024-03-24',
-  token: process.env.SANITY_API_WRITE_TOKEN,
+  token: process.env.SANITY_API_WRITE_TOKEN_NEWEST,
   useCdn: false,
 });
 
-if (!process.env.SANITY_API_WRITE_TOKEN) {
-  console.log('⚠️  Warning: Missing SANITY_API_WRITE_TOKEN. Migration likely to fail.');
+if (!process.env.SANITY_API_WRITE_TOKEN_NEWEST) {
+  console.log('⚠️  Warning: Missing SANITY_API_WRITE_TOKEN_NEWEST. Migration likely to fail.');
 }
 
 

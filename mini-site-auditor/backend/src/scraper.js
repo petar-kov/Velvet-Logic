@@ -72,10 +72,19 @@ async function scrapePage(url) {
     const h1s = document.querySelectorAll('h1');
     const hasOneH1 = h1s.length === 1;
     let hasValidH1 = false;
-    if (hasOneH1) {
-      const h1Text = h1s[0].innerText.toLowerCase();
-      const tradeKeywords = ['roofing', 'plumbing', 'electrician', 'contractor', 'services', 'repair', 'installation'];
-      hasValidH1 = tradeKeywords.some(kw => h1Text.includes(kw));
+    let h1ErrorType = null;
+    
+    if (h1s.length === 0) {
+      h1ErrorType = 'missing';
+    } else if (h1s.length > 1) {
+      h1ErrorType = 'multiple';
+    } else {
+      const h1Text = h1s[0].innerText.trim();
+      if (h1Text.length < 5) {
+        h1ErrorType = 'empty';
+      } else {
+        hasValidH1 = true;
+      }
     }
 
     const title = document.title;
@@ -163,6 +172,7 @@ async function scrapePage(url) {
       hasChatWidget,
       hasHeaderHierarchyError,
       hasValidH1,
+      h1ErrorType,
       hasValidTitle,
       hasMetaDescription,
       hasSchemaData,

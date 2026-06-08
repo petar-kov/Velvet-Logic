@@ -52,8 +52,16 @@ async function auditEngine(url) {
     deductions.seo.push('Site protocol is not secure (HTTP instead of HTTPS) (-4 pts)');
   }
   if (!data.hasValidH1) {
-    scores.seo -= 4;
-    deductions.seo.push('Missing exactly one <h1> tag or lacks regional stop-words/trade keywords (-4 pts)');
+    if (data.h1ErrorType === 'missing') {
+      scores.seo -= 4;
+      deductions.seo.push('Missing <h1> tag. Every page must have exactly one <h1> tag. (-4 pts)');
+    } else if (data.h1ErrorType === 'multiple') {
+      scores.seo -= 4;
+      deductions.seo.push('Multiple <h1> tags detected. A page should have strictly one <h1> tag for SEO clarity. (-4 pts)');
+    } else if (data.h1ErrorType === 'empty') {
+      scores.seo -= 2;
+      deductions.seo.push('The <h1> tag is empty or too short to provide SEO value. (-2 pts)');
+    }
   }
   if (!data.hasValidTitle) {
     scores.seo -= 4;

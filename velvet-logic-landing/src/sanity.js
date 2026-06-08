@@ -11,7 +11,7 @@ export const client = createClient({
   apiVersion: '2024-03-24',
   // Required for draft viewing
   perspective: isPreview ? 'previewDrafts' : 'published',
-  token: isPreview ? import.meta.env.VITE_SANITY_API_READ_TOKEN : undefined,
+  token: isPreview ? import.meta.env.VITE_SANITY_API_READ_TOKEN_New : undefined,
   // Enable visual editing overlays (stega)
   stega: {
     enabled: isPreview,

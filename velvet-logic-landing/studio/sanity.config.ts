@@ -18,7 +18,9 @@ export default defineConfig({
     }),
     presentationTool({
       previewUrl: {
-        origin: 'https://www.velvetlogicagency.com',
+        origin: typeof location !== 'undefined' && location.hostname === 'localhost' 
+          ? 'http://localhost:5173' 
+          : 'https://www.velvetlogicagency.com',
         preview: '/?preview=true',
       }
     }),

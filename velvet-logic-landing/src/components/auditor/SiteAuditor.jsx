@@ -6,7 +6,7 @@ import AuditResults from './AuditResults';
 
 const ExampleReport = ({ t }) => {
   return (
-    <div className="w-full max-w-md bg-white p-8 lg:p-10 rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col justify-between transform md:-translate-y-4 h-full">
+    <div className="w-full max-w-md bg-white p-6 md:p-8 lg:p-10 rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col justify-between transform md:-translate-y-4 h-full">
       <div className="absolute top-0 right-0 w-64 h-64 bg-orange/10 rounded-full blur-[60px] pointer-events-none" />
       
       <div className="relative z-10 flex flex-col h-full">
@@ -106,7 +106,7 @@ export default function SiteAuditor({ t }) {
   };
 
   return (
-    <section id="free-audit" className="py-24 px-6 bg-navy relative overflow-hidden">
+    <section id="free-audit" className="py-16 md:py-24 px-6 bg-navy relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-orange/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
       

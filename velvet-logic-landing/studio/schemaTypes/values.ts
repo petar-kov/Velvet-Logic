@@ -46,27 +46,7 @@ export const valuesType = defineType({
       type: 'array',
       validation: rule => rule.min(1),
       of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({ name: 'tag', title: 'Card Tag (e.g. The Vision)', type: 'localizedString' }),
-            defineField({ name: 'icon', title: 'Icon Name (e.g. "Zap")', type: 'string' }),
-            defineField({ 
-              name: 'iconCustom', 
-              title: 'Upload Custom SVG', 
-              type: 'image',
-              options: { accept: 'image/svg+xml' }
-            }),
-            defineField({ name: 'title', title: 'Card Title', type: 'localizedString' }),
-            defineField({ name: 'description', title: 'Card Description', type: 'localizedBlockContent' }),
-          ],
-          preview: {
-            select: {
-              title: 'title.en',
-              subtitle: 'tag.en',
-            }
-          }
-        })
+        { type: 'valueCard' }
       ]
     }),
   ],

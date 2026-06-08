@@ -15,7 +15,7 @@ export default function AuditForm({ onSubmit, isLoading, t }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md bg-white p-8 lg:p-10 rounded-[2rem] shadow-2xl relative group transform md:-translate-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md bg-white p-6 md:p-8 lg:p-10 rounded-[2rem] shadow-2xl relative group transform md:-translate-y-4">
       
       <div className="relative z-10">
         <label htmlFor="url" className="block text-xs font-bold font-heading uppercase tracking-widest text-navy mb-2">

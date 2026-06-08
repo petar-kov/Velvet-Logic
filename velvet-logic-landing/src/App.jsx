@@ -141,34 +141,78 @@ const getTestimonials = () => {
 // --- Components ---
 
 const Navbar = ({ t, logo }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const scrollToContact = (e) => {
     e.preventDefault();
+    setMobileMenuOpen(false);
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  return (
-    <nav className="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-surface border-b border-gray/20 shadow-sm">
-      {logo ? (
-        <img src={urlFor(logo).height(40).url()} alt="Logo" className="h-10" />
-      ) : (
-        <div className="text-2xl font-bold font-heading tracking-tight text-slate">
-          VELVET<span className="text-navy">LOGIC</span>
-        </div>
-      )}
-      
-      <div className="hidden md:flex gap-8 items-center font-heading font-medium text-sm text-slate">
-        <a href="#services" className="hover:text-navy transition-colors">{t.navProcess}</a>
-        <a href="#testimonials" className="hover:text-navy transition-colors">{t.navWork}</a>
-        <a href="#contact" onClick={scrollToContact} className="hover:text-navy transition-colors">{t.navContact}</a>
-      </div>
+  const scrollToSection = (e, id) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-      <button 
-        onClick={scrollToContact}
-        className="bg-orange text-white px-6 py-2.5 rounded-lg font-heading font-bold text-sm transition-colors hover:bg-orange/90 shadow-md"
-      >
-        {t.btnStart}
-      </button>
-    </nav>
+  return (
+    <>
+      <nav className="fixed top-0 w-full z-50 px-4 py-3 md:px-6 md:py-4 flex justify-between items-center bg-surface border-b border-gray/20 shadow-sm">
+        <div className="flex items-center gap-2">
+          <button 
+            className="md:hidden text-slate p-1 focus:outline-none" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <DynamicIcon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
+          </button>
+          
+          {logo ? (
+            <img src={urlFor(logo).height(40).url()} alt="Logo" className="h-8 md:h-10" />
+          ) : (
+            <div className="text-xl md:text-2xl font-bold font-heading tracking-tight text-slate">
+              VELVET<span className="text-navy">LOGIC</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="hidden md:flex gap-8 items-center font-heading font-medium text-sm text-slate">
+          <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-navy transition-colors">{t.navProcess}</a>
+          <a href="#testimonials" onClick={(e) => scrollToSection(e, 'testimonials')} className="hover:text-navy transition-colors">{t.navWork}</a>
+          <a href="#contact" onClick={scrollToContact} className="hover:text-navy transition-colors">{t.navContact}</a>
+        </div>
+
+        <button 
+          onClick={scrollToContact}
+          className="bg-orange text-white px-4 py-2 md:px-6 md:py-2.5 rounded-lg font-heading font-bold text-xs md:text-sm transition-colors hover:bg-orange/90 shadow-md whitespace-nowrap"
+        >
+          {t.btnStart}
+        </button>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-surface pt-20 px-6 flex flex-col gap-6 md:hidden overflow-y-auto"
+          >
+            <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="text-2xl font-heading font-bold text-slate hover:text-navy">{t.navProcess}</a>
+            <a href="#testimonials" onClick={(e) => scrollToSection(e, 'testimonials')} className="text-2xl font-heading font-bold text-slate hover:text-navy">{t.navWork}</a>
+            <a href="#contact" onClick={scrollToContact} className="text-2xl font-heading font-bold text-slate hover:text-navy">{t.navContact}</a>
+            <div className="mt-8 pt-8 border-t border-gray/20">
+              <button 
+                onClick={scrollToContact}
+                className="w-full bg-orange text-white px-6 py-4 rounded-lg font-heading font-bold text-lg shadow-md"
+              >
+                {t.btnStart}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -240,15 +284,15 @@ const InteractiveBento = ({ t }) => {
       <motion.div 
         whileHover={{ y: -8, scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        className="md:col-span-7 lg:col-span-8 bg-navy rounded-3xl p-10 flex flex-col justify-between border border-navy/20 shadow-2xl relative overflow-hidden group min-h-[400px]"
+        className="md:col-span-7 lg:col-span-8 bg-navy rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col justify-between border border-navy/20 shadow-2xl relative overflow-hidden group min-h-[400px]"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3" />
         <div className="relative z-10">
           <span className="text-xs font-heading font-bold bg-white/10 text-white px-3 py-1 rounded-full uppercase tracking-wide">
             {t.feat1Tag}
           </span>
-          <h3 className="text-4xl lg:text-5xl font-heading font-bold text-white mt-6 mb-4">{t.feat1Title}</h3>
-          <div className="text-white/70 font-body text-lg max-w-md leading-relaxed"><RichText content={t.feat1Desc} /></div>
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mt-6 mb-4">{t.feat1Title}</h3>
+          <div className="text-white/70 font-body text-base md:text-lg max-w-md leading-relaxed"><RichText content={t.feat1Desc} /></div>
         </div>
         
         {/* Interactive Loading Bar */}
@@ -316,10 +360,10 @@ const MagneticCarousel = ({ testimonials }) => {
   return (
     <div className="mt-16 flex flex-col lg:flex-row gap-8 items-stretch">
       {/* Featured Anchor */}
-      <div className="lg:w-1/3 bg-orange rounded-3xl p-10 text-white flex flex-col justify-between shadow-2xl relative overflow-hidden min-h-[400px]">
+      <div className="lg:w-1/3 bg-orange rounded-3xl p-6 md:p-10 text-white flex flex-col justify-between shadow-2xl relative overflow-hidden min-h-[400px]">
         <DynamicIcon name="Quote" size={120} className="absolute -top-6 -left-6 text-white/10" />
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px] translate-y-1/3 translate-x-1/3" />
-        <div className="relative z-10 mb-8 font-heading text-2xl font-bold leading-relaxed pt-8">
+        <div className="relative z-10 mb-8 font-heading text-xl md:text-2xl font-bold leading-relaxed pt-8">
           "<RichText content={featured.quote} className="inline [&>p]:inline" />"
         </div>
         <div className="relative z-10 flex items-center gap-4 border-t border-white/20 pt-6">
@@ -349,13 +393,13 @@ const MagneticCarousel = ({ testimonials }) => {
         <motion.div 
           drag="x" 
           dragConstraints={containerRef}
-          className="flex gap-6 cursor-grab active:cursor-grabbing px-8 pb-4"
+          className="flex gap-6 cursor-grab active:cursor-grabbing px-4 md:px-8 pb-4"
           whileTap={{ cursor: "grabbing" }}
         >
           {others.map((t, idx) => (
             <motion.div 
               key={idx} 
-              className="min-w-[320px] md:min-w-[400px] bg-white rounded-3xl p-8 shadow-industrial border border-gray/10 flex flex-col justify-between"
+              className="w-[85vw] sm:min-w-[320px] md:min-w-[400px] shrink-0 bg-white rounded-3xl p-6 md:p-8 shadow-industrial border border-gray/10 flex flex-col justify-between"
               whileHover={{ scale: 1.02, rotate: Math.random() > 0.5 ? 1 : -1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
@@ -388,7 +432,7 @@ const MagneticCarousel = ({ testimonials }) => {
 
 const WhyItMatters = ({ t }) => {
   return (
-    <section id="why" className="py-24 px-6 bg-surface relative overflow-hidden">
+    <section id="why" className="py-16 md:py-24 px-6 bg-surface relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
@@ -452,7 +496,7 @@ const Faq = ({ t }) => {
   const [openIdx, setOpenIdx] = useState(null);
 
   return (
-    <section id="faq" className="py-24 px-6 bg-surface">
+    <section id="faq" className="py-16 md:py-24 px-6 bg-surface">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <span className="font-heading text-sm tracking-widest text-navy font-bold uppercase mb-3 block">
@@ -712,25 +756,25 @@ export default function App() {
       <Navbar t={t} logo={sanityData?.settings?.logo} />
 
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 px-6 overflow-hidden bg-surface">
+      <section className="relative pt-24 pb-16 md:pt-40 md:pb-32 px-6 overflow-hidden bg-surface">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-navy/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-left"
+            className="text-left mt-10 md:mt-0"
           >
-            <span className="font-heading text-sm tracking-widest text-navy font-bold uppercase mb-6 flex items-center gap-3">
+            <span className="font-heading text-xs md:text-sm tracking-widest text-navy font-bold uppercase mb-4 md:mb-6 flex items-center gap-3">
               <span className="w-8 h-px bg-navy"></span>
               {t.heroPre}
             </span>
-            <DynamicHeading tag={t.heroTitleTag} className="text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold tracking-tight mb-8 text-slate leading-[1.1]">
+            <DynamicHeading tag={t.heroTitleTag} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold tracking-tight mb-6 md:mb-8 text-slate leading-[1.1]">
               {t.heroTitle1} <span className="text-navy">{t.heroTitleVelvet}</span><br />
               {t.heroTitle2} <span className="text-orange">{t.heroTitleLogic}</span>
             </DynamicHeading>
-            <div className="font-body text-secondary text-lg md:text-xl mb-10 leading-relaxed max-w-lg">
+            <div className="font-body text-secondary text-base md:text-xl mb-8 md:mb-10 leading-relaxed max-w-lg">
               <RichText content={t.heroDesc} />
             </div>
             <div className="flex flex-col sm:flex-row gap-4 items-center sm:justify-start">
@@ -754,12 +798,12 @@ export default function App() {
             </div>
 
             {/* Social Proof Section */}
-            <div className="mt-12 pt-10 border-t border-gray/20 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div className="mt-10 md:mt-12 pt-8 md:pt-10 border-t border-gray/20 flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6">
               <div className="flex -space-x-3">
-                <div className="w-12 h-12 rounded-full border-2 border-surface overflow-hidden"><img src="https://i.pravatar.cc/100?img=11" alt="User 1" /></div>
-                <div className="w-12 h-12 rounded-full border-2 border-surface overflow-hidden"><img src="https://i.pravatar.cc/100?img=12" alt="User 2" /></div>
-                <div className="w-12 h-12 rounded-full border-2 border-surface overflow-hidden"><img src="https://i.pravatar.cc/100?img=13" alt="User 3" /></div>
-                <div className="w-12 h-12 rounded-full border-2 border-surface overflow-hidden bg-navy flex items-center justify-center text-white font-bold text-xs">+150</div>
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-surface overflow-hidden"><img src="https://i.pravatar.cc/100?img=11" alt="User 1" /></div>
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-surface overflow-hidden"><img src="https://i.pravatar.cc/100?img=12" alt="User 2" /></div>
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-surface overflow-hidden"><img src="https://i.pravatar.cc/100?img=13" alt="User 3" /></div>
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-surface overflow-hidden bg-navy flex items-center justify-center text-white font-bold text-xs">+150</div>
               </div>
               <div className="text-center sm:text-left">
                 <div className="flex gap-1 mb-1 text-orange justify-center sm:justify-start">
@@ -779,18 +823,18 @@ export default function App() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="relative h-[400px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white mt-8 md:mt-0"
+            className="relative h-[300px] sm:h-[400px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white mt-8 md:mt-0"
           >
             <img src={sanityData?.settings?.defaultHeroImage ? urlFor(sanityData.settings.defaultHeroImage).url() : "/hero-industrial.png"} alt="Hero background" className="w-full h-full object-cover" />
             
             {/* Overlay floating element for extra appeal */}
-            <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 bg-white p-4 pr-8 rounded-xl shadow-xl border border-gray/10 flex items-center gap-4 animate-bounce z-20" style={{ animationDuration: '3s' }}>
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <DynamicIcon name="TrendingUp" className="text-green-600" size={24} />
+            <div className="absolute -bottom-2 -left-2 md:bottom-8 md:left-8 bg-white p-3 pr-6 md:p-4 md:pr-8 rounded-xl shadow-xl border border-gray/10 flex items-center gap-3 md:gap-4 animate-bounce z-20 transform scale-90 md:scale-100" style={{ animationDuration: '3s' }}>
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <DynamicIcon name="TrendingUp" className="text-green-600" size={20} />
               </div>
               <div>
                 <p className="text-[10px] md:text-xs text-secondary uppercase font-bold tracking-wider">{t.heroStatLabel}</p>
-                <p className="text-lg md:text-xl font-heading font-bold text-slate">{t.heroStatValue}</p>
+                <p className="text-base md:text-xl font-heading font-bold text-slate">{t.heroStatValue}</p>
               </div>
             </div>
           </motion.div>
@@ -798,7 +842,7 @@ export default function App() {
       </section>
 
       {/* SERVICES SECTION */}
-      <section id="services" className="py-24 px-6 bg-surface border-y border-gray/10">
+      <section id="services" className="py-16 md:py-24 px-6 bg-surface border-y border-gray/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto">
             <span className="font-heading text-sm tracking-widest text-navy font-bold uppercase mb-3 block">
@@ -817,7 +861,7 @@ export default function App() {
       </section>
 
       {/* FEATURES / APPROACH SECTION */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
+      <section className="py-16 md:py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto">
           <span className="font-heading text-sm tracking-widest text-navy font-bold uppercase mb-3 block">
             {t.featPreTitle}
@@ -838,7 +882,7 @@ export default function App() {
       <SiteAuditor t={t} />
 
       {/* TESTIMONIALS SECTION */}
-      <section id="testimonials" className="py-24 px-6 bg-slate text-white">
+      <section id="testimonials" className="py-16 md:py-24 px-6 bg-slate text-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <DynamicHeading tag={t.testiHeadTag} className="text-4xl md:text-5xl font-heading font-bold mb-4">
@@ -856,8 +900,8 @@ export default function App() {
       <Faq t={t} />
 
       {/* CONTACT SECTION */}
-      <section id="contact" className="py-24 px-6 bg-surface">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+      <section id="contact" className="py-16 md:py-24 px-6 bg-surface">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16">
           <div>
             <span className="font-heading text-sm tracking-widest text-navy font-bold uppercase mb-4 block">
               {t.contactTag}
@@ -891,7 +935,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white p-8 md:p-10 rounded-2xl border border-gray/20 shadow-lg">
+          <div className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl border border-gray/20 shadow-lg">
             {/* The ContactForm component might still have some internal styling to fix, but we use it as is for now */}
             <ContactForm 
               currentLang="ENG"

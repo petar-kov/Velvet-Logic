@@ -14,6 +14,10 @@ import { footerType } from './footer'
 import { faqType } from './faq'
 import { whyItMattersType } from './whyItMatters'
 import { siteAuditorType } from './siteAuditor'
+import { processStepType } from './processStep'
+import { valueCardType } from './valueCard'
+import { testimonialItemType } from './testimonialItem'
+import { faqItemType } from './faqItem'
 
 export const schemaTypes = [
   localizedString,
@@ -31,4 +35,8 @@ export const schemaTypes = [
   faqType,
   whyItMattersType,
   siteAuditorType,
+  processStepType,
+  valueCardType,
+  testimonialItemType,
+  faqItemType,
 ]

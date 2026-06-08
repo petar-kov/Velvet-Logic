@@ -18,18 +18,7 @@ export const faqType = defineType({
       name: 'questions',
       title: 'Questions',
       type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({ name: 'question', title: 'Question', type: 'localizedString' }),
-            defineField({ name: 'answer', title: 'Answer', type: 'localizedBlockContent' }),
-          ],
-          preview: {
-            select: { title: 'question.en' }
-          }
-        })
-      ]
+      of: [{type: 'faqItem'}]
     })
   ],
   preview: {

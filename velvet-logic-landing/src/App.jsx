@@ -5,6 +5,7 @@ import * as LucideIcons from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import imageUrlBuilder from '@sanity/image-url';
 import ContactForm from './components/ContactForm';
+import SiteAuditor from './components/auditor/SiteAuditor';
 import { VisualEditing } from '@sanity/visual-editing/react';
 
 // Detect if we are in preview mode via URL parameter (same as client)
@@ -51,13 +52,13 @@ const dict = {
   navProcess: "Services",
   navContact: "Contact Us",
   btnStart: "GET AN ESTIMATE",
-  heroPre: "Industrial Grade Web Solutions",
-  heroTitle1: "Built for the ",
-  heroTitleVelvet: "Trades",
-  heroTitle2: "Optimized for ",
-  heroTitleLogic: "Growth.",
-  heroDesc: "We design and build high-performance websites that generate leads for manufacturing, construction, and trade service businesses.",
-  heroBtnStart: "Get an Estimate",
+  heroPre: "Stop Bleeding Revenue",
+  heroTitle1: "Your website is leaking ",
+  heroTitleVelvet: "leads",
+  heroTitle2: " to your ",
+  heroTitleLogic: "competitors.",
+  heroDesc: "A three-second load delay kills 50% of your traffic. We build high-converting funnels that stop the leak and dominate local search.",
+  heroBtnStart: "Stop The Leak",
   heroBtnPort: "View Our Work",
   testiHeadPre: "Client",
   testiHeadSub: "Testimonials",
@@ -67,24 +68,45 @@ const dict = {
   procHeadSpan: "Velvet Logic",
   procHeadEnd: " Advantage",
   procDesc: "Straightforward, no-nonsense web development. We build sites that load fast, rank high, and convert visitors into calling customers.",
-  proc1Title: "Local SEO",
-  proc1Desc: "Dominate your local market and appear when customers are searching for your services.",
-  proc2Title: "Lead Generation",
-  proc2Desc: "High-converting landing pages designed to get the phone ringing immediately.",
-  proc3Title: "Mobile Optimization",
-  proc3Desc: "Fast-loading sites optimized for field workers and customers on the go.",
+  processSteps: [
+    { title: "Conversion & Trust Optimization", desc: "We fix hidden phone numbers, broken mobile layouts, and missing estimate forms. We inject social proof and clear Call-To-Actions so when prospects land on your site, they actually call you.", icon: "Target" },
+    { title: "Traditional Local SEO & Technical Health", desc: "We rebuild your site's foundation. From lightning-fast load times and secure SSL certificates to optimized H1 tags and Schema markup, we ensure you rank above local competitors on Google.", icon: "Search" },
+    { title: "AI Search Readiness (GEO/AEO)", desc: "The future of search is AI. We restructure your content with \"answer-first\" architecture and structured data tables so AI engines recommend your business first.", icon: "Bot" },
+    { title: "Compliance & Competitive Protection", desc: "We secure your digital footprint. We plug AdWords leakage where competitors steal your brand traffic, and ensure your site is ADA compliant and legally protected.", icon: "ShieldCheck" }
+  ],
   featPreTitle: "Our Approach",
-  featHeading: "Industrial Strength Digital",
-  featSubtext: "We understand that your website isn't an art project—it's a sales tool. We focus on what matters: speed, clarity, and conversion.",
-  feat1Tag: "Speed",
-  feat1Title: "Lightning Fast",
-  feat1Desc: "Optimized code ensures your site loads instantly, even on weak 4G connections in the field.",
-  feat2Tag: "Clarity",
-  feat2Title: "Clear Contact",
-  feat2Desc: "Prominent phone numbers and easy-to-use forms so customers can reach you without friction.",
-  feat3Tag: "Trust",
-  feat3Title: "Social Proof",
-  feat3Desc: "We prominently display your reviews, licenses, and past projects to build immediate trust.",
+  featHeading: "Built for Lead Generation",
+  featSubtext: "We understand that your website isn't an art project. It's a sales tool. We map every section directly to conversion and search engine dominance.",
+  feat1Tag: "Trust",
+  feat1Title: "Data-Driven Trust",
+  feat1Desc: "We replace generic layouts with high-converting, tested funnels. Every element is tested to turn your traffic into verified leads.",
+  feat2Tag: "Technical SEO",
+  feat2Title: "Search Foundation",
+  feat2Desc: "Secure certificates and lightning-fast load times. We build the foundation Google demands.",
+  feat3Tag: "AI Optimized",
+  feat3Title: "Generative Readiness",
+  feat3Desc: "Answer-first architecture. We format your content so generative AI engines recommend you first.",
+  faqPreTitle: "Questions",
+  faqHeading: "Frequently Asked Questions",
+  faqSubtext: "Straight answers about our process.",
+  faqQuestions: [
+    { question: "How fast can you build a site?", answer: "We typically launch standard service sites within two weeks." },
+    { question: "Do you guarantee leads?", answer: "We guarantee an optimized conversion foundation, but market demand dictates volume." },
+    { question: "How do I know if my site is leaking leads?", answer: "If your site takes more than 3 seconds to load, lacks a sticky mobile click-to-call button, or doesn't have local schema markup, you are losing leads to competitors." },
+    { question: "Do you work with generic templates?", answer: "No. We build custom, high-performance architectures specifically designed for lead capture in the trades and industrial sectors." },
+    { question: "What happens after the audit?", answer: "We provide a completely free, no-obligation technical report. If you choose to hire us, we implement the fixes to plug the leaks." }
+  ],
+  whyPreTitle: "Comparison",
+  whyHeading: "Why It Matters",
+  whySubtext: "See the difference between standard development and Velvet Logic.",
+  whyComparisons: [
+    { pillar: "Lead Capture", oldWay: "Hidden phone numbers and broken contact forms.", ourWay: "Sticky mobile CTA bars and optimized lead funnels." },
+    { pillar: "Technical SEO", oldWay: "Slow load times and missing H1 tags.", ourWay: "Sub-second load times with pristine Schema markup." },
+    { pillar: "AI Readiness", oldWay: "Buried answers and generic text blocks.", ourWay: "Answer-first architecture ready for AI search engines." },
+    { pillar: "Analytics", oldWay: "Guessing what visitors are actually doing.", ourWay: "Precision tracking on every button and form submission." },
+    { pillar: "Security", oldWay: "Outdated plugins and missing SSL certificates.", ourWay: "Enterprise-grade protection and ADA compliance." },
+    { pillar: "Ownership", oldWay: "Held hostage by proprietary agency platforms.", ourWay: "100% ownership of your code, content, and domain." }
+  ],
   contactTag: "Get Started",
   contactHead1: "Ready to grow your ",
   contactHeadSpan: "business",
@@ -118,7 +140,7 @@ const getTestimonials = () => {
 
 // --- Components ---
 
-const Navbar = ({ t }) => {
+const Navbar = ({ t, logo }) => {
   const scrollToContact = (e) => {
     e.preventDefault();
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -126,9 +148,13 @@ const Navbar = ({ t }) => {
 
   return (
     <nav className="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-surface border-b border-gray/20 shadow-sm">
-      <div className="text-2xl font-bold font-heading tracking-tight text-slate">
-        VELVET<span className="text-navy">LOGIC</span>
-      </div>
+      {logo ? (
+        <img src={urlFor(logo).height(40).url()} alt="Logo" className="h-10" />
+      ) : (
+        <div className="text-2xl font-bold font-heading tracking-tight text-slate">
+          VELVET<span className="text-navy">LOGIC</span>
+        </div>
+      )}
       
       <div className="hidden md:flex gap-8 items-center font-heading font-medium text-sm text-slate">
         <a href="#services" className="hover:text-navy transition-colors">{t.navProcess}</a>
@@ -149,18 +175,16 @@ const Navbar = ({ t }) => {
 const InteractiveServices = ({ t }) => {
   const [activeTab, setActiveTab] = useState(0);
   
-  const services = [
-    { title: t.proc1Title, desc: t.proc1Desc, icon: "Search" },
-    { title: t.proc2Title, desc: t.proc2Desc, icon: "TrendingUp" },
-    { title: t.proc3Title, desc: t.proc3Desc, icon: "Smartphone" }
-  ];
+  const services = t.processSteps || [];
 
   return (
     <div className="flex flex-col md:flex-row gap-12 mt-16">
       <div className="md:w-1/2 flex flex-col justify-center gap-4">
         {services.map((srv, idx) => (
-          <div 
+          <motion.div 
             key={idx}
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
             onMouseEnter={() => setActiveTab(idx)}
             onClick={() => setActiveTab(idx)}
             className={`cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 ${activeTab === idx ? 'border-navy bg-white shadow-xl' : 'border-transparent hover:bg-gray/5'}`}
@@ -183,7 +207,7 @@ const InteractiveServices = ({ t }) => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
         ))}
       </div>
       <div className="md:w-1/2 bg-slate rounded-3xl overflow-hidden relative min-h-[400px] flex items-center justify-center shadow-2xl">
@@ -214,7 +238,8 @@ const InteractiveBento = ({ t }) => {
     <div className="grid md:grid-cols-12 gap-6 mt-16">
       {/* Large Featured Block */}
       <motion.div 
-        whileHover="hover"
+        whileHover={{ y: -8, scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className="md:col-span-7 lg:col-span-8 bg-navy rounded-3xl p-10 flex flex-col justify-between border border-navy/20 shadow-2xl relative overflow-hidden group min-h-[400px]"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3" />
@@ -241,7 +266,8 @@ const InteractiveBento = ({ t }) => {
       {/* Two smaller blocks */}
       <div className="md:col-span-5 lg:col-span-4 grid grid-rows-2 gap-6">
         <motion.div 
-          whileHover="hover"
+          whileHover={{ y: -5, scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
           className="bg-surface rounded-3xl p-8 border border-gray/20 shadow-industrial flex flex-col justify-center relative overflow-hidden group"
         >
           <div className="flex justify-between items-start mb-6">
@@ -360,6 +386,131 @@ const MagneticCarousel = ({ testimonials }) => {
   );
 };
 
+const WhyItMatters = ({ t }) => {
+  return (
+    <section id="why" className="py-24 px-6 bg-surface relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <span className="font-heading text-sm tracking-widest text-orange font-bold uppercase mb-3 block">
+            {t.whyPreTitle}
+          </span>
+          <h2 className="text-4xl md:text-5xl font-heading font-bold text-slate mb-6">
+            {t.whyHeading}
+          </h2>
+          <div className="font-body text-secondary text-lg max-w-2xl mx-auto">
+            <RichText content={t.whySubtext} />
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {t.whyComparisons?.map((comp, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: idx * 0.05 }}
+              className="bg-white border border-gray/20 rounded-3xl p-6 shadow-industrial relative overflow-hidden group hover:border-gray/30 transition-colors"
+            >
+              <h3 className="text-lg font-heading font-bold text-slate mb-6 border-b border-gray/10 pb-3">
+                {comp.pillar}
+              </h3>
+              
+              <div className="space-y-4">
+                {/* The Old Way */}
+                <div className="bg-surface p-4 rounded-2xl border border-gray/10 relative group-hover:border-gray/20 transition-colors">
+                  <div className="absolute top-4 left-4 text-red-500">
+                    <DynamicIcon name="XCircle" size={20} />
+                  </div>
+                  <div className="pl-10">
+                    <div className="text-[10px] uppercase tracking-wider text-red-500 mb-1 font-bold font-heading">The Bleed</div>
+                    <p className="text-secondary font-body text-sm leading-relaxed">{comp.oldWay}</p>
+                  </div>
+                </div>
+                
+                {/* The Velvet Logic Way */}
+                <div className="bg-green-500/5 p-4 rounded-2xl border border-green-500/20 relative shadow-sm">
+                  <div className="absolute top-4 left-4 text-green-600">
+                    <DynamicIcon name="CheckCircle" size={20} />
+                  </div>
+                  <div className="pl-10">
+                    <div className="text-[10px] uppercase tracking-wider text-green-600 mb-1 font-bold font-heading">The Velvet Logic Fix</div>
+                    <p className="text-slate font-body font-medium text-sm leading-relaxed">{comp.ourWay}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Faq = ({ t }) => {
+  const [openIdx, setOpenIdx] = useState(null);
+
+  return (
+    <section id="faq" className="py-24 px-6 bg-surface">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="font-heading text-sm tracking-widest text-navy font-bold uppercase mb-3 block">
+            {t.faqPreTitle}
+          </span>
+          <h2 className="text-4xl md:text-5xl font-heading font-bold text-slate mb-6">
+            {t.faqHeading}
+          </h2>
+          <div className="font-body text-secondary text-lg max-w-2xl mx-auto">
+            <RichText content={t.faqSubtext} />
+          </div>
+        </div>
+        <div className="max-w-3xl mx-auto space-y-4">
+          {t.faqQuestions?.map((faq, idx) => {
+            const isOpen = openIdx === idx;
+            return (
+              <motion.div 
+                key={idx} 
+                className={`border border-gray/20 rounded-2xl overflow-hidden transition-colors ${isOpen ? 'bg-white shadow-industrial border-navy/20' : 'bg-surface hover:bg-white'}`}
+              >
+                <button
+                  onClick={() => setOpenIdx(isOpen ? null : idx)}
+                  className="w-full text-left p-6 lg:p-8 flex items-center justify-between gap-6 focus:outline-none focus:ring-2 focus:ring-navy/50 focus:ring-inset"
+                >
+                  <h3 className={`text-xl font-heading font-bold transition-colors ${isOpen ? 'text-navy' : 'text-slate'}`}>
+                    {faq.question}
+                  </h3>
+                  <motion.div
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${isOpen ? 'bg-navy/10 text-navy' : 'bg-gray/5 text-secondary'}`}
+                  >
+                    <DynamicIcon name="ChevronDown" size={20} />
+                  </motion.div>
+                </button>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    >
+                      <div className="px-6 lg:px-8 pb-8 pt-0 font-body text-secondary leading-relaxed border-t border-gray/5 mt-2 pt-6">
+                        <p>{faq.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const DynamicHeading = ({ tag = 'h2', children, animate, ...props }) => {
   const Tag = (tag || 'h2').toLowerCase();
   const Component = animate ? motion[Tag] : Tag;
@@ -386,7 +537,9 @@ export default function App() {
         hero: home?.sections?.find(s => s._type === 'hero'),
         testimonials: home?.sections?.find(s => s._type === 'testimonials'),
         process: home?.sections?.find(s => s._type === 'process'),
+        whyItMatters: home?.sections?.find(s => s._type === 'whyItMatters'),
         values: home?.sections?.find(s => s._type === 'values'),
+        faq: home?.sections?.find(s => s._type === 'faq'),
         contact: home?.sections?.find(s => s._type === 'contact')
       };
 
@@ -397,6 +550,18 @@ export default function App() {
   useEffect(() => {
     if (sanityData?.settings?.siteTitle) {
       document.title = l(sanityData.settings.siteTitle) || "Velvet Logic";
+    }
+    if (sanityData?.settings?.seoDesc) {
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', l(sanityData.settings.seoDesc));
+      }
+    }
+    if (sanityData?.settings?.favicon) {
+      let linkIcon = document.querySelector('link[rel="icon"]');
+      if (linkIcon) {
+        linkIcon.setAttribute('href', urlFor(sanityData.settings.favicon).width(32).height(32).url());
+      }
     }
   }, [sanityData]);
 
@@ -434,12 +599,13 @@ export default function App() {
     procHeadSpan: l(sanityData?.process?.headSpan) || dict.procHeadSpan,
     procHeadEnd: l(sanityData?.process?.headEnd) || dict.procHeadEnd,
     procDesc: l(sanityData?.process?.description) || dict.procDesc,
-    proc1Title: l(sanityData?.process?.steps?.[0]?.title) || dict.proc1Title,
-    proc1Desc: l(sanityData?.process?.steps?.[0]?.description) || dict.proc1Desc,
-    proc2Title: l(sanityData?.process?.steps?.[1]?.title) || dict.proc2Title,
-    proc2Desc: l(sanityData?.process?.steps?.[1]?.description) || dict.proc2Desc,
-    proc3Title: l(sanityData?.process?.steps?.[2]?.title) || dict.proc3Title,
-    proc3Desc: l(sanityData?.process?.steps?.[2]?.description) || dict.proc3Desc,
+    processSteps: sanityData?.process?.steps?.length > 0
+      ? sanityData.process.steps.map(s => ({
+          title: l(s.title),
+          desc: l(s.description),
+          icon: s.icon || 'Check'
+        }))
+      : dict.processSteps,
 
     featPreTitle: l(sanityData?.values?.preTitle) || dict.featPreTitle,
     featHeading:  l(sanityData?.values?.heading)  || dict.featHeading,
@@ -453,6 +619,27 @@ export default function App() {
     feat3Tag: l(sanityData?.values?.cards?.[2]?.tag) || dict.feat3Tag,
     feat3Title: l(sanityData?.values?.cards?.[2]?.title) || dict.feat3Title,
     feat3Desc: l(sanityData?.values?.cards?.[2]?.description) || dict.feat3Desc,
+
+    faqPreTitle: l(sanityData?.faq?.preTitle) || dict.faqPreTitle,
+    faqHeading: l(sanityData?.faq?.heading) || dict.faqHeading,
+    faqSubtext: l(sanityData?.faq?.subtext) || dict.faqSubtext,
+    faqQuestions: sanityData?.faq?.questions?.length > 0 
+      ? sanityData.faq.questions.map(q => ({
+          question: l(q.question),
+          answer: l(q.answer)
+        }))
+      : dict.faqQuestions,
+
+    whyPreTitle: l(sanityData?.whyItMatters?.preTitle) || dict.whyPreTitle,
+    whyHeading: l(sanityData?.whyItMatters?.heading) || dict.whyHeading,
+    whySubtext: l(sanityData?.whyItMatters?.subtext) || dict.whySubtext,
+    whyComparisons: sanityData?.whyItMatters?.comparisons?.length > 0
+      ? sanityData.whyItMatters.comparisons.map(c => ({
+          pillar: l(c.pillar),
+          oldWay: l(c.oldWay),
+          ourWay: l(c.ourWay)
+        }))
+      : dict.whyComparisons,
 
     contactTag: l(sanityData?.contact?.tag) || dict.contactTag,
     contactHead1: l(sanityData?.contact?.head1) || dict.contactHead1,
@@ -499,7 +686,7 @@ export default function App() {
 
   return (
     <div className="bg-mercury text-slate min-h-screen font-body antialiased selection:bg-orange/20 selection:text-orange">
-      <Navbar t={t} />
+      <Navbar t={t} logo={sanityData?.settings?.logo} />
 
       {/* HERO SECTION */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 px-6 overflow-hidden bg-surface">
@@ -524,19 +711,23 @@ export default function App() {
               <RichText content={t.heroDesc} />
             </div>
             <div className="flex flex-col sm:flex-row gap-4 items-center sm:justify-start">
-              <button 
+              <motion.button 
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={scrollToContact}
                 className="w-full sm:w-auto bg-orange text-white px-8 py-4 rounded-lg font-heading font-bold text-lg shadow-lg hover:bg-orange/90 transition-colors flex items-center justify-center gap-2"
               >
                 {t.heroBtnStart} <DynamicIcon name={t.heroBtnStartIcon} size={20} />
-              </button>
+              </motion.button>
               
-              <button 
+              <motion.button 
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
                 className="w-full sm:w-auto bg-surface border-2 border-gray/20 text-slate px-8 py-4 rounded-lg font-heading font-bold text-lg hover:bg-gray/5 transition-colors"
               >
                 {t.heroBtnPort}
-              </button>
+              </motion.button>
             </div>
 
             {/* Social Proof Section */}
@@ -567,7 +758,7 @@ export default function App() {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="relative h-[400px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white mt-8 md:mt-0"
           >
-            <img src="/hero-industrial.png" alt="Industrial construction workers" className="w-full h-full object-cover" />
+            <img src={sanityData?.settings?.defaultHeroImage ? urlFor(sanityData.settings.defaultHeroImage).url() : "/hero-industrial.png"} alt="Hero background" className="w-full h-full object-cover" />
             
             {/* Overlay floating element for extra appeal */}
             <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 bg-white p-4 pr-8 rounded-xl shadow-xl border border-gray/10 flex items-center gap-4 animate-bounce z-20" style={{ animationDuration: '3s' }}>
@@ -619,6 +810,10 @@ export default function App() {
         <InteractiveBento t={t} />
       </section>
 
+      <WhyItMatters t={t} />
+
+      <SiteAuditor />
+
       {/* TESTIMONIALS SECTION */}
       <section id="testimonials" className="py-24 px-6 bg-slate text-white">
         <div className="max-w-7xl mx-auto">
@@ -634,6 +829,8 @@ export default function App() {
           <MagneticCarousel testimonials={activeTestimonials} />
         </div>
       </section>
+
+      <Faq t={t} />
 
       {/* CONTACT SECTION */}
       <section id="contact" className="py-24 px-6 bg-surface">

@@ -142,80 +142,52 @@ const getTestimonials = () => {
 // --- Components ---
 
 const Navbar = ({ t, logo }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const scrollToContact = (e) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToSection = (e, id) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <>
-      <nav className="fixed top-0 w-full z-50 px-4 py-3 md:px-6 md:py-4 flex justify-between items-center bg-surface border-b border-gray/20 shadow-sm">
-        <div className="flex items-center">
-          {logo ? (
-            <img src={urlFor(logo).height(40).url()} alt="Logo" className="h-8 md:h-10" />
-          ) : (
-            <div className="text-xl md:text-2xl font-bold font-heading tracking-tight text-slate">
-              VELVET<span className="text-navy">LOGIC</span>
-            </div>
-          )}
-        </div>
-        
-        <div className="hidden md:flex gap-8 items-center font-heading font-medium text-sm text-slate">
-          <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-navy transition-colors">{t.navProcess}</a>
-          <a href="#testimonials" onClick={(e) => scrollToSection(e, 'testimonials')} className="hover:text-navy transition-colors">{t.navWork}</a>
-          <a href="#contact" onClick={scrollToContact} className="hover:text-navy transition-colors">{t.navContact}</a>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={scrollToContact}
-            className="hidden sm:block bg-orange text-white px-4 py-2 md:px-6 md:py-2.5 rounded-lg font-heading font-bold text-xs md:text-sm transition-colors hover:bg-orange/90 shadow-md whitespace-nowrap"
-          >
-            {t.btnStart}
-          </button>
-          
-          <button 
-            className="md:hidden text-slate p-1 focus:outline-none" 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <DynamicIcon name={mobileMenuOpen ? "X" : "Menu"} size={28} />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-surface pt-20 px-6 flex flex-col gap-6 md:hidden overflow-y-auto"
-          >
-            <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="text-2xl font-heading font-bold text-slate hover:text-navy">{t.navProcess}</a>
-            <a href="#testimonials" onClick={(e) => scrollToSection(e, 'testimonials')} className="text-2xl font-heading font-bold text-slate hover:text-navy">{t.navWork}</a>
-            <a href="#contact" onClick={scrollToContact} className="text-2xl font-heading font-bold text-slate hover:text-navy">{t.navContact}</a>
-            <div className="mt-8 pt-8 border-t border-gray/20">
-              <button 
-                onClick={scrollToContact}
-                className="w-full bg-orange text-white px-6 py-4 rounded-lg font-heading font-bold text-lg shadow-md"
-              >
-                {t.btnStart}
-              </button>
-            </div>
-          </motion.div>
+    <nav className="fixed top-0 w-full z-50 px-4 py-3 md:px-6 md:py-4 flex justify-between items-center bg-surface border-b border-gray/20 shadow-sm">
+      <div className="flex items-center">
+        {logo ? (
+          <img src={urlFor(logo).height(40).url()} alt="Logo" className="h-8 md:h-10" />
+        ) : (
+          <div className="text-xl md:text-2xl font-bold font-heading tracking-tight text-slate">
+            VELVET<span className="text-navy">LOGIC</span>
+          </div>
         )}
-      </AnimatePresence>
-    </>
+      </div>
+      
+      <div className="hidden md:flex gap-8 items-center font-heading font-medium text-sm text-slate">
+        <a href="#services" onClick={(e) => scrollToSection(e, 'services')} className="hover:text-navy transition-colors">{t.navProcess}</a>
+        <a href="#testimonials" onClick={(e) => scrollToSection(e, 'testimonials')} className="hover:text-navy transition-colors">{t.navWork}</a>
+        <a href="#contact" onClick={scrollToContact} className="hover:text-navy transition-colors">{t.navContact}</a>
+      </div>
+
+      <div className="flex items-center gap-4">
+        {/* Desktop CTA */}
+        <button 
+          onClick={scrollToContact}
+          className="hidden md:block bg-orange text-white px-6 py-2.5 rounded-lg font-heading font-bold text-sm transition-colors hover:bg-orange/90 shadow-md whitespace-nowrap"
+        >
+          {t.btnStart}
+        </button>
+        
+        {/* Mobile Sticky CTA (Audit) */}
+        <button 
+          onClick={(e) => scrollToSection(e, 'free-audit')}
+          className="md:hidden bg-orange text-white px-4 py-2 rounded-lg font-heading font-bold text-xs transition-colors hover:bg-orange/90 shadow-md whitespace-nowrap"
+        >
+          Free Audit
+        </button>
+      </div>
+    </nav>
   );
 };
 

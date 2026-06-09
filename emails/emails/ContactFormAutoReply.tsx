@@ -36,29 +36,29 @@ export const ContactFormAutoReply = ({
             style={logo}
           />
           
-          <Heading style={h1}>Thank you, {name}!</Heading>
+          <Heading style={h1}>Inquiry Received, {name}.</Heading>
           
           <Text style={text}>
-            We have received your project inquiry and our team will review it shortly. 
+            We've received your project details and our team is reviewing them now. 
           </Text>
           
           <Text style={text}>
-            At Velvet Logic, we specialize in building digital flagships that convert. 
-            One of our lead engineers or strategists will be in touch with you within 
-            the next <strong>24 business hours</strong> to discuss the next steps.
+            At Velvet Logic, we build high-converting sales tools, not art projects. 
+            One of our lead engineers will contact you within the next <strong>24 business hours</strong> 
+            to discuss how we can stop your revenue leak and dominate your local market.
           </Text>
 
           <Section style={ctaContainer}>
             <Link href="https://velvetlogicagency.com" style={button}>
-              Visit Our Website
+              View Our Work
             </Link>
           </Section>
 
           <Hr style={hr} />
 
           <Text style={footer}>
-            Velvet Logic Agency<br />
-            Forward-thinking web design & high-performance development.<br />
+            Velvet Logic<br />
+            Straightforward, no-nonsense web development for the trades.<br />
             <Link href="mailto:hello@velvetlogicagency.com" style={footerLink}>
               hello@velvetlogicagency.com
             </Link>

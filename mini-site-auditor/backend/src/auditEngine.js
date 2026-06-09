@@ -1,4 +1,5 @@
 const { scrapePage } = require('./scraper');
+const aiEngine = require('./aiEngine');
 
 const IMPACT_MAP = {
   conversion: '[Impact: High Customer Churn] Your website is actively leaking mobile leads who want to book immediately but face technical friction.',
@@ -7,7 +8,7 @@ const IMPACT_MAP = {
   compliance: '[Impact: Legal & Ad Platform Vulnerability] Lacking standard baseline compliance documentation exposes your business to ad account suspensions and predatory legal risks.'
 };
 
-async function auditEngine(url) {
+async function auditEngine(url, tier = 'free') {
   const data = await scrapePage(url);
   
   let scores = {
@@ -75,7 +76,6 @@ async function auditEngine(url) {
     scores.seo -= 4;
     deductions.seo.push('Page lacks local business structured schema data (-4 pts)');
   }
-  // New Header Hierarchy check
   if (data.hasHeaderHierarchyError) {
     scores.seo -= 5;
     deductions.seo.push('Heading structure is broken (skips levels like h1 to h3) (-5 pts)');
@@ -117,12 +117,36 @@ async function auditEngine(url) {
   if (scores.geo_aeo < 20) impacts.push(IMPACT_MAP.geo_aeo);
   if (scores.compliance < 20) impacts.push(IMPACT_MAP.compliance);
 
+  // --- AI VERIFICATION ENGINES ---
+  // The Free Tier gets the OpenAI critique (Cheap, massive value)
+  let aiCritique = null;
+  if (data.rawText) {
+    aiCritique = await aiEngine.generateContentCritique(data.rawText);
+  }
+
+  let premiumData = null;
+  // The Premium Tier gets the deep verification data
+  if (tier === 'premium') {
+    const domainMatch = url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
+    const [perplexityData, serperData] = await Promise.all([
+      aiEngine.verifyAIPresence(domainMatch),
+      aiEngine.verifyGoogleSerp(domainMatch)
+    ]);
+    premiumData = {
+      perplexity: perplexityData,
+      serper: serperData
+    };
+  }
+
   return {
     url,
+    tier,
     totalScore,
     scores,
     deductions,
-    impacts
+    impacts,
+    aiCritique,
+    premiumData
   };
 }
 

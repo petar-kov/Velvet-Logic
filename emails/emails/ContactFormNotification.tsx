@@ -21,11 +21,11 @@ interface ContactFormNotificationProps {
 }
 
 export const ContactFormNotification = ({
-  fullName = 'John Doe',
-  companyName = 'Acme Corp',
-  email = 'john@example.com',
-  phone = '+1 234 567 8900',
-  message = 'Hi, I need help redesigning our outdated agency website to improve conversion rates.',
+  fullName = 'Mike R.',
+  companyName = 'Precision HVAC',
+  email = 'mike@precisionhvac.example.com',
+  phone = '(555) 123-4567',
+  message = 'Hi, our site is slow and we are losing jobs to competitors. We need you to plug the leak and fix our local SEO.',
 }: ContactFormNotificationProps) => {
   const previewText = `New Project Inquiry from ${fullName}`;
 

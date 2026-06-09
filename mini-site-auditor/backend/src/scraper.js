@@ -156,13 +156,10 @@ async function scrapePage(url) {
       }
     });
 
-    const images = document.querySelectorAll('img');
-    let hasImagesWithoutAlt = false;
-    images.forEach(img => {
-      if (!img.hasAttribute('alt') || img.getAttribute('alt').trim() === '') {
-        hasImagesWithoutAlt = true;
-      }
-    });
+    const hasImagesWithoutAlt = !!document.querySelector('img:not([alt]), img[alt=""]');
+    
+    // Extract raw text for AI critique (limited to first 3000 chars to save tokens)
+    const rawText = document.body.innerText.substring(0, 3000);
 
     return {
       hasTelLink,
@@ -170,19 +167,21 @@ async function scrapePage(url) {
       hasForm,
       hasOutdatedYear,
       hasChatWidget,
-      hasHeaderHierarchyError,
+      isHttps,
       hasValidH1,
       h1ErrorType,
       hasValidTitle,
       hasMetaDescription,
       hasSchemaData,
-      hasStackedSchema,
-      hasScannableListsOrTables,
+      hasHeaderHierarchyError,
       hasConversationalHeadings,
-      hasAnswerNugget,
+      hasScannableListsOrTables,
+      hasStackedSchema,
       hasExternalCitations,
+      hasAnswerNugget,
       hasComplianceLinks,
-      hasImagesWithoutAlt
+      hasImagesWithoutAlt,
+      rawText
     };
   });
 

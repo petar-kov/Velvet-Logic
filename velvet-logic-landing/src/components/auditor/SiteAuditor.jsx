@@ -74,7 +74,7 @@ export default function SiteAuditor({ t }) {
   const [error, setError] = useState(null);
   const [auditData, setAuditData] = useState(null);
 
-  const handleAuditSubmit = async (email, url) => {
+  const handleAuditSubmit = async (email, url, tier = 'free') => {
     setIsLoading(true);
     setError(null);
     setAuditData(null);
@@ -84,7 +84,7 @@ export default function SiteAuditor({ t }) {
       const response = await fetch(`${apiUrl}/api/v1/audit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, url }),
+        body: JSON.stringify({ email, url, tier }),
       });
       
       const data = await response.json();

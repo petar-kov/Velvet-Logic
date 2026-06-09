@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ShieldAlert, TrendingDown, Search, Globe, CheckCircle } from 'lucide-react';
+import { ShieldAlert, TrendingDown, Search, Globe, CheckCircle, Sparkles, Lock } from 'lucide-react';
 
 export default function AuditResults({ data }) {
   const { totalScore, scores, deductions, impacts } = data;
@@ -116,7 +116,7 @@ export default function AuditResults({ data }) {
               </div>
             </div>
             
-            <ul className="space-y-3">
+    <ul className="space-y-3">
               {cat.deducs.length === 0 ? (
                 <li className="flex items-start gap-3 text-sm text-[#059669] font-body font-medium">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-[#10b981]" />
@@ -134,6 +134,74 @@ export default function AuditResults({ data }) {
           </motion.div>
         ))}
       </div>
+
+      {/* NEW AI VERIFICATION SECTIONS */}
+      {data.aiCritique && (
+        <motion.div variants={itemVariants} className="mt-8 bg-surface border border-gray/10 rounded-2xl p-6 md:p-8 shadow-industrial">
+          <div className="flex items-center gap-3 font-heading font-bold text-lg text-slate mb-4">
+            <div className="w-10 h-10 rounded-full bg-orange/10 flex items-center justify-center text-orange">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            AI Copywriting Critique
+          </div>
+          <p className="font-body text-secondary leading-relaxed pl-13 border-l-2 border-orange/20 italic">
+            "{data.aiCritique}"
+          </p>
+        </motion.div>
+      )}
+
+      {data.tier === 'free' && (
+        <motion.div variants={itemVariants} className="mt-8 relative overflow-hidden bg-navy rounded-2xl p-6 md:p-8 border border-navy/20 shadow-2xl">
+           <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-6">
+              <Lock className="w-10 h-10 text-orange mb-3" />
+              <h4 className="font-heading font-bold text-white text-xl mb-2">Unlock Premium Analytics</h4>
+              <p className="font-body text-white/70 text-sm max-w-md">Verify your business reputation on Perplexity AI and see live Google SERP competitor rankings.</p>
+           </div>
+           {/* Blurred mock content behind the lock */}
+           <div className="opacity-20 blur-sm select-none pointer-events-none">
+             <div className="h-4 bg-white/20 w-1/3 rounded mb-4"></div>
+             <div className="h-4 bg-white/20 w-3/4 rounded mb-2"></div>
+             <div className="h-4 bg-white/20 w-2/3 rounded"></div>
+           </div>
+        </motion.div>
+      )}
+
+      {data.tier === 'premium' && data.premiumData && (
+        <motion.div variants={itemVariants} className="mt-8 grid md:grid-cols-2 gap-8">
+           <div className="bg-navy rounded-2xl p-6 border border-navy/20 shadow-2xl text-white">
+              <div className="flex items-center gap-3 font-heading font-bold text-lg mb-4">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-orange">
+                  <Globe className="w-5 h-5" />
+                </div>
+                Perplexity AI Reputation
+              </div>
+              <p className="font-body text-white/80 leading-relaxed text-sm">
+                {data.premiumData.perplexity.message}
+              </p>
+           </div>
+           
+           <div className="bg-navy rounded-2xl p-6 border border-navy/20 shadow-2xl text-white">
+              <div className="flex items-center gap-3 font-heading font-bold text-lg mb-4">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-orange">
+                  <Search className="w-5 h-5" />
+                </div>
+                Live Google SERP Data
+              </div>
+              <ul className="space-y-3 font-body text-sm text-white/80">
+                 <li className="flex justify-between border-b border-white/10 pb-2">
+                   <span>Rank Status:</span> <span className="font-bold text-white">{data.premiumData.serper.rankingPage}</span>
+                 </li>
+                 <li className="flex justify-between border-b border-white/10 pb-2">
+                   <span>Competitors Outranking You:</span> <span className="font-bold text-white">{data.premiumData.serper.competitorsOutranking}</span>
+                 </li>
+                 <li className="flex justify-between">
+                   <span>Google Business Profile:</span> <span className="font-bold text-white">{data.premiumData.serper.googleBusinessProfile}</span>
+                 </li>
+              </ul>
+           </div>
+        </motion.div>
+      )}
+
     </motion.div>
   );
 }

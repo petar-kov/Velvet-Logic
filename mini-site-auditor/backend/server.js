@@ -13,13 +13,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/v1/audit', async (req, res) => {
-  const { email, url } = req.body;
+  const { email, url, tier = 'free' } = req.body;
   if (!email || !url) {
     return res.status(400).json({ error: 'Email and URL are required' });
   }
 
   try {
-    const results = await auditEngine(url);
+    const results = await auditEngine(url, tier);
     
     // Concurrently send the email using Resend
     sendEmail(email, url, results).catch(console.error);

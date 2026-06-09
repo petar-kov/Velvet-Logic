@@ -1,22 +1,45 @@
 import { useState } from 'react';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function AuditForm({ onSubmit, isLoading, t }) {
   const [email, setEmail] = useState('');
   const [url, setUrl] = useState('');
+  const [tier, setTier] = useState('free');
 
   const handleSubmit = (e) => {
-    e.formAction = undefined; // Prevent default form sub
     e.preventDefault();
     if (email && url) {
-      onSubmit(email, url);
+      onSubmit(email, url, tier);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md bg-white p-6 md:p-8 lg:p-10 rounded-[2rem] shadow-2xl relative group transform md:-translate-y-4">
       
+      {/* Tier Selector */}
+      <div className="flex bg-gray-100 p-1 rounded-xl mb-6 relative">
+        <div 
+          className="absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-transform duration-300 ease-in-out"
+          style={{ transform: tier === 'premium' ? 'translateX(calc(100% + 4px))' : 'translateX(0)' }}
+        />
+        <button 
+          type="button" 
+          onClick={() => setTier('free')}
+          className={`relative z-10 w-1/2 py-2 text-sm font-bold font-heading uppercase tracking-widest transition-colors ${tier === 'free' ? 'text-navy' : 'text-secondary'}`}
+        >
+          Free Audit
+        </button>
+        <button 
+          type="button" 
+          onClick={() => setTier('premium')}
+          className={`relative z-10 w-1/2 py-2 text-sm font-bold font-heading uppercase tracking-widest transition-colors flex items-center justify-center gap-2 ${tier === 'premium' ? 'text-orange' : 'text-secondary'}`}
+        >
+          <Sparkles size={14} />
+          Premium
+        </button>
+      </div>
+
       <div className="relative z-10">
         <label htmlFor="url" className="block text-xs font-bold font-heading uppercase tracking-widest text-navy mb-2">
           {t?.auditorUrlLabel || 'Website URL'}

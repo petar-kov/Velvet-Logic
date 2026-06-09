@@ -1,0 +1,16 @@
+{
+  "name": "velvet-logic-emails",
+  "version": "1.0.0",
+  "description": "React Email templates for Velvet Logic",
+  "scripts": {
+    "dev": "email dev"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.33",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "react-email": "3.0.7"
+  }
+}

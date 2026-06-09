@@ -365,18 +365,13 @@ const MagneticCarousel = ({ testimonials }) => {
             <DynamicIcon name="ArrowRight" size={16} />
           </div>
         </div>
-        <motion.div 
-          drag="x" 
-          dragConstraints={containerRef}
-          className="flex gap-6 cursor-grab active:cursor-grabbing px-4 md:px-8 pb-4"
-          whileTap={{ cursor: "grabbing" }}
+        <div 
+          className="flex gap-6 overflow-x-auto snap-x snap-mandatory px-4 md:px-8 pb-4 no-scrollbar"
         >
           {others.map((t, idx) => (
-            <motion.div 
+            <div 
               key={idx} 
-              className="w-[85vw] sm:min-w-[320px] md:min-w-[400px] shrink-0 bg-white rounded-3xl p-6 md:p-8 shadow-industrial border border-gray/10 flex flex-col justify-between"
-              whileHover={{ scale: 1.02, rotate: Math.random() > 0.5 ? 1 : -1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="w-[85vw] sm:min-w-[320px] md:min-w-[400px] shrink-0 snap-center bg-white rounded-3xl p-6 md:p-8 shadow-industrial border border-gray/10 flex flex-col justify-between transition-transform hover:scale-[1.02]"
             >
               <div className="flex gap-1 mb-6 text-orange">
                 {[1,2,3,4,5].map((_, i) => <DynamicIcon key={i} name="Star" size={14} fill="currentColor" />)}
@@ -397,9 +392,9 @@ const MagneticCarousel = ({ testimonials }) => {
                   <p className="text-secondary font-body text-sm font-medium">{t.role}</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

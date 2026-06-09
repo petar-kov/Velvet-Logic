@@ -32,18 +32,22 @@ const fixBlock = (obj) => {
   };
 };
 
-async function fix() {
-  console.log('Fixing Array vs String errors...');
-  const doc = await client.getDocument('home-page');
-  if (!doc) return console.log('No home-page doc found');
+async function fixDoc(docId) {
+  const doc = await client.getDocument(docId);
+  if (!doc) return console.log('No doc found for', docId);
 
-  const updatedSections = doc.sections.map(section => {
-    if (section._type === 'process' && Array.isArray(section.steps)) {
-      section.steps = section.steps.map(step => ({
-        ...step,
-        _type: 'processStep',
-        description: typeof step.description?.en === 'string' ? fixBlock(step.description) : step.description
-      }));
+  const updatedSections = doc.sections?.map(section => {
+    if (section._type === 'process') {
+      if (Array.isArray(section.steps)) {
+        section.steps = section.steps.map(step => ({
+          ...step,
+          _type: 'processStep',
+          description: typeof step.description?.en === 'string' ? fixBlock(step.description) : step.description
+        }));
+      }
+      if (!section.headEnd || !section.headEnd.en) {
+        section.headEnd = { en: "Framework" };
+      }
     }
     if (section._type === 'values' && Array.isArray(section.cards)) {
       section.cards = section.cards.map(card => ({
@@ -69,8 +73,16 @@ async function fix() {
     return section;
   });
 
-  await client.patch('home-page').set({ sections: updatedSections }).commit();
-  console.log('Data fixed successfully!');
+  if (updatedSections) {
+    await client.patch(docId).set({ sections: updatedSections }).commit();
+    console.log(`Data fixed successfully for ${docId}!`);
+  }
+}
+
+async function fix() {
+  console.log('Fixing Array vs String errors...');
+  await fixDoc('home-page');
+  await fixDoc('drafts.home-page');
 }
 
 fix().catch(console.error);

@@ -16,6 +16,16 @@
   }
 }
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
 /* ─── Liquid Fill Card Wave Animations ──────────────────────────────────────
    GPU compositor-thread only (transform). No layout, no paint, silky 60fps. */
 @keyframes liquid-wave-fwd {

@@ -167,7 +167,6 @@ async function scrapePage(url) {
       hasForm,
       hasOutdatedYear,
       hasChatWidget,
-      isHttps,
       hasValidH1,
       h1ErrorType,
       hasValidTitle,

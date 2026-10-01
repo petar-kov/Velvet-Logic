@@ -131,13 +131,8 @@ export default function App() {
             case 'hero': return <HeroBlock key={block._key} data={{...block, backgroundImage: block.backgroundImage || settings?.defaultHeroImage}} />;
             case 'process': return <ProcessBlock key={block._key} data={block} />;
             case 'values': return <ValuesBlock key={block._key} data={block} />;
-            case 'whyItMatters': 
-              return (
-                <React.Fragment key={block._key}>
-                  <WhyItMattersBlock data={block} />
-                  <DesignPhilosophyBlock data={{}} />
-                </React.Fragment>
-              );
+            case 'whyItMatters': return <WhyItMattersBlock key={block._key} data={block} />;
+            case 'designPhilosophy': return <DesignPhilosophyBlock key={block._key} data={block} />;
             case 'siteAuditor': return null;
             case 'testimonials': return null;
             case 'faq': return <FaqBlock key={block._key} data={block} />;

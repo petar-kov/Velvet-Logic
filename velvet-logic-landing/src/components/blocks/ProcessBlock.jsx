@@ -14,31 +14,6 @@ export default function ProcessBlock({ data }) {
 
   if (!data || !data.steps) return null;
 
-  const steps = data.steps.map(step => {
-    if (l(step.title) === 'Ad Spend Bleed') {
-      return {
-        ...step,
-        title: { en: 'Unprofessional, Generic Design' },
-        description: { 
-          en: [{ 
-            _key: step.description?.en?.[0]?._key || 'desc1',
-            _type: 'block', 
-            children: [{ 
-              _key: step.description?.en?.[0]?.children?.[0]?._key || 'span1',
-              _type: 'span', 
-              marks: [],
-              text: 'If your brand looks like a generic template from 2015, high-end clients will assume your work is equally outdated. We build striking, premium interfaces that instantly establish authority and trust.' 
-            }],
-            markDefs: [],
-            style: 'normal'
-          }] 
-        },
-        icon: 'Palette'
-      };
-    }
-    return step;
-  });
-
   return (
     <section 
       ref={containerRef} 
@@ -65,7 +40,7 @@ export default function ProcessBlock({ data }) {
           />
 
           <div className="space-y-12">
-            {steps.map((step, idx) => (
+            {data.steps.map((step, idx) => (
               <div 
                 key={step._key || idx} 
                 className="relative pl-20 group"

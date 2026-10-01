@@ -27,6 +27,7 @@ export const homePageType = defineType({
         { type: 'values' },
         { type: 'process' },
         { type: 'whyItMatters' },
+        { type: 'designPhilosophy' },
         { type: 'siteAuditor' },
         { type: 'testimonials' },
         { type: 'faq' },

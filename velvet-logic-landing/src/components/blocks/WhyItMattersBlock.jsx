@@ -6,17 +6,7 @@ import { DynamicIcon, RichText, DynamicHeading, l } from '../shared/SharedCompon
 export default function WhyItMattersBlock({ data }) {
   if (!data) return null;
 
-  const comparisons = (data.comparisons || []).map(comp => {
-    if (l(comp.pillar) === 'Analytics') {
-      return {
-        ...comp,
-        pillar: { en: 'Design Aesthetics' },
-        oldWay: { en: 'Generic templates and forgettable visuals.' },
-        ourWay: { en: 'Premium, conversion-focused design that elevates your brand.' }
-      };
-    }
-    return comp;
-  });
+  const comparisons = data.comparisons || [];
 
   return (
     <section 

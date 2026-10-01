@@ -39,7 +39,7 @@ export default function HeroBlock({ data }) {
             {l(data.titlePart2)} <span className="text-orange">{l(data.titleLogic)}</span>
           </DynamicHeading>
           <div className="font-body text-secondary text-base md:text-xl mb-8 md:mb-10 leading-relaxed max-w-lg">
-            <p>A three-second load delay kills 50% of your traffic. We build visually stunning, high-converting digital experiences that stop the leak and elevate your brand.</p>
+            <RichText content={data.description} />
           </div>
           <div className="flex flex-col sm:flex-row gap-4 items-center sm:justify-start">
             <button 

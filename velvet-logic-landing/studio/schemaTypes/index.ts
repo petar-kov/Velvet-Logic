@@ -14,6 +14,7 @@ import { footerType } from './footer'
 import { faqType } from './faq'
 import { whyItMattersType } from './whyItMatters'
 import { siteAuditorType } from './siteAuditor'
+import designPhilosophy from './designPhilosophy'
 import { processStepType } from './processStep'
 import { valueCardType } from './valueCard'
 import { testimonialItemType } from './testimonialItem'
@@ -36,6 +37,7 @@ export const schemaTypes = [
   faqType,
   whyItMattersType,
   siteAuditorType,
+  designPhilosophy,
   processStepType,
   valueCardType,
   testimonialItemType,

@@ -19,7 +19,20 @@ export default function FaqBlock({ data }) {
     }
   ];
 
-  const allQuestions = data?.questions ? [...data.questions, ...hcFaqs] : hcFaqs;
+  const newFaq = {
+    _key: 'hc-other-services',
+    question: { en: "Do you offer other services beyond web design?" },
+    answer: { en: "Yes. Beyond building high-performance websites, we provide comprehensive branding, content planning, and content production (including blog writing and new page creation). We also offer ongoing retainers for web and copy updates to ensure your digital presence remains sharp, effective, and up-to-date." }
+  };
+
+  let allQuestions = data?.questions ? [...data.questions, ...hcFaqs] : [...hcFaqs];
+  
+  if (allQuestions.length > 0) {
+    const middleIndex = Math.floor(allQuestions.length / 2);
+    allQuestions.splice(middleIndex, 0, newFaq);
+  } else {
+    allQuestions = [newFaq];
+  }
 
   if (!allQuestions || allQuestions.length === 0) return null;
 

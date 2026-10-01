@@ -36,46 +36,49 @@ async function fixDoc(docId) {
   const doc = await client.getDocument(docId);
   if (!doc) return console.log('No doc found for', docId);
 
-  const updatedSections = doc.sections?.map(section => {
-    if (section._type === 'process') {
-      if (Array.isArray(section.steps)) {
-        section.steps = section.steps.map(step => ({
-          ...step,
-          _type: 'processStep',
-          description: typeof step.description?.en === 'string' ? fixBlock(step.description) : step.description
+  if (doc.sections && !doc.pageBuilder) {
+    console.log(`Migrating sections to pageBuilder for ${docId}`);
+    const updatedSections = doc.sections.map(section => {
+      if (section._type === 'process') {
+        if (Array.isArray(section.steps)) {
+          section.steps = section.steps.map(step => ({
+            ...step,
+            _type: 'processStep',
+            description: typeof step.description?.en === 'string' ? fixBlock(step.description) : step.description
+          }));
+        }
+        if (!section.headEnd || !section.headEnd.en) {
+          section.headEnd = { en: "Framework" };
+        }
+      }
+      if (section._type === 'values' && Array.isArray(section.cards)) {
+        section.cards = section.cards.map(card => ({
+          ...card,
+          _type: 'valueCard',
+          description: typeof card.description?.en === 'string' ? fixBlock(card.description) : card.description
         }));
       }
-      if (!section.headEnd || !section.headEnd.en) {
-        section.headEnd = { en: "Framework" };
+      if (section._type === 'testimonials' && Array.isArray(section.list)) {
+        section.list = section.list.map(item => ({
+          ...item,
+          _type: 'testimonialItem',
+          quote: typeof item.quote?.en === 'string' ? fixBlock(item.quote) : item.quote
+        }));
       }
-    }
-    if (section._type === 'values' && Array.isArray(section.cards)) {
-      section.cards = section.cards.map(card => ({
-        ...card,
-        _type: 'valueCard',
-        description: typeof card.description?.en === 'string' ? fixBlock(card.description) : card.description
-      }));
-    }
-    if (section._type === 'testimonials' && Array.isArray(section.list)) {
-      section.list = section.list.map(item => ({
-        ...item,
-        _type: 'testimonialItem',
-        quote: typeof item.quote?.en === 'string' ? fixBlock(item.quote) : item.quote
-      }));
-    }
-    if (section._type === 'faq' && Array.isArray(section.questions)) {
-      section.questions = section.questions.map(q => ({
-        ...q,
-        _type: 'faqItem',
-        answer: typeof q.answer?.en === 'string' ? fixBlock(q.answer) : q.answer
-      }));
-    }
-    return section;
-  });
+      if (section._type === 'faq' && Array.isArray(section.questions)) {
+        section.questions = section.questions.map(q => ({
+          ...q,
+          _type: 'faqItem',
+          answer: typeof q.answer?.en === 'string' ? fixBlock(q.answer) : q.answer
+        }));
+      }
+      return section;
+    });
 
-  if (updatedSections) {
-    await client.patch(docId).set({ sections: updatedSections }).commit();
-    console.log(`Data fixed successfully for ${docId}!`);
+    await client.patch(docId).set({ pageBuilder: updatedSections }).unset(['sections']).commit();
+    console.log(`Data migrated successfully for ${docId}!`);
+  } else {
+    console.log(`No sections to migrate or pageBuilder already exists for ${docId}`);
   }
 }
 

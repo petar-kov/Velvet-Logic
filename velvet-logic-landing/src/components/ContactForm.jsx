@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import { l } from './shared/SharedComponents';
 
 const DynamicIcon = ({ name, ...props }) => {
   const Icon = LucideIcons[name] || LucideIcons.Zap;
@@ -9,6 +10,7 @@ const DynamicIcon = ({ name, ...props }) => {
 };
 
 export default function ContactForm({ labels, currentLang = 'ENG' }) {
+  const lbl = (key, fallback) => labels?.[key] ? (l(labels[key]) || fallback) : fallback;
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -92,9 +94,9 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
             >
               <CheckCircle2 size={40} className="text-violet" />
             </motion.div>
-            <h3 className="text-3xl font-heading font-bold text-obsidian mb-2">{labels?.successTitle || "Thank you."}</h3>
+            <h3 className="text-3xl font-heading font-bold text-obsidian mb-2">{lbl('successTitle', 'Thank you.')}</h3>
             <p className="font-mono text-sm text-violet">
-              {labels?.successDesc || "We've received your inquiry and will be in touch within 24 hours."}
+              {lbl('successDesc', "We've received your inquiry and will be in touch within 24 hours.")}
             </p>
           </motion.div>
         ) : (
@@ -117,9 +119,9 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
                   value={formData.fullName}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder={labels?.name || "Full Name"} 
+                  placeholder={lbl('name', 'Full Name')} 
                 />
-                <label htmlFor="fullName" className={labelClasses}>{labels?.name || "Full Name"}</label>
+                <label htmlFor="fullName" className={labelClasses}>{lbl('name', 'Full Name')}</label>
                 {errors.fullName && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.fullName}</span>}
               </div>
 
@@ -131,9 +133,9 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
                   value={formData.companyName}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder={labels?.company || "Company Name"} 
+                  placeholder={lbl('company', 'Company Name')} 
                 />
-                <label htmlFor="companyName" className={labelClasses}>{labels?.company || "Company Name"} <span className="lowercase text-obsidian/40">{labels?.optional || "(optional)"}</span></label>
+                <label htmlFor="companyName" className={labelClasses}>{lbl('company', 'Company Name')} <span className="lowercase text-obsidian/40">{lbl('optional', '(optional)')}</span></label>
               </div>
 
               <div className="relative">
@@ -144,9 +146,9 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
                   value={formData.email}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder={labels?.email || "Email Address"} 
+                  placeholder={lbl('email', 'Email Address')} 
                 />
-                <label htmlFor="email" className={labelClasses}>{labels?.email || "Email Address"}</label>
+                <label htmlFor="email" className={labelClasses}>{lbl('email', 'Email Address')}</label>
                 {errors.email && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.email}</span>}
               </div>
 
@@ -158,9 +160,9 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
                   value={formData.phone}
                   onChange={handleChange}
                   className={inputClasses} 
-                  placeholder={labels?.phone || "Phone Number"} 
+                  placeholder={lbl('phone', 'Phone Number')} 
                 />
-                <label htmlFor="phone" className={labelClasses}>{labels?.phone || "Phone Number"} <span className="lowercase text-obsidian/40">{labels?.optional || "(optional)"}</span></label>
+                <label htmlFor="phone" className={labelClasses}>{lbl('phone', 'Phone Number')} <span className="lowercase text-obsidian/40">{lbl('optional', '(optional)')}</span></label>
                 {errors.phone && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.phone}</span>}
               </div>
 
@@ -172,16 +174,16 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
                   value={formData.message}
                   onChange={handleChange}
                   className={`${inputClasses} resize-none`} 
-                  placeholder={labels?.detailsPlace || "Message"} 
+                  placeholder={lbl('detailsPlace', 'Message')} 
                 ></textarea>
-                <label htmlFor="message" className={labelClasses}>{labels?.details || "Project Details"}</label>
+                <label htmlFor="message" className={labelClasses}>{lbl('details', 'Project Details')}</label>
                 {errors.message && <span className="absolute -bottom-5 left-0 text-[10px] text-red-400 font-mono">{errors.message}</span>}
               </div>
             </div>
             
             {status === 'error' && (
               <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-mono text-center">
-                {labels?.errorText || "Something went wrong. Please try again."}
+                {lbl('errorText', 'Something went wrong. Please try again.')}
               </div>
             )}
 
@@ -192,8 +194,8 @@ export default function ContactForm({ labels, currentLang = 'ENG' }) {
               className="w-full bg-violet text-white py-4 mt-4 rounded-xl font-heading font-bold text-lg relative overflow-hidden group shadow-lg shadow-violet/20 hover:shadow-violet/40 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                {status === 'loading' ? (labels?.sending || 'SENDING...') : (labels?.submit || 'SEND MESSAGE')} 
-                {status !== 'loading' && <DynamicIcon name={labels?.submitIcon} size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
+                {status === 'loading' ? lbl('sending', 'SENDING...') : lbl('submit', 'SEND MESSAGE')} 
+                {status !== 'loading' && <DynamicIcon name={lbl('submitIcon', 'Send')} size={18} fill="currentColor" className="group-hover:scale-110 transition-transform" />}
               </span>
               <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
             </motion.button>

@@ -11,14 +11,22 @@ export const testimonialItemType = defineType({
     defineField({ name: 'initials', title: 'Initials (Fallback)', type: 'string', description: 'e.g. "JD" if no image is uploaded' }),
     defineField({ name: 'avatar', title: 'Client Image', type: 'image', options: { hotspot: true } }),
     defineField({
+      name: 'rating',
+      title: 'Rating (1-5)',
+      type: 'number',
+      initialValue: 5,
+      validation: Rule => Rule.min(1).max(5)
+    }),
+    defineField({
       name: 'color',
       title: 'Glow Color',
       type: 'string',
       options: {
         list: [
-          { title: 'Violet (Primary)', value: 'bg-primary' },
-          { title: 'Emerald (CTA)', value: 'bg-cta' },
-          { title: 'Amber (Accent)', value: 'bg-accent' },
+          { title: 'Navy (Brand)', value: 'navy' },
+          { title: 'Orange (Accent)', value: 'orange' },
+          { title: 'Green (Success)', value: 'green' },
+          { title: 'Slate (Neutral)', value: 'slate' },
         ]
       }
     }),

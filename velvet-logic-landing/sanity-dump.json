@@ -1,0 +1,804 @@
+{
+  "_createdAt": "2026-04-01T21:44:32Z",
+  "_id": "home-page",
+  "_rev": "HMqfufDQ3Xtv1qDwK8qoKk",
+  "_system": {
+    "base": {
+      "id": "home-page",
+      "rev": "Tvj07qhO1kfFDFySUGPp19"
+    }
+  },
+  "_type": "homePage",
+  "_updatedAt": "2026-06-09T18:47:17Z",
+  "pageBuilder": [
+    {
+      "_key": "section_1775083311971_hero",
+      "_system": {
+        "base": {
+          "id": "hero",
+          "rev": "5RHnDHga3j5d2aGwsCQTXr"
+        }
+      },
+      "_type": "hero",
+      "btnPortText": {
+        "en": "View Our Work"
+      },
+      "btnStartText": {
+        "en": "Stop The Leak"
+      },
+      "description": {
+        "en": [
+          {
+            "_key": "7ofg5v",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "tfkucn",
+                "_type": "span",
+                "marks": [],
+                "text": "A three-second load delay kills 50% of your traffic. We build high-converting funnels that stop the leak and dominate local search."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      },
+      "preTitle": {
+        "en": "Stop Bleeding Revenue"
+      },
+      "sectionLabel": "Hero Section",
+      "titleLogic": {
+        "en": "competitors."
+      },
+      "titlePart1": {
+        "en": "Your website is leaking "
+      },
+      "titlePart2": {
+        "en": " to your "
+      },
+      "titleTag": "h1",
+      "titleVelvet": {
+        "en": "leads"
+      }
+    },
+    {
+      "_key": "whyItMatters-1780673439194",
+      "_type": "whyItMatters",
+      "comparisons": [
+        {
+          "_key": "6azxe",
+          "_type": "comparisonItem",
+          "oldWay": {
+            "en": "Hidden phone numbers and broken contact forms."
+          },
+          "ourWay": {
+            "en": "Sticky mobile CTA bars and optimized lead funnels."
+          },
+          "pillar": {
+            "en": "Lead Capture"
+          }
+        },
+        {
+          "_key": "gobht7",
+          "_type": "comparisonItem",
+          "oldWay": {
+            "en": "Slow load times and missing H1 tags."
+          },
+          "ourWay": {
+            "en": "Sub-second load times with pristine Schema markup."
+          },
+          "pillar": {
+            "en": "Technical SEO"
+          }
+        },
+        {
+          "_key": "sl8eus",
+          "_type": "comparisonItem",
+          "oldWay": {
+            "en": "Buried answers and generic text blocks."
+          },
+          "ourWay": {
+            "en": "Answer-first architecture ready for AI search engines."
+          },
+          "pillar": {
+            "en": "AI Readiness"
+          }
+        },
+        {
+          "_key": "fnsvq",
+          "_type": "comparisonItem",
+          "oldWay": {
+            "en": "Guessing what visitors are actually doing."
+          },
+          "ourWay": {
+            "en": "Precision tracking on every button and form submission."
+          },
+          "pillar": {
+            "en": "Analytics"
+          }
+        },
+        {
+          "_key": "xtuvgd",
+          "_type": "comparisonItem",
+          "oldWay": {
+            "en": "Outdated plugins and missing SSL certificates."
+          },
+          "ourWay": {
+            "en": "Enterprise-grade protection and ADA compliance."
+          },
+          "pillar": {
+            "en": "Security"
+          }
+        },
+        {
+          "_key": "de7b8m",
+          "_type": "comparisonItem",
+          "oldWay": {
+            "en": "Held hostage by proprietary agency platforms."
+          },
+          "ourWay": {
+            "en": "100% ownership of your code, content, and domain."
+          },
+          "pillar": {
+            "en": "Ownership"
+          }
+        }
+      ],
+      "heading": {
+        "en": "Why Standard Sites Fail"
+      },
+      "preTitle": {
+        "en": "The Cost of Inaction"
+      },
+      "sectionLabel": "Why It Matters",
+      "subtext": {
+        "en": [
+          {
+            "_key": "rryren",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "4p9f2a",
+                "_type": "span",
+                "marks": [],
+                "text": "See exactly where your current website is losing you money, and how Velvet Logic fixes it."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      }
+    },
+    {
+      "_key": "values-1780673439194",
+      "_type": "values",
+      "cards": [
+        {
+          "_key": "dw9o4q",
+          "_type": "valueCard",
+          "description": {
+            "en": [
+              {
+                "_key": "98x2qb",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "bpynja",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "We run a comprehensive audit across 40+ technical metrics to find exactly where you are losing prospects."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "tag": {
+            "en": "Discovery"
+          },
+          "title": {
+            "en": "Identifying the Bleed"
+          }
+        },
+        {
+          "_key": "55rtrh",
+          "_type": "valueCard",
+          "description": {
+            "en": [
+              {
+                "_key": "wlfxf9",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "wqe7m",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "We map out a high-converting user journey designed specifically for your trade to maximize lead capture."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "tag": {
+            "en": "Strategy"
+          },
+          "title": {
+            "en": "Conversion Mapping"
+          }
+        },
+        {
+          "_key": "ektald",
+          "_type": "valueCard",
+          "description": {
+            "en": [
+              {
+                "_key": "3gyvqs",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "oxy37f",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "We deploy industrial-grade web architecture that solves the root problems and scales with your business."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "tag": {
+            "en": "Execution"
+          },
+          "title": {
+            "en": "The Velvet Logic Fix"
+          }
+        }
+      ],
+      "heading": {
+        "en": "Data-Driven Diagnostics"
+      },
+      "headingTag": "h2",
+      "preTitle": {
+        "en": "Audit Methodology"
+      },
+      "sectionLabel": "Our Approach",
+      "subtext": {
+        "en": [
+          {
+            "_key": "ypreok",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "bk7mfn",
+                "_type": "span",
+                "marks": [],
+                "text": "We don't guess. We scan your digital footprint to identify exactly where your funnel is broken and how much it's costing you."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      }
+    },
+    {
+      "_key": "section_1775083311972_testimonials",
+      "_type": "testimonials",
+      "description": {
+        "en": [
+          {
+            "_key": "0d1e255b",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "7844e647",
+                "_type": "span",
+                "text": "Hear from the businesses we've partnered with."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      },
+      "headPre": {
+        "en": "Client"
+      },
+      "headSub": {
+        "en": "Testimonials"
+      },
+      "headTag": "h2",
+      "list": [
+        {
+          "_key": "testi-1",
+          "_type": "testimonialItem",
+          "color": "bg-primary",
+          "name": "Sarah Chen",
+          "quote": {
+            "en": [
+              {
+                "_key": "block_u9pab5e8l",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_uqjwn2vxa",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "Velvet Logic completely redesigned our SaaS interface. User engagement increased by 140% in just two weeks."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "role": {
+            "en": "CTO, Nexus AI"
+          }
+        },
+        {
+          "_key": "testi-2",
+          "_type": "testimonialItem",
+          "color": "bg-accent",
+          "name": "Marcus Thorne",
+          "quote": {
+            "en": [
+              {
+                "_key": "block_0z9316s29",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_hu7qyuqa8",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "Their fluid, organic approach to design transformed our rigid productivity app into an experience people love using."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "role": {
+            "en": "Founder, Oasis"
+          }
+        },
+        {
+          "_key": "testi-3",
+          "_type": "testimonialItem",
+          "color": "bg-cta",
+          "name": "Dr. E. Vance",
+          "quote": {
+            "en": [
+              {
+                "_key": "block_nfpxh6547",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_8fwa9xc4j",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "The virtual interfaces they built for our VR platform defied everything we thought was possible in web tech."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "role": {
+            "en": "Lead Researcher, Veridian"
+          }
+        },
+        {
+          "_key": "testi-4",
+          "_type": "testimonialItem",
+          "color": "bg-primary",
+          "name": "Alex Rivera",
+          "quote": {
+            "en": [
+              {
+                "_key": "block_iphwmfm54",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_85dsdnm64",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "A rare mix of creative brilliance and technical mastery. The animations they added are profoundly impactful."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "role": {
+            "en": "CEO, FinTech Flow"
+          }
+        }
+      ],
+      "sectionLabel": "Testimonials"
+    },
+    {
+      "_key": "section_1775083311972_process",
+      "_type": "process",
+      "description": {
+        "en": [
+          {
+            "_key": "tlgga9",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "j6duk",
+                "_type": "span",
+                "marks": [],
+                "text": "Every broken link, hidden phone number, and slow page load is a job handed directly to your competitor."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      },
+      "head": {
+        "en": "Stop Losing Jobs To "
+      },
+      "headEnd": {
+        "en": "Framework"
+      },
+      "headSpan": {
+        "en": "Bad UX"
+      },
+      "headTag": "h2",
+      "sectionLabel": "Framework",
+      "steps": [
+        {
+          "_key": "eluh5h",
+          "_type": "processStep",
+          "description": {
+            "en": [
+              {
+                "_key": "7zvnuj",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "jx613f",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "If a customer has to hunt for your phone number, they will call someone else. We build sticky mobile CTA bars and optimized lead capture forms that force conversions."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "icon": "PhoneOff",
+          "title": {
+            "en": "Missing CTAs = Lost Calls"
+          }
+        },
+        {
+          "_key": "a57mz",
+          "_type": "processStep",
+          "description": {
+            "en": [
+              {
+                "_key": "lcomj",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "dp2tfe",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "A three-second load delay kills 50% of your traffic. We engineer sub-second load times and pristine technical SEO to keep prospects engaged."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "icon": "Hourglass",
+          "title": {
+            "en": "Slow Load Times = High Bounce Rate"
+          }
+        },
+        {
+          "_key": "t5n6of",
+          "_type": "processStep",
+          "description": {
+            "en": [
+              {
+                "_key": "44yg6mk",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "te2p45",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "If your site isn't structured with pristine Schema markup, you don't exist to modern generative search engines. We build answer-first architecture."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "icon": "Bot",
+          "title": {
+            "en": "Invisible to AI = Irrelevant"
+          }
+        },
+        {
+          "_key": "a3j5jq",
+          "_type": "processStep",
+          "description": {
+            "en": [
+              {
+                "_key": "8jb81o",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "eg0l1i",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "You are spending thousands on Google Ads only to send traffic to a generic homepage. We build targeted landing pages that convert paid traffic into booked jobs."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "icon": "TrendingDown",
+          "title": {
+            "en": "Ad Spend Bleed"
+          }
+        }
+      ],
+      "tag": {
+        "en": "The Problems We Fix"
+      }
+    },
+    {
+      "_key": "faq-1780673439194",
+      "_type": "faq",
+      "heading": {
+        "en": "Common Questions"
+      },
+      "preTitle": {
+        "en": "Questions"
+      },
+      "questions": [
+        {
+          "_key": "k2j3a",
+          "_type": "faqItem",
+          "answer": {
+            "en": [
+              {
+                "_key": "block_oecwnx7iw",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_uemvpp7w8",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "We typically launch standard service sites within two weeks."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "question": {
+            "en": "How fast can you build a site?"
+          }
+        },
+        {
+          "_key": "z7hldc",
+          "_type": "faqItem",
+          "answer": {
+            "en": [
+              {
+                "_key": "block_oqu5j6zla",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_xz48kjtsx",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "We guarantee an optimized conversion foundation, but market demand dictates volume."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "question": {
+            "en": "Do you guarantee leads?"
+          }
+        },
+        {
+          "_key": "64jmgk",
+          "_type": "faqItem",
+          "answer": {
+            "en": [
+              {
+                "_key": "block_j24wwyf9k",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_1jccslin5",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "If your site takes more than 3 seconds to load, lacks a sticky mobile click-to-call button, or doesn't have local schema markup, you are losing leads to competitors."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "question": {
+            "en": "How do I know if my site is leaking leads?"
+          }
+        },
+        {
+          "_key": "yim4z5",
+          "_type": "faqItem",
+          "answer": {
+            "en": [
+              {
+                "_key": "block_tonoymf6t",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_wploruhsc",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "No. We build custom, high-performance architectures specifically designed for lead capture in the trades and industrial sectors."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "question": {
+            "en": "Do you work with generic templates?"
+          }
+        },
+        {
+          "_key": "5w0aah",
+          "_type": "faqItem",
+          "answer": {
+            "en": [
+              {
+                "_key": "block_f5ra7nep7",
+                "_type": "block",
+                "children": [
+                  {
+                    "_key": "span_s39s238go",
+                    "_type": "span",
+                    "marks": [],
+                    "text": "We provide a completely free, no-obligation technical report. If you choose to hire us, we implement the fixes to plug the leaks."
+                  }
+                ],
+                "markDefs": [],
+                "style": "normal"
+              }
+            ]
+          },
+          "question": {
+            "en": "What happens after the audit?"
+          }
+        }
+      ],
+      "sectionLabel": "FAQ",
+      "subtext": {
+        "en": [
+          {
+            "_key": "7x9cyu",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "kzg27",
+                "_type": "span",
+                "marks": [],
+                "text": "Everything you need to know about stopping the leak."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      }
+    },
+    {
+      "_key": "section_1775083311972_contact",
+      "_type": "contact",
+      "description": {
+        "en": [
+          {
+            "_key": "48e61a2f",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "6070acf1",
+                "_type": "span",
+                "text": "Contact us today for a free website audit and estimate. We'll show you exactly how we can increase your online leads."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ]
+      },
+      "features": [
+        {
+          "_key": "feat-1",
+          "_type": "object",
+          "icon": "Zap",
+          "subtext": {
+            "en": "We'll get back to you within 24 hours."
+          },
+          "title": {
+            "en": "Fast Response"
+          }
+        },
+        {
+          "_key": "feat-2",
+          "_type": "object",
+          "icon": "Target",
+          "subtext": {
+            "en": "Custom strategies for your specific trade."
+          },
+          "title": {
+            "en": "Tailored Solutions"
+          }
+        }
+      ],
+      "formLabels": {
+        "details": {
+          "en": "Project Details"
+        },
+        "detailsPlace": {
+          "en": "Tell us about your next big idea..."
+        },
+        "email": {
+          "en": "Email"
+        },
+        "name": {
+          "en": "Name"
+        },
+        "submit": {
+          "en": "Submit Inquiry"
+        }
+      },
+      "head1": {
+        "en": "Ready to grow your "
+      },
+      "head2": {
+        "en": "?"
+      },
+      "headSpan": {
+        "en": "business"
+      },
+      "headTag": "h2",
+      "tag": {
+        "en": "Get Started"
+      }
+    }
+  ],
+  "title": "Home Page"
+}

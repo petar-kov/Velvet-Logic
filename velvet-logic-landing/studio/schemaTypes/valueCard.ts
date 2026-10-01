@@ -13,6 +13,14 @@ export const valueCardType = defineType({
       type: 'image',
       options: { accept: 'image/svg+xml' }
     }),
+    defineField({ name: 'metric', title: 'Highlight Metric', type: 'localizedString', description: 'e.g. "+340% Lift"' }),
+    defineField({ 
+      name: 'tags', 
+      title: 'Tags', 
+      type: 'array', 
+      of: [{type: 'string'}],
+      description: 'e.g. "Performance", "SEO"'
+    }),
     defineField({ name: 'description', title: 'Card Description', type: 'localizedBlockContent' }),
   ],
   preview: {

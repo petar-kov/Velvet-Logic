@@ -4,6 +4,10 @@ export const homePageType = defineType({
   name: 'homePage',
   title: 'Home Page',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO & Settings' },
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -11,11 +15,13 @@ export const homePageType = defineType({
       type: 'string',
       initialValue: 'Home Page',
       readOnly: true,
+      group: 'content',
     }),
     defineField({
-      name: 'sections',
-      title: 'Page Sections',
+      name: 'pageBuilder',
+      title: 'Page Builder',
       type: 'array',
+      group: 'content',
       of: [
         { type: 'hero' },
         { type: 'values' },
@@ -26,6 +32,12 @@ export const homePageType = defineType({
         { type: 'faq' },
         { type: 'contact' },
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

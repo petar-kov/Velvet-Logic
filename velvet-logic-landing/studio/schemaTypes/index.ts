@@ -18,6 +18,7 @@ import { processStepType } from './processStep'
 import { valueCardType } from './valueCard'
 import { testimonialItemType } from './testimonialItem'
 import { faqItemType } from './faqItem'
+import { seoType } from './seo'
 
 export const schemaTypes = [
   localizedString,
@@ -39,4 +40,5 @@ export const schemaTypes = [
   valueCardType,
   testimonialItemType,
   faqItemType,
+  seoType,
 ]

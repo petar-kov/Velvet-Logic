@@ -30,4 +30,18 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
+  
+  document: {
+    actions: (prev, context) => {
+      // Define our singletons
+      const singletons = new Set(['homePage', 'navigation', 'settings', 'footer'])
+      
+      if (singletons.has(context.schemaType)) {
+        // Filter out 'duplicate', 'delete', 'unpublish' for singletons
+        return prev.filter(({ action }) => !['unpublish', 'delete', 'duplicate'].includes(action))
+      }
+      
+      return prev
+    },
+  },
 })
